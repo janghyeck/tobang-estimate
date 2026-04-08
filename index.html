@@ -143,13 +143,13 @@ tr:last-child td{border-bottom:none;}
 
 <!-- 인쇄용 표지 -->
 <div id="print-cover" style="display:none;page-break-after:always;">
-  <div style="min-height:250mm;display:flex;flex-direction:column;justify-content:center;padding:22mm 22mm;">
-    <div style="width:44px;height:3px;background:#2563eb;margin-bottom:14px;"></div>
-    <div style="font-size:9pt;color:#9ca3af;letter-spacing:.06em;margin-bottom:10px;">토방이앤지</div>
+  <div style="min-height:240mm;display:flex;flex-direction:column;justify-content:center;padding:22mm 24mm;">
+    <div style="width:44px;height:3px;background:#2563eb;margin-bottom:12px;"></div>
+    <div style="font-size:9pt;color:#9ca3af;letter-spacing:0.12em;margin-bottom:10px;">TOBANGENG</div>
     <div id="pc-title" style="font-size:28pt;font-weight:900;color:#1a1a2e;line-height:1.2;margin-bottom:6px;">방수공사<br>견적서</div>
-    <hr style="border:none;border-top:0.5px solid #e5e7eb;margin:16px 0 14px;">
+    <hr style="border:none;border-top:0.5px solid #e5e7eb;margin:48px 0 36px;">
     <table id="pc-table" style="width:100%;border-collapse:collapse;"></table>
-    <div style="margin-top:20px;padding-top:14px;border-top:0.5px solid #e5e7eb;display:flex;justify-content:space-between;">
+    <div style="margin-top:32px;padding-top:14px;border-top:0.5px solid #e5e7eb;display:flex;justify-content:space-between;">
       <div id="pc-mgr" style="font-size:9pt;color:#9ca3af;line-height:1.8;"></div>
       <div id="pc-date" style="font-size:9pt;color:#9ca3af;line-height:1.8;text-align:right;"></div>
     </div>
@@ -158,7 +158,7 @@ tr:last-child td{border-bottom:none;}
 
 <!-- 인쇄용 내부검토용 -->
 <div id="print-internal-page" style="display:none;page-break-after:always;">
-  <div style="padding:15mm 18mm;">
+  <div style="padding:14mm 14mm;">
     <div style="font-size:13pt;font-weight:700;color:#1a1a2e;border-bottom:2.5px solid #2563eb;padding-bottom:5px;margin-bottom:14px;">&#9632; 내부검토용 견적</div>
     <div style="font-size:10pt;font-weight:700;color:#2563eb;border-bottom:1px solid #2563eb;padding-bottom:3px;margin:12px 0 6px;">&#9632; 자재비</div>
     <table style="width:100%;border-collapse:collapse;font-size:8.5pt;margin-bottom:4px;">
@@ -177,10 +177,10 @@ tr:last-child td{border-bottom:none;}
   </div>
 </div>
 
-<!-- 인쇄용 제출용 -->
+<!-- 인쇄용 제출용 견적서 -->
 <div id="print-submit" style="display:none;">
-  <div style="padding:15mm 18mm;">
-    <div style="font-size:13pt;font-weight:700;color:#1a1a2e;border-bottom:2.5px solid #2563eb;padding-bottom:5px;margin-bottom:14px;">&#9632; 제출용 견적서</div>
+  <div style="padding:14mm 14mm;">
+    <div style="font-size:13pt;font-weight:700;color:#1a1a2e;border-bottom:2.5px solid #2563eb;padding-bottom:5px;margin-bottom:14px;">&#9632; 견적서</div>
     <div style="font-size:10pt;font-weight:700;color:#2563eb;border-bottom:1px solid #2563eb;padding-bottom:3px;margin:12px 0 6px;">&#9632; 공사 개요</div>
     <table id="ps-info" style="width:100%;border-collapse:collapse;margin-bottom:8px;font-size:9pt;"></table>
     <div style="font-size:10pt;font-weight:700;color:#2563eb;border-bottom:1px solid #2563eb;padding-bottom:3px;margin:12px 0 6px;">&#9632; 공사 내역</div>
@@ -189,10 +189,12 @@ tr:last-child td{border-bottom:none;}
       <tbody id="ps-rows"></tbody>
     </table>
     <div style="font-size:10pt;font-weight:700;color:#2563eb;border-bottom:1px solid #2563eb;padding-bottom:3px;margin:12px 0 6px;">&#9632; 공사비 정산</div>
-    <table id="ps-cost" style="width:100%;border-collapse:collapse;font-size:9pt;"></table>
-    <div style="border:0.5px solid #d1d5db;border-radius:4px;overflow:hidden;margin-top:10px;">
-      <div style="background:#f3f4f6;font-weight:700;font-size:9pt;padding:5px 10px;border-bottom:0.5px solid #d1d5db;">참고사항</div>
-      <div style="padding:6px 10px 8px;" id="ps-notes"></div>
+    <table id="ps-cost" style="width:100%;border-collapse:collapse;font-size:9pt;margin-bottom:10px;"></table>
+    <div style="break-inside:avoid;page-break-inside:avoid;">
+      <div style="border:0.5px solid #d1d5db;border-radius:4px;overflow:hidden;">
+        <div style="background:#f3f4f6;font-weight:700;font-size:9pt;padding:5px 10px;border-bottom:0.5px solid #d1d5db;">참고사항</div>
+        <div style="padding:6px 10px 8px;" id="ps-notes"></div>
+      </div>
     </div>
   </div>
 </div>
@@ -335,14 +337,14 @@ tr:last-child td{border-bottom:none;}
     <div class="sec"><div class="sec-title">표지 미리보기</div>
       <div class="cover-preview"><div class="cv-body">
         <div class="cv-accent"></div>
-        <div class="cv-company">토방이앤지</div>
+        <div class="cv-company">TOBANGENG</div>
         <div class="cv-title" id="cv-title">방수공사<br>견적서</div>
         <div class="cv-sub" id="cv-sub">공사 위치</div>
         <hr class="cv-divider">
         <div id="cv-rows"></div>
         <div class="cv-footer">
           <div class="cv-ft" id="cv-mgr">담당자: 장혁<br>010-9864-0418</div>
-          <div class="cv-ft" id="cv-date" style="text-align:right">2026.04.08<br>토방이앤지</div>
+          <div class="cv-ft" id="cv-date" style="text-align:right">2026.04.08<br>TOBANGENG</div>
         </div>
       </div></div>
       <div class="sec-title" style="margin-top:4px;">표지 내용 편집</div>
