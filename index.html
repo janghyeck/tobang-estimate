@@ -93,19 +93,110 @@ tr:last-child td{border-bottom:none;}
 
 /* 인쇄 스타일 */
 @media print {
-  body{background:#fff;}
-  .container{max-width:100%;padding:0;}
-  .no-print{display:none!important;}
-  .print-page{page-break-after:always;}
-  .print-page:last-child{page-break-after:auto;}
-  .sec{border:none;padding:8px 0;}
-  table{font-size:9pt;}
-  th{font-size:9pt;}
-  td{font-size:9pt;}
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  body { background:#fff; margin:0; padding:0; }
+  .container { max-width:100%; padding:0; }
+
+  /* 화면 UI 전체 숨김 */
+  .no-print { display:none !important; }
+  h1, .subtitle { display:none !important; }
+
+  /* 탭 숨김 */
+  .tab-wrap { display:none !important; }
+  .cards { display:none !important; }
+
+  /* 툴 입력 영역 숨김 */
+  #tab-internal { display:none !important; }
+  #tab-cover { display:none !important; }
+
+  /* 제출용만 표시 */
+  #tab-submit { display:block !important; }
+
+  /* 참고사항 UI 버튼 숨김 */
+  .del-btn { display:none !important; }
+  .preset-grid { display:none !important; }
+  .custom-row { display:none !important; }
+  .note-inp { border:none !important; background:transparent !important; padding:0 !important; font-size:8.5pt !important; color:#6b7280 !important; }
+  .sec-title span { display:none !important; }
+
+  /* 금액 입력 필드 → 텍스트처럼 보이게 */
+  .amt-inp { border:none !important; background:transparent !important; text-align:right; padding:0 !important; font-size:9pt !important; width:auto !important; }
+
+  /* 섹션 스타일 */
+  .sec { border:none !important; padding:6px 0 !important; box-shadow:none !important; }
+
+  /* 표 스타일 */
+  table { font-size:9pt; border-collapse:collapse; }
+  th { font-size:9pt; background:#2563eb !important; color:#fff !important; padding:5px 7px; }
+  td { font-size:9pt; padding:4px 7px; }
+
+  /* 페이지 */
+  @page { size:A4; margin:15mm 18mm; }
+
+  /* 인쇄용 표지 */
+  #print-cover { display:block !important; page-break-after:always; }
+  #print-cover-hidden { display:none !important; }
 }
 </style>
 </head>
 <body>
+
+<!-- 인쇄용 표지 -->
+<div id="print-cover" style="display:none;page-break-after:always;">
+  <div style="min-height:250mm;display:flex;flex-direction:column;justify-content:center;padding:22mm 22mm;">
+    <div style="width:44px;height:3px;background:#2563eb;margin-bottom:14px;"></div>
+    <div style="font-size:9pt;color:#9ca3af;letter-spacing:.06em;margin-bottom:10px;">토방이앤지</div>
+    <div id="pc-title" style="font-size:28pt;font-weight:900;color:#1a1a2e;line-height:1.2;margin-bottom:6px;">방수공사<br>견적서</div>
+    <hr style="border:none;border-top:0.5px solid #e5e7eb;margin:16px 0 14px;">
+    <table id="pc-table" style="width:100%;border-collapse:collapse;"></table>
+    <div style="margin-top:20px;padding-top:14px;border-top:0.5px solid #e5e7eb;display:flex;justify-content:space-between;">
+      <div id="pc-mgr" style="font-size:9pt;color:#9ca3af;line-height:1.8;"></div>
+      <div id="pc-date" style="font-size:9pt;color:#9ca3af;line-height:1.8;text-align:right;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- 인쇄용 내부검토용 -->
+<div id="print-internal-page" style="display:none;page-break-after:always;">
+  <div style="padding:15mm 18mm;">
+    <div style="font-size:13pt;font-weight:700;color:#1a1a2e;border-bottom:2.5px solid #2563eb;padding-bottom:5px;margin-bottom:14px;">&#9632; 내부검토용 견적</div>
+    <div style="font-size:10pt;font-weight:700;color:#2563eb;border-bottom:1px solid #2563eb;padding-bottom:3px;margin:12px 0 6px;">&#9632; 자재비</div>
+    <table style="width:100%;border-collapse:collapse;font-size:8.5pt;margin-bottom:4px;">
+      <thead><tr style="background:#2563eb;"><th style="color:#fff;font-weight:700;padding:5px 7px;text-align:left;border:0.5px solid #1d4ed8;">공정</th><th style="color:#fff;font-weight:700;padding:5px 7px;text-align:left;border:0.5px solid #1d4ed8;">항목</th><th style="color:#fff;font-weight:700;padding:5px 7px;text-align:left;border:0.5px solid #1d4ed8;">규격</th><th style="color:#fff;font-weight:700;padding:5px 7px;text-align:right;border:0.5px solid #1d4ed8;">이론량</th><th style="color:#fff;font-weight:700;padding:5px 7px;text-align:right;border:0.5px solid #1d4ed8;">수량</th><th style="color:#fff;font-weight:700;padding:5px 7px;text-align:right;border:0.5px solid #1d4ed8;">단가</th><th style="color:#fff;font-weight:700;padding:5px 7px;text-align:right;border:0.5px solid #1d4ed8;">금액</th></tr></thead>
+      <tbody id="pi-mat-rows"></tbody>
+      <tfoot><tr style="background:#eff6ff;"><td colspan="6" style="font-weight:700;padding:4px 7px;border:0.5px solid #d1d5db;">자재비 합계</td><td style="font-weight:700;padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;" id="pi-mat-total">-</td></tr></tfoot>
+    </table>
+    <div style="font-size:10pt;font-weight:700;color:#2563eb;border-bottom:1px solid #2563eb;padding-bottom:3px;margin:12px 0 6px;">&#9632; 노무비</div>
+    <table style="width:100%;border-collapse:collapse;font-size:8.5pt;margin-bottom:4px;">
+      <thead><tr style="background:#2563eb;"><th style="color:#fff;font-weight:700;padding:5px 7px;text-align:left;border:0.5px solid #1d4ed8;">공정</th><th style="color:#fff;font-weight:700;padding:5px 7px;text-align:left;border:0.5px solid #1d4ed8;">기준</th><th style="color:#fff;font-weight:700;padding:5px 7px;text-align:right;border:0.5px solid #1d4ed8;">인원</th><th style="color:#fff;font-weight:700;padding:5px 7px;text-align:right;border:0.5px solid #1d4ed8;">단가</th><th style="color:#fff;font-weight:700;padding:5px 7px;text-align:right;border:0.5px solid #1d4ed8;">금액</th></tr></thead>
+      <tbody id="pi-labor-rows"></tbody>
+      <tfoot><tr style="background:#eff6ff;"><td colspan="4" style="font-weight:700;padding:4px 7px;border:0.5px solid #d1d5db;">노무비 합계</td><td style="font-weight:700;padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;" id="pi-labor-total">-</td></tr></tfoot>
+    </table>
+    <div style="font-size:10pt;font-weight:700;color:#2563eb;border-bottom:1px solid #2563eb;padding-bottom:3px;margin:12px 0 6px;">&#9632; 내부검토 합계</div>
+    <table id="pi-sum" style="width:100%;border-collapse:collapse;font-size:9pt;"></table>
+  </div>
+</div>
+
+<!-- 인쇄용 제출용 -->
+<div id="print-submit" style="display:none;">
+  <div style="padding:15mm 18mm;">
+    <div style="font-size:13pt;font-weight:700;color:#1a1a2e;border-bottom:2.5px solid #2563eb;padding-bottom:5px;margin-bottom:14px;">&#9632; 제출용 견적서</div>
+    <div style="font-size:10pt;font-weight:700;color:#2563eb;border-bottom:1px solid #2563eb;padding-bottom:3px;margin:12px 0 6px;">&#9632; 공사 개요</div>
+    <table id="ps-info" style="width:100%;border-collapse:collapse;margin-bottom:8px;font-size:9pt;"></table>
+    <div style="font-size:10pt;font-weight:700;color:#2563eb;border-bottom:1px solid #2563eb;padding-bottom:3px;margin:12px 0 6px;">&#9632; 공사 내역</div>
+    <table style="width:100%;border-collapse:collapse;font-size:8.5pt;margin-bottom:4px;">
+      <thead><tr style="background:#2563eb;"><th style="color:#fff;font-weight:700;padding:5px 7px;text-align:left;border:0.5px solid #1d4ed8;">공정</th><th style="color:#fff;font-weight:700;padding:5px 7px;text-align:left;border:0.5px solid #1d4ed8;">항목</th><th style="color:#fff;font-weight:700;padding:5px 7px;text-align:left;border:0.5px solid #1d4ed8;">규격</th><th style="color:#fff;font-weight:700;padding:5px 7px;text-align:right;border:0.5px solid #1d4ed8;">수량</th><th style="color:#fff;font-weight:700;padding:5px 7px;text-align:right;border:0.5px solid #1d4ed8;">단가</th><th style="color:#fff;font-weight:700;padding:5px 7px;text-align:right;border:0.5px solid #1d4ed8;">금액</th></tr></thead>
+      <tbody id="ps-rows"></tbody>
+    </table>
+    <div style="font-size:10pt;font-weight:700;color:#2563eb;border-bottom:1px solid #2563eb;padding-bottom:3px;margin:12px 0 6px;">&#9632; 공사비 정산</div>
+    <table id="ps-cost" style="width:100%;border-collapse:collapse;font-size:9pt;"></table>
+    <div style="border:0.5px solid #d1d5db;border-radius:4px;overflow:hidden;margin-top:10px;">
+      <div style="background:#f3f4f6;font-weight:700;font-size:9pt;padding:5px 10px;border-bottom:0.5px solid #d1d5db;">참고사항</div>
+      <div style="padding:6px 10px 8px;" id="ps-notes"></div>
+    </div>
+  </div>
+</div>
+
 <div class="container">
 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
   <div>
@@ -540,10 +631,145 @@ function recalcEdit(){
   g('c-mat').textContent=n(matSum);g('c-labor').textContent=n(laborSum);g('c-total').textContent=n(final)+'원';
 }
 
-// 인쇄 버튼 — 브라우저 인쇄 기능 사용 (팝업 없음)
+// 인쇄 버튼 — 인쇄용 페이지 구성 후 출력
 g('pdf-btn').addEventListener('click',function(){
-  window.print();
+  buildPrintPages();
+  setTimeout(function(){ window.print(); }, 300);
 });
+
+function buildPrintPages(){
+  var name=g('f-name').value||'방수공사';
+  var addr=g('f-addr').value||'';
+  var mgr=g('f-mgr').value.split('|');
+  var date=g('f-date').value;
+  var printInternal=g('print-internal').checked;
+
+  // ── 표지 구성 ──
+  g('pc-title').innerHTML=name+'<br>견적서';
+  var cvRows='<tr><td style="color:#9ca3af;font-size:9pt;width:80px;padding:6px 0;border-bottom:0.5px solid #f3f4f6;">공 사 명</td><td style="font-size:9.5pt;padding:6px 0;border-bottom:0.5px solid #f3f4f6;">'+name+'</td></tr>';
+  if(addr) cvRows+='<tr><td style="color:#9ca3af;font-size:9pt;width:80px;padding:6px 0;border-bottom:0.5px solid #f3f4f6;">위&nbsp;&nbsp;&nbsp;&nbsp;치</td><td style="font-size:9.5pt;padding:6px 0;border-bottom:0.5px solid #f3f4f6;">'+addr+'</td></tr>';
+  if(g('sh-area').checked&&cvData.area) cvRows+='<tr><td style="color:#9ca3af;font-size:9pt;padding:6px 0;border-bottom:0.5px solid #f3f4f6;">면&nbsp;&nbsp;&nbsp;&nbsp;적</td><td style="font-size:9.5pt;padding:6px 0;border-bottom:0.5px solid #f3f4f6;">'+cvData.area+'</td></tr>';
+  if(g('sh-work').checked&&cvData.work) cvRows+='<tr><td style="color:#9ca3af;font-size:9pt;padding:6px 0;border-bottom:0.5px solid #f3f4f6;">공&nbsp;&nbsp;&nbsp;&nbsp;정</td><td style="font-size:9.5pt;padding:6px 0;border-bottom:0.5px solid #f3f4f6;">'+cvData.work+'</td></tr>';
+  if(g('sh-bt').checked&&cvData.bt) cvRows+='<tr><td style="color:#9ca3af;font-size:9pt;padding:6px 0;border-bottom:0.5px solid #f3f4f6;">바탕조정</td><td style="font-size:9.5pt;padding:6px 0;border-bottom:0.5px solid #f3f4f6;">'+cvData.bt+'</td></tr>';
+  if(g('sh-cs').checked&&cvData.cs) cvRows+='<tr><td style="color:#9ca3af;font-size:9pt;padding:6px 0;border-bottom:0.5px solid #f3f4f6;">복합시트</td><td style="font-size:9.5pt;padding:6px 0;border-bottom:0.5px solid #f3f4f6;">'+cvData.cs+'</td></tr>';
+  if(g('sh-ur').checked&&cvData.ur) cvRows+='<tr><td style="color:#9ca3af;font-size:9pt;padding:6px 0;border-bottom:0.5px solid #f3f4f6;">우레탄방수</td><td style="font-size:9.5pt;padding:6px 0;border-bottom:0.5px solid #f3f4f6;">'+cvData.ur+'</td></tr>';
+  g('pc-table').innerHTML=cvRows;
+  g('pc-mgr').innerHTML=mgr[0]+'<br>'+mgr[1];
+  g('pc-date').innerHTML=fmtDate(date)+'<br>토방이앤지';
+  g('print-cover').style.display='block';
+
+  // ── 내부검토용 ──
+  if(printInternal){
+    var matSum=0, laborSum=0;
+    var piMatHTML='';
+    document.querySelectorAll('#i-mat-body tr').forEach(function(tr){
+      var tds=tr.querySelectorAll('td');
+      if(tds.length<7)return;
+      var inp=tds[5].querySelector('input');
+      var price=inp?parseFloat(inp.value)||0:0;
+      var qty=parseFloat(tds[4].textContent)||0;
+      var amt=qty*price;
+      matSum+=amt;
+      var even=piMatHTML.split('</tr>').length%2===0;
+      piMatHTML+='<tr style="background:'+(even?'#f8fafc':'#fff')+';">'
+        +'<td style="padding:4px 7px;border:0.5px solid #d1d5db;">'+tds[0].textContent+'</td>'
+        +'<td style="padding:4px 7px;border:0.5px solid #d1d5db;">'+tds[1].textContent+'</td>'
+        +'<td style="padding:4px 7px;border:0.5px solid #d1d5db;">'+tds[2].textContent+'</td>'
+        +'<td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+tds[3].textContent+'</td>'
+        +'<td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+tds[4].textContent+'</td>'
+        +'<td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+n(price)+'</td>'
+        +'<td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+n(amt)+'</td></tr>';
+    });
+    g('pi-mat-rows').innerHTML=piMatHTML;
+    g('pi-mat-total').textContent=n(matSum);
+
+    var piLaborHTML='';
+    document.querySelectorAll('#i-labor-body tr').forEach(function(tr){
+      var tds=tr.querySelectorAll('td');
+      if(tds.length<5)return;
+      var inp=tds[3].querySelector('input');
+      var price=inp?parseFloat(inp.value)||0:0;
+      var count=parseFloat(tds[2].textContent)||0;
+      var amt=count*price;
+      laborSum+=amt;
+      var even=piLaborHTML.split('</tr>').length%2===0;
+      piLaborHTML+='<tr style="background:'+(even?'#f8fafc':'#fff')+';">'
+        +'<td style="padding:4px 7px;border:0.5px solid #d1d5db;">'+tds[0].textContent+'</td>'
+        +'<td style="padding:4px 7px;border:0.5px solid #d1d5db;">'+tds[1].textContent+'</td>'
+        +'<td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+tds[2].textContent+'</td>'
+        +'<td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+n(price)+'</td>'
+        +'<td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+n(amt)+'</td></tr>';
+    });
+    g('pi-labor-rows').innerHTML=piLaborHTML;
+    g('pi-labor-total').textContent=n(laborSum);
+    g('pi-sum').innerHTML=
+      '<tbody>'
+      +'<tr><td style="padding:5px 10px;border:0.5px solid #d1d5db;">자재비</td><td style="padding:5px 10px;border:0.5px solid #d1d5db;text-align:right;">'+n(matSum)+' 원</td></tr>'
+      +'<tr style="background:#f8fafc;"><td style="padding:5px 10px;border:0.5px solid #d1d5db;">노무비</td><td style="padding:5px 10px;border:0.5px solid #d1d5db;text-align:right;">'+n(laborSum)+' 원</td></tr>'
+      +'<tr style="background:#2563eb;"><td style="padding:8px 10px;color:#fff;font-weight:700;font-size:11pt;">내부검토 합계</td><td style="padding:8px 10px;color:#fff;font-weight:700;font-size:11pt;text-align:right;">'+n(matSum+laborSum)+' 원</td></tr>'
+      +'</tbody>';
+    g('print-internal-page').style.display='block';
+  } else {
+    g('print-internal-page').style.display='none';
+  }
+
+  // ── 제출용 ──
+  // 공사 개요
+  var psInfoHTML='<tbody>';
+  psInfoHTML+='<tr><td style="padding:5px 8px;border:0.5px solid #d1d5db;background:#f3f4f6;font-weight:700;width:28%;font-size:9pt;">공 사 명</td><td style="padding:5px 8px;border:0.5px solid #d1d5db;font-size:9pt;">'+name+'</td></tr>';
+  if(addr) psInfoHTML+='<tr><td style="padding:5px 8px;border:0.5px solid #d1d5db;background:#f3f4f6;font-weight:700;font-size:9pt;">위&nbsp;&nbsp;&nbsp;&nbsp;치</td><td style="padding:5px 8px;border:0.5px solid #d1d5db;font-size:9pt;">'+addr+'</td></tr>';
+  psInfoHTML+='<tr><td style="padding:5px 8px;border:0.5px solid #d1d5db;background:#f3f4f6;font-weight:700;font-size:9pt;">담 당 자</td><td style="padding:5px 8px;border:0.5px solid #d1d5db;font-size:9pt;">'+mgr[0]+' / '+mgr[1]+'</td></tr>';
+  psInfoHTML+='<tr><td style="padding:5px 8px;border:0.5px solid #d1d5db;background:#f3f4f6;font-weight:700;font-size:9pt;">제 출 일</td><td style="padding:5px 8px;border:0.5px solid #d1d5db;font-size:9pt;">'+fmtDateKo(date)+'</td></tr>';
+  psInfoHTML+='</tbody>';
+  g('ps-info').innerHTML=psInfoHTML;
+
+  // 공사 내역
+  var psRowsHTML='';
+  var rowIdx=0;
+  document.querySelectorAll('#s-body tr').forEach(function(tr){
+    var tds=tr.querySelectorAll('td');
+    if(tds.length<6)return;
+    var inp=tds[5].querySelector('input');
+    var amt=inp?parseFloat(inp.value)||0:0;
+    var amtStr=inp?n(amt):tds[5].textContent;
+    var bg=rowIdx%2===0?'#fff':'#f8fafc';
+    psRowsHTML+='<tr style="background:'+bg+';">'
+      +'<td style="padding:4px 7px;border:0.5px solid #d1d5db;">'+tds[0].textContent+'</td>'
+      +'<td style="padding:4px 7px;border:0.5px solid #d1d5db;">'+tds[1].textContent+'</td>'
+      +'<td style="padding:4px 7px;border:0.5px solid #d1d5db;">'+tds[2].textContent+'</td>'
+      +'<td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+tds[3].textContent+'</td>'
+      +'<td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+tds[4].textContent+'</td>'
+      +'<td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+amtStr+'</td></tr>';
+    rowIdx++;
+  });
+  g('ps-rows').innerHTML=psRowsHTML;
+
+  // 정산
+  var submitSum=0;
+  document.querySelectorAll('.amt-inp[id^="s_"]').forEach(function(inp){submitSum+=parseFloat(inp.value)||0;});
+  var profit=Math.round(submitSum*0.1), supply=submitSum+profit, final=ru(supply);
+  g('ps-cost').innerHTML='<tbody>'
+    +'<tr><td style="padding:5px 10px;border:0.5px solid #d1d5db;font-size:9pt;">공사비 합계</td><td style="padding:5px 10px;border:0.5px solid #d1d5db;text-align:right;font-size:9pt;">'+n(submitSum)+' 원</td></tr>'
+    +'<tr style="background:#f8fafc;"><td style="padding:5px 10px;border:0.5px solid #d1d5db;font-size:9pt;">기업이윤 (10%)</td><td style="padding:5px 10px;border:0.5px solid #d1d5db;text-align:right;font-size:9pt;">'+n(profit)+' 원</td></tr>'
+    +'<tr><td style="padding:5px 10px;border:0.5px solid #d1d5db;font-size:9pt;">공급가액</td><td style="padding:5px 10px;border:0.5px solid #d1d5db;text-align:right;font-size:9pt;">'+n(supply)+' 원</td></tr>'
+    +'<tr style="background:#2563eb;"><td style="padding:8px 10px;color:#fff;font-weight:700;font-size:11pt;">총 공사금액 (V.A.T 별도)</td><td style="padding:8px 10px;color:#fff;font-weight:700;font-size:11pt;text-align:right;">'+n(final)+' 원</td></tr>'
+    +'</tbody>';
+
+  // 참고사항
+  var notesHTML='';
+  notes.forEach(function(note,i){
+    notesHTML+='<p style="font-size:8.5pt;color:#6b7280;padding:2px 0;list-style:none;">- '+note.text+'</p>';
+  });
+  g('ps-notes').innerHTML=notesHTML;
+  g('print-submit').style.display='block';
+
+  // 인쇄 후 숨김 처리
+  window.addEventListener('afterprint',function(){
+    g('print-cover').style.display='none';
+    g('print-submit').style.display='none';
+    g('print-internal-page').style.display='none';
+  },{once:true});
+}
 
 onAreaChange();
 })();
