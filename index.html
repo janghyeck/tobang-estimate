@@ -448,14 +448,10 @@ function recalcEdit(){
   g('i-labor-total').textContent=n(laborSum);g('i-labor-sum').textContent=n(laborSum);
   var addSum=0;document.querySelectorAll('.amt-inp[id^="add_"]').forEach(function(inp){addSum+=parseFloat(inp.value)||0;});
   g('i-add-total').textContent=n(addSum);g('i-add-sum').textContent=n(addSum);g('i-grand').textContent=n(matSum+laborSum+addSum);
-  var submitSum=0;document.querySelectorAll('.amt-inp[id^="s_"]').forEach(function(inp){submitSum+=parseFloat(inp.value)||0;});
-  var profit=submitSum*0.1,supply=submitSum+profit,final=ru(supply);
-  g('s-cost').textContent=n(submitSum);g('s-profit').textContent=n(profit);g('s-supply').textContent=n(supply);g('s-total').textContent=n(final)+'원';
-  // 추가항목 합산
-  var extraSum=0;
-  extraItems.forEach(function(item){extraSum+=item.amt||0;});
-  submitSum+=extraSum;
-  profit=submitSum*0.1;supply=submitSum+profit;final=ru(supply);
+  var submitSum=0;
+  document.querySelectorAll('.amt-inp[id^="s_"]').forEach(function(inp){submitSum+=parseFloat(inp.value)||0;});
+  extraItems.forEach(function(item){submitSum+=item.amt||0;});
+  var profit=Math.round(submitSum*0.1),supply=submitSum+profit,final=ru(supply);
   g('s-cost').textContent=n(submitSum);g('s-profit').textContent=n(profit);g('s-supply').textContent=n(supply);g('s-total').textContent=n(final)+'원';
   g('c-mat').textContent=n(matSum);g('c-labor').textContent=n(laborSum);g('c-total').textContent=n(final)+'원';
 }
