@@ -90,7 +90,6 @@ tr:last-child td{border-bottom:none;}
   body{background:#fff;margin:0;padding:0;}
   .container{display:none!important;}
   #print-cover{display:block!important;}
-  #print-internal-page{display:block!important;}
   #print-submit{display:block!important;}
   @page{size:A4;margin:8mm 8mm;}
 }
@@ -104,7 +103,7 @@ tr:last-child td{border-bottom:none;}
     <div style="width:52px;height:4px;background:#2563eb;margin-bottom:16px;-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;"></div>
     <div style="font-size:11pt;color:#111827;letter-spacing:0.14em;margin-bottom:12px;font-weight:700;">TOBANGENG</div>
     <div id="pc-title" style="font-size:30pt;font-weight:900;color:#111827;line-height:1.2;margin-bottom:6px;">방수공사<br>견적서</div>
-    <hr style="border:none;border-top:2px solid #374151;margin:80px 0 56px;">
+    <hr style="border:none;border-top:2px solid #374151;margin:56px 0 40px;">
     <table id="pc-table" style="width:100%;border-collapse:collapse;"></table>
     <div style="margin-top:40px;padding-top:18px;border-top:1.5px solid #374151;display:flex;justify-content:space-between;">
       <div id="pc-mgr" style="font-size:11pt;color:#111827;line-height:2;font-weight:600;"></div>
@@ -115,17 +114,17 @@ tr:last-child td{border-bottom:none;}
 
 <!-- 인쇄용 내부검토용 -->
 <div id="print-internal-page" style="display:none;page-break-after:always;">
-  <div style="padding:10mm 8mm;">
+  <div style="padding:14mm 14mm;">
     <div style="font-size:13pt;font-weight:700;color:#1a1a2e;border-bottom:2.5px solid #2563eb;padding-bottom:5px;margin-bottom:14px;">&#9632; 내부검토용 견적</div>
     <div style="font-size:10pt;font-weight:700;color:#2563eb;border-bottom:1px solid #2563eb;padding-bottom:3px;margin:12px 0 6px;">&#9632; 자재비</div>
     <table style="width:100%;border-collapse:collapse;font-size:8.5pt;margin-bottom:4px;">
-      <tbody><tr style="background-color:#2563eb;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;"><td style="color:#fff;font-weight:700;padding:5px 7px;border:0.5px solid #1d4ed8;background-color:#2563eb;">공정</td><td style="color:#fff;font-weight:700;padding:5px 7px;border:0.5px solid #1d4ed8;background-color:#2563eb;">항목</td><td style="color:#fff;font-weight:700;padding:5px 7px;border:0.5px solid #1d4ed8;background-color:#2563eb;">규격</td><td style="color:#fff;font-weight:700;padding:5px 7px;text-align:right;border:0.5px solid #1d4ed8;background-color:#2563eb;">이론량</td><td style="color:#fff;font-weight:700;padding:5px 7px;text-align:right;border:0.5px solid #1d4ed8;background-color:#2563eb;">수량</td><td style="color:#fff;font-weight:700;padding:5px 7px;text-align:right;border:0.5px solid #1d4ed8;background-color:#2563eb;">단가</td><td style="color:#fff;font-weight:700;padding:5px 7px;text-align:right;border:0.5px solid #1d4ed8;background-color:#2563eb;">금액</td></tr></tbody>
+      <thead><tr style="background:#2563eb !important;-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;;-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important"><th style="color:#fff;font-weight:700;padding:5px 7px;text-align:left;border:0.5px solid #1d4ed8;">공정</th><th style="color:#fff;font-weight:700;padding:5px 7px;text-align:left;border:0.5px solid #1d4ed8;">항목</th><th style="color:#fff;font-weight:700;padding:5px 7px;text-align:left;border:0.5px solid #1d4ed8;">규격</th><th style="color:#fff;font-weight:700;padding:5px 7px;text-align:right;border:0.5px solid #1d4ed8;">이론량</th><th style="color:#fff;font-weight:700;padding:5px 7px;text-align:right;border:0.5px solid #1d4ed8;">수량</th><th style="color:#fff;font-weight:700;padding:5px 7px;text-align:right;border:0.5px solid #1d4ed8;">단가</th><th style="color:#fff;font-weight:700;padding:5px 7px;text-align:right;border:0.5px solid #1d4ed8;">금액</th></tr></thead>
       <tbody id="pi-mat-rows"></tbody>
       <tfoot><tr style="background:#eff6ff;"><td colspan="6" style="font-weight:700;padding:4px 7px;border:0.5px solid #d1d5db;">자재비 합계</td><td style="font-weight:700;padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;" id="pi-mat-total">-</td></tr></tfoot>
     </table>
     <div style="font-size:10pt;font-weight:700;color:#2563eb;border-bottom:1px solid #2563eb;padding-bottom:3px;margin:12px 0 6px;">&#9632; 노무비</div>
     <table style="width:100%;border-collapse:collapse;font-size:8.5pt;margin-bottom:4px;">
-      <tbody><tr style="background-color:#2563eb;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;"><td style="color:#fff;font-weight:700;padding:5px 7px;border:0.5px solid #1d4ed8;background-color:#2563eb;">공정</td><td style="color:#fff;font-weight:700;padding:5px 7px;border:0.5px solid #1d4ed8;background-color:#2563eb;">기준</td><td style="color:#fff;font-weight:700;padding:5px 7px;text-align:right;border:0.5px solid #1d4ed8;background-color:#2563eb;">인원</td><td style="color:#fff;font-weight:700;padding:5px 7px;text-align:right;border:0.5px solid #1d4ed8;background-color:#2563eb;">단가</td><td style="color:#fff;font-weight:700;padding:5px 7px;text-align:right;border:0.5px solid #1d4ed8;background-color:#2563eb;">금액</td></tr></tbody>
+      <thead><tr style="background:#2563eb !important;-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;;-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important"><th style="color:#fff;font-weight:700;padding:5px 7px;text-align:left;border:0.5px solid #1d4ed8;">공정</th><th style="color:#fff;font-weight:700;padding:5px 7px;text-align:left;border:0.5px solid #1d4ed8;">기준</th><th style="color:#fff;font-weight:700;padding:5px 7px;text-align:right;border:0.5px solid #1d4ed8;">인원</th><th style="color:#fff;font-weight:700;padding:5px 7px;text-align:right;border:0.5px solid #1d4ed8;">단가</th><th style="color:#fff;font-weight:700;padding:5px 7px;text-align:right;border:0.5px solid #1d4ed8;">금액</th></tr></thead>
       <tbody id="pi-labor-rows"></tbody>
       <tfoot><tr style="background:#eff6ff;"><td colspan="4" style="font-weight:700;padding:4px 7px;border:0.5px solid #d1d5db;">노무비 합계</td><td style="font-weight:700;padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;" id="pi-labor-total">-</td></tr></tfoot>
     </table>
@@ -136,13 +135,13 @@ tr:last-child td{border-bottom:none;}
 
 <!-- 인쇄용 견적서 -->
 <div id="print-submit" style="display:none;">
-  <div style="padding:10mm 8mm;">
+  <div style="padding:14mm 14mm;">
     <div style="font-size:13pt;font-weight:700;color:#1a1a2e;border-bottom:2.5px solid #2563eb;padding-bottom:5px;margin-bottom:14px;">&#9632; 견적서</div>
     <div style="font-size:10pt;font-weight:700;color:#2563eb;border-bottom:1px solid #2563eb;padding-bottom:3px;margin:12px 0 6px;">&#9632; 공사 개요</div>
     <table id="ps-info" style="width:100%;border-collapse:collapse;margin-bottom:8px;font-size:9pt;"></table>
     <div style="font-size:10pt;font-weight:700;color:#2563eb;border-bottom:1px solid #2563eb;padding-bottom:3px;margin:12px 0 6px;">&#9632; 공사 내역</div>
     <table style="width:100%;border-collapse:collapse;font-size:8.5pt;margin-bottom:4px;">
-      <tbody><tr style="background-color:#2563eb;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;"><td style="color:#fff;font-weight:700;padding:5px 7px;border:0.5px solid #1d4ed8;background-color:#2563eb;">공정</td><td style="color:#fff;font-weight:700;padding:5px 7px;border:0.5px solid #1d4ed8;background-color:#2563eb;">항목</td><td style="color:#fff;font-weight:700;padding:5px 7px;border:0.5px solid #1d4ed8;background-color:#2563eb;">규격</td><td style="color:#fff;font-weight:700;padding:5px 7px;text-align:right;border:0.5px solid #1d4ed8;background-color:#2563eb;">수량</td><td style="color:#fff;font-weight:700;padding:5px 7px;text-align:right;border:0.5px solid #1d4ed8;background-color:#2563eb;">단가</td><td style="color:#fff;font-weight:700;padding:5px 7px;text-align:right;border:0.5px solid #1d4ed8;background-color:#2563eb;">금액</td></tr></tbody>
+      <thead><tr style="background:#2563eb !important;-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;;-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important"><th style="color:#fff;font-weight:700;padding:5px 7px;text-align:left;border:0.5px solid #1d4ed8;">공정</th><th style="color:#fff;font-weight:700;padding:5px 7px;text-align:left;border:0.5px solid #1d4ed8;">항목</th><th style="color:#fff;font-weight:700;padding:5px 7px;text-align:left;border:0.5px solid #1d4ed8;">규격</th><th style="color:#fff;font-weight:700;padding:5px 7px;text-align:right;border:0.5px solid #1d4ed8;">수량</th><th style="color:#fff;font-weight:700;padding:5px 7px;text-align:right;border:0.5px solid #1d4ed8;">단가</th><th style="color:#fff;font-weight:700;padding:5px 7px;text-align:right;border:0.5px solid #1d4ed8;">금액</th></tr></thead>
       <tbody id="ps-rows"></tbody>
     </table>
     <div style="font-size:10pt;font-weight:700;color:#2563eb;border-bottom:1px solid #2563eb;padding-bottom:3px;margin:12px 0 6px;">&#9632; 공사비 정산</div>
@@ -279,6 +278,23 @@ tr:last-child td{border-bottom:none;}
         <tr class="total-row"><td>총 공사금액(V.A.T 별도)</td><td class="r" id="s-total">-</td></tr>
       </tbody></table>
     </div>
+    <div class="sec">
+      <div class="sec-title">추가 항목 <span style="font-size:10px;color:#9ca3af">직접 입력 / 내부+제출용 반영</span></div>
+      <table style="width:100%;border-collapse:collapse;font-size:11px;margin-bottom:8px;" id="extra-table">
+        <thead><tr>
+          <th style="padding:4px 5px;border-bottom:0.5px solid #e5e7eb;background:#f9fafb;font-size:10px;color:#6b7280;font-weight:600;">공정</th>
+          <th style="padding:4px 5px;border-bottom:0.5px solid #e5e7eb;background:#f9fafb;font-size:10px;color:#6b7280;font-weight:600;">항목명</th>
+          <th style="padding:4px 5px;border-bottom:0.5px solid #e5e7eb;background:#f9fafb;font-size:10px;color:#6b7280;font-weight:600;">규격</th>
+          <th style="padding:4px 5px;border-bottom:0.5px solid #e5e7eb;background:#f9fafb;font-size:10px;color:#6b7280;font-weight:600;text-align:right;">수량</th>
+          <th style="padding:4px 5px;border-bottom:0.5px solid #e5e7eb;background:#f9fafb;font-size:10px;color:#6b7280;font-weight:600;">단위</th>
+          <th style="padding:4px 5px;border-bottom:0.5px solid #e5e7eb;background:#f9fafb;font-size:10px;color:#6b7280;font-weight:600;text-align:right;">단가</th>
+          <th style="padding:4px 5px;border-bottom:0.5px solid #e5e7eb;background:#f9fafb;font-size:10px;color:#6b7280;font-weight:600;text-align:right;">금액</th>
+          <th style="padding:4px 5px;border-bottom:0.5px solid #e5e7eb;background:#f9fafb;width:22px;"></th>
+        </tr></thead>
+        <tbody id="extra-rows"></tbody>
+      </table>
+      <button class="btn" style="height:30px;font-size:11px;margin-bottom:0;" id="extra-add-btn">+ 항목 추가</button>
+    </div>
     <div class="sec"><div class="sec-title">참고사항</div>
       <div id="note-list"></div>
       <div style="font-size:11px;color:#6b7280;margin:8px 0 5px;">빠른 추가</div>
@@ -302,7 +318,7 @@ tr:last-child td{border-bottom:none;}
         </div>
       </div></div>
       <div class="sec-title" style="margin-top:4px;">편집</div>
-      <div class="field-row"><label>공사명</label><input id="f-name" value="방수공사"></div>
+      <div class="field-row" style="align-items:flex-start;"><label style="padding-top:6px;">공사명</label><textarea id="f-name" rows="2" style="flex:1;border:0.5px solid #d1d5db;border-radius:6px;padding:6px 8px;font-size:12px;background:#fff;color:#1a1a2e;resize:vertical;font-family:inherit;line-height:1.5;">방수공사</textarea></div>
       <div class="field-row"><label>주소</label><input id="f-addr" placeholder="현장 주소"></div>
       <div class="field-row"><label>담당자</label><select id="f-mgr"><option value="장혁|010-9864-0418">장혁 / 010-9864-0418</option><option value="이경수|010-6265-2251">이경수 / 010-6265-2251</option></select></div>
       <div class="field-row"><label>제출일</label><input type="date" id="f-date"></div>
@@ -378,12 +394,13 @@ g('custom-add-btn').addEventListener('click',addCustomNote);
 g('custom-inp').addEventListener('keydown',function(e){if(e.key==='Enter')addCustomNote();});
 
 var cvData={};
-function updateCover(){var name=g('f-name').value,addr=g('f-addr').value,mgr=g('f-mgr').value.split('|'),date=g('f-date').value;g('cv-title').innerHTML=name+'<br>견적서';g('cv-sub').textContent=addr||'공사 위치';g('cv-mgr').innerHTML='담당자: '+mgr[0]+'<br>'+mgr[1];g('cv-date').innerHTML=(fmtDate(date)||'2026.04.08')+'<br>토방이앤지';var rows=[];rows.push({lbl:'공 사 명',val:name});if(addr)rows.push({lbl:'위\u00a0\u00a0\u00a0\u00a0치',val:addr});if(g('sh-area').checked&&cvData.area)rows.push({lbl:'면\u00a0\u00a0\u00a0\u00a0적',val:cvData.area});if(g('sh-work').checked&&cvData.work)rows.push({lbl:'공\u00a0\u00a0\u00a0\u00a0정',val:cvData.work});if(g('sh-bt').checked&&cvData.bt)rows.push({lbl:'바탕조정',val:cvData.bt});if(g('sh-cs').checked&&cvData.cs)rows.push({lbl:'복합시트',val:cvData.cs});if(g('sh-ur').checked&&cvData.ur)rows.push({lbl:'우레탄방수',val:cvData.ur});g('cv-rows').innerHTML=rows.map(function(r){return '<div class="cv-row"><span class="cv-lbl">'+r.lbl+'</span><span class="cv-val">'+r.val+'</span></div>';}).join('');}
-['f-name','f-addr','f-date'].forEach(function(id){g(id).addEventListener('input',updateCover);});
+function updateCover(){var name=g('f-name').value,addr=g('f-addr').value,mgr=g('f-mgr').value.split('|'),date=g('f-date').value;g('cv-title').innerHTML=name.replace(/\n/g,'<br>')+'<br>견적서';g('cv-sub').textContent=addr||'공사 위치';g('cv-mgr').innerHTML='담당자: '+mgr[0]+'<br>'+mgr[1];g('cv-date').innerHTML=(fmtDate(date)||'2026.04.08')+'<br>토방이앤지';var rows=[];rows.push({lbl:'공 사 명',val:name});if(addr)rows.push({lbl:'위\u00a0\u00a0\u00a0\u00a0치',val:addr});if(g('sh-area').checked&&cvData.area)rows.push({lbl:'면\u00a0\u00a0\u00a0\u00a0적',val:cvData.area});if(g('sh-work').checked&&cvData.work)rows.push({lbl:'공\u00a0\u00a0\u00a0\u00a0정',val:cvData.work});if(g('sh-bt').checked&&cvData.bt)rows.push({lbl:'바탕조정',val:cvData.bt});if(g('sh-cs').checked&&cvData.cs)rows.push({lbl:'복합시트',val:cvData.cs});if(g('sh-ur').checked&&cvData.ur)rows.push({lbl:'우레탄방수',val:cvData.ur});g('cv-rows').innerHTML=rows.map(function(r){return '<div class="cv-row"><span class="cv-lbl">'+r.lbl+'</span><span class="cv-val">'+r.val+'</span></div>';}).join('');}
+['f-name','f-addr','f-date'].forEach(function(id){g(id).addEventListener('input',updateCover);g(id).addEventListener('change',updateCover);});
 g('f-mgr').addEventListener('change',updateCover);
 ['sh-area','sh-work','sh-bt','sh-cs','sh-ur'].forEach(function(id){g(id).addEventListener('change',updateCover);});
 
 var iMatRows=[],iLaborRows=[],sRows=[];
+var extraItems=[];
 function addMatRow(공정,항목,규격,theory,qty,ul,price,surcharge){var id='mp_'+iMatRows.length;iMatRows.push({id:id,qty:qty});var amt=qty*price,sp=Math.round(price*(surcharge?1.5:1));sRows.push({공정:공정,항목:항목,규격:규격,qty:qty,ul:ul,단가:sp,amt:qty*sp,type:'mat',id:'s_'+sRows.length});return '<tr><td>'+공정+'</td><td>'+항목+'</td><td>'+규격+'</td><td class="r">'+theory+'</td><td class="r">'+qty+ul+'</td><td class="r"><input type="number" class="amt-inp" id="'+id+'" data-qty="'+qty+'" value="'+price+'"></td><td class="r" id="'+id+'_a">'+n(amt)+'</td></tr>';}
 function addLaborRow(공정,기준,count,price){var id='lp_'+iLaborRows.length;iLaborRows.push({id:id,count:count});var amt=count*price;sRows.push({공정:공정,항목:'시공비',규격:'-',qty:1,ul:'식',단가:0,amt:amt,type:'labor',id:'s_'+sRows.length});return '<tr><td>'+공정+'</td><td>'+기준+'</td><td class="r">'+count+'인</td><td class="r"><input type="number" class="amt-inp" id="'+id+'" data-qty="'+count+'" value="'+price+'"></td><td class="r" id="'+id+'_a">'+n(amt)+'</td></tr>';}
 
@@ -432,14 +449,61 @@ function recalcEdit(){
   var submitSum=0;document.querySelectorAll('.amt-inp[id^="s_"]').forEach(function(inp){submitSum+=parseFloat(inp.value)||0;});
   var profit=submitSum*0.1,supply=submitSum+profit,final=ru(supply);
   g('s-cost').textContent=n(submitSum);g('s-profit').textContent=n(profit);g('s-supply').textContent=n(supply);g('s-total').textContent=n(final)+'원';
+  // 추가항목 합산
+  var extraSum=0;
+  extraItems.forEach(function(item){extraSum+=item.amt||0;});
+  submitSum+=extraSum;
+  profit=submitSum*0.1;supply=submitSum+profit;final=ru(supply);
+  g('s-cost').textContent=n(submitSum);g('s-profit').textContent=n(profit);g('s-supply').textContent=n(supply);g('s-total').textContent=n(final)+'원';
   g('c-mat').textContent=n(matSum);g('c-labor').textContent=n(laborSum);g('c-total').textContent=n(final)+'원';
 }
+
+
+function renderExtraRows(){
+  var tbody=g('extra-rows');
+  if(!tbody)return;
+  tbody.innerHTML=extraItems.map(function(item,i){
+    var amt=(parseFloat(item.qty)||0)*(parseFloat(item.price)||0);
+    extraItems[i].amt=amt;
+    return '<tr>'
+      +'<td style="padding:3px 4px;border-bottom:0.5px solid #f3f4f6;"><input style="width:60px;height:24px;border:0.5px solid #d1d5db;border-radius:4px;padding:0 4px;font-size:11px;" value="'+item.gong+'" data-idx="'+i+'" data-field="gong" class="extra-inp"></td>'
+      +'<td style="padding:3px 4px;border-bottom:0.5px solid #f3f4f6;"><input style="width:80px;height:24px;border:0.5px solid #d1d5db;border-radius:4px;padding:0 4px;font-size:11px;" value="'+item.name+'" data-idx="'+i+'" data-field="name" class="extra-inp"></td>'
+      +'<td style="padding:3px 4px;border-bottom:0.5px solid #f3f4f6;"><input style="width:70px;height:24px;border:0.5px solid #d1d5db;border-radius:4px;padding:0 4px;font-size:11px;" value="'+item.spec+'" data-idx="'+i+'" data-field="spec" class="extra-inp"></td>'
+      +'<td style="padding:3px 4px;border-bottom:0.5px solid #f3f4f6;"><input type="number" style="width:50px;height:24px;border:0.5px solid #d1d5db;border-radius:4px;padding:0 4px;font-size:11px;text-align:right;" value="'+item.qty+'" data-idx="'+i+'" data-field="qty" class="extra-inp extra-calc"></td>'
+      +'<td style="padding:3px 4px;border-bottom:0.5px solid #f3f4f6;"><input style="width:36px;height:24px;border:0.5px solid #d1d5db;border-radius:4px;padding:0 4px;font-size:11px;" value="'+item.unit+'" data-idx="'+i+'" data-field="unit" class="extra-inp"></td>'
+      +'<td style="padding:3px 4px;border-bottom:0.5px solid #f3f4f6;"><input type="number" style="width:70px;height:24px;border:0.5px solid #d1d5db;border-radius:4px;padding:0 4px;font-size:11px;text-align:right;" value="'+item.price+'" data-idx="'+i+'" data-field="price" class="extra-inp extra-calc"></td>'
+      +'<td style="padding:3px 4px;border-bottom:0.5px solid #f3f4f6;text-align:right;font-size:11px;color:#1a1a2e;">'+n(amt)+'</td>'
+      +'<button style="width:20px;height:20px;border:0.5px solid #d1d5db;border-radius:4px;background:#fff;color:#9ca3af;font-size:12px;cursor:pointer;line-height:1;" data-del="'+i+'" class="extra-del">×</button>'
+      +'</tr>';
+  }).join('');
+  tbody.querySelectorAll('.extra-inp').forEach(function(inp){
+    inp.addEventListener('input',function(){
+      var idx=+this.dataset.idx,field=this.dataset.field;
+      extraItems[idx][field]=this.value;
+      if(field==='qty'||field==='price'){
+        var amt=(parseFloat(extraItems[idx].qty)||0)*(parseFloat(extraItems[idx].price)||0);
+        extraItems[idx].amt=amt;
+        var tr=this.closest('tr');
+        if(tr)tr.querySelectorAll('td')[6].textContent=n(amt);
+        recalcEdit();
+      }
+    });
+  });
+  tbody.querySelectorAll('.extra-del').forEach(function(btn){
+    btn.addEventListener('click',function(){extraItems.splice(+this.dataset.del,1);renderExtraRows();recalcEdit();});
+  });
+}
+
+g('extra-add-btn').addEventListener('click',function(){
+  extraItems.push({gong:'기타',name:'',spec:'-',qty:0,unit:'식',price:0,amt:0});
+  renderExtraRows();
+});
 
 g('pdf-btn').addEventListener('click',function(){buildPrintPages();setTimeout(function(){window.print();},400);});
 
 function buildPrintPages(){
   var name=g('f-name').value||'방수공사',addr=g('f-addr').value||'',mgr=g('f-mgr').value.split('|'),date=g('f-date').value,printInternal=g('print-internal').checked;
-  g('pc-title').innerHTML=name+'<br>견적서';
+  g('pc-title').innerHTML=name.replace(/\n/g,'<br>')+'<br>견적서';
   var cvRows='';
   cvRows+='<tr><td style="color:#111827;font-size:10.5pt;width:90px;padding:9px 0;border-bottom:1px solid #9ca3af;font-weight:700;">공 사 명</td><td style="font-size:10.5pt;padding:9px 0;border-bottom:1px solid #9ca3af;color:#111827;font-weight:500;">'+name+'</td></tr>';
   if(addr)cvRows+='<tr><td style="color:#111827;font-size:10.5pt;padding:9px 0;border-bottom:1px solid #9ca3af;font-weight:700;">위\u00a0\u00a0\u00a0\u00a0치</td><td style="font-size:10.5pt;padding:9px 0;border-bottom:1px solid #9ca3af;color:#111827;font-weight:500;">'+addr+'</td></tr>';
@@ -460,6 +524,17 @@ function buildPrintPages(){
     document.querySelectorAll('#i-labor-body tr').forEach(function(tr,idx){var tds=tr.querySelectorAll('td');if(tds.length<5)return;var inp=tds[3].querySelector('input'),price=inp?parseFloat(inp.value)||0:0,count=parseFloat(tds[2].textContent)||0,amt=count*price;laborSum+=amt;var bg=idx%2===0?'#fff':'#f8fafc';piLaborHTML+='<tr style="background:'+bg+'"><td style="padding:4px 7px;border:0.5px solid #d1d5db;">'+tds[0].textContent+'</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;">'+tds[1].textContent+'</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+tds[2].textContent+'</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+n(price)+'</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+n(amt)+'</td></tr>';});
     g('pi-labor-rows').innerHTML=piLaborHTML;g('pi-labor-total').textContent=n(laborSum);
     g('pi-sum').innerHTML='<tbody><tr><td style="padding:5px 10px;border:0.5px solid #d1d5db;font-size:9pt;">자재비</td><td style="padding:5px 10px;border:0.5px solid #d1d5db;text-align:right;font-size:9pt;">'+n(matSum)+' 원</td></tr><tr style="background:#f8fafc"><td style="padding:5px 10px;border:0.5px solid #d1d5db;font-size:9pt;">노무비</td><td style="padding:5px 10px;border:0.5px solid #d1d5db;text-align:right;font-size:9pt;">'+n(laborSum)+' 원</td></tr><tr style="background:#2563eb !important;-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;;-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important"><td style="padding:8px 10px;color:#fff;font-weight:700;font-size:11pt;">내부검토 합계</td><td style="padding:8px 10px;color:#fff;font-weight:700;font-size:11pt;text-align:right;">'+n(matSum+laborSum)+' 원</td></tr></tbody>';
+    // 추가항목 내부검토용에도 추가
+    if(extraItems.length>0){
+      var piExtraHTML='';
+      extraItems.forEach(function(item,idx){
+        var bg=idx%2===0?'#fff':'#f8fafc';
+        piExtraHTML+='<tr style="background:'+bg+'"><td style="padding:4px 7px;border:0.5px solid #d1d5db;">'+item.gong+'</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;">'+item.name+'</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;">'+item.spec+'</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">-</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+item.qty+item.unit+'</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+n(item.price)+'</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+n(item.amt)+'</td></tr>';
+        matSum+=item.amt;
+      });
+      g('pi-mat-rows').innerHTML+=piExtraHTML;
+      g('pi-mat-total').textContent=n(matSum);
+    }
     g('print-internal-page').style.display='block';
   } else {g('print-internal-page').style.display='none';}
 
@@ -470,6 +545,11 @@ function buildPrintPages(){
 
   var psRowsHTML='',rowIdx=0;
   document.querySelectorAll('#s-body tr').forEach(function(tr){var tds=tr.querySelectorAll('td');if(tds.length<6)return;var inp=tds[5].querySelector('input'),amt=inp?parseFloat(inp.value)||0:0,amtStr=inp?n(amt):tds[5].textContent,bg=rowIdx%2===0?'#fff':'#f8fafc';psRowsHTML+='<tr style="background:'+bg+'"><td style="padding:4px 7px;border:0.5px solid #d1d5db;">'+tds[0].textContent+'</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;">'+tds[1].textContent+'</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;">'+tds[2].textContent+'</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+tds[3].textContent+'</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+tds[4].textContent+'</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+amtStr+'</td></tr>';rowIdx++;});
+  // 추가항목 제출용에 추가 (50% 할증 없이 그대로)
+  extraItems.forEach(function(item,idx){
+    var bg=(rowIdx+idx)%2===0?'#fff':'#f8fafc';
+    psRowsHTML+='<tr style="background:'+bg+'"><td style="padding:4px 7px;border:0.5px solid #d1d5db;">'+item.gong+'</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;">'+item.name+'</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;">'+item.spec+'</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+item.qty+item.unit+'</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+n(item.price)+'</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+n(item.amt)+'</td></tr>';
+  });
   g('ps-rows').innerHTML=psRowsHTML;
 
   var submitSum=0;document.querySelectorAll('.amt-inp[id^="s_"]').forEach(function(inp){submitSum+=parseFloat(inp.value)||0;});
