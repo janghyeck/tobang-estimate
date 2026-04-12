@@ -1489,8 +1489,7 @@ function buildIlwiPages(name,addr,mgr,date,submitSum,profit,supply,final){
   // 갑지
   if(g('print-gabji')&&g('print-gabji').checked){
     var d=getGabjiData(totalMatAmt,totalLaborAmt);
-    g('ilwi-gabji-title').textContent='공사명 : '+name.replace(/
-/g,' ');
+    g('ilwi-gabji-title').textContent='공사명 : '+name.replace(/\n/g,' ');
     function grow(label,rate,amt,isSub,isTot){
       var s=isTot?'background:#1e3a5f!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;':isSub?'background:#e8f0fb!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;font-weight:700;color:#1e3a5f;':'';
       var ct=isTot?'color:#fff!important;':'';
