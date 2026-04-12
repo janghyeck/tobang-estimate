@@ -1492,12 +1492,12 @@ function buildIlwiPages(name,addr,mgr,date,submitSum,profit,supply,final){
     function grow(label,rate,amt,isSub,isTot){
       var s=isTot?'background:#1e3a5f!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;':isSub?'background:#e8f0fb!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;font-weight:700;color:#1e3a5f;':'';
       var ct=isTot?'color:#fff!important;':'';
-      var fw=isSub?'font-weight:700;':'';
-      return '<tr style="height:14px;'+s+'"><td style="padding:2px 6px;border:0.5px solid #c8d0db;'+ct+fw+'">'+label+'</td>'+
-        '<td style="padding:2px 6px;border:0.5px solid #c8d0db;text-align:right;'+ct+fw+'">'+(amt!==null?n(amt):'')+'</td>'+
-        '<td style="padding:2px 6px;border:0.5px solid #c8d0db;'+ct+'">'+rate+'</td></tr>';
+      var fw=(isSub||isTot)?'font-weight:700;':'';
+      return '<tr style="'+s+'"><td style="padding:1.5px 8px;border:0.5px solid #c8d0db;white-space:nowrap;'+ct+fw+'">'+label+'</td>'+
+        '<td style="padding:1.5px 8px;border:0.5px solid #c8d0db;text-align:right;white-space:nowrap;'+ct+fw+'">'+(amt!==null?n(amt):'')+'</td>'+
+        '<td style="padding:1.5px 8px;border:0.5px solid #c8d0db;white-space:nowrap;'+ct+'">'+rate+'</td></tr>';
     }
-    function gempty(label){return '<tr style="height:14px;"><td style="padding:2px 6px;border:0.5px solid #c8d0db;color:#9ca3af;">'+label+'</td><td style="padding:2px 6px;border:0.5px solid #c8d0db;"></td><td style="padding:2px 6px;border:0.5px solid #c8d0db;color:#9ca3af;">-</td></tr>';}
+    function gempty(label){return '<tr><td style="padding:1.5px 8px;border:0.5px solid #c8d0db;color:#9ca3af;white-space:nowrap;">'+label+'</td><td style="padding:1.5px 8px;border:0.5px solid #c8d0db;"></td><td style="padding:1.5px 8px;border:0.5px solid #c8d0db;color:#9ca3af;white-space:nowrap;">-</td></tr>';}
     var ghtml='';
     ghtml+=grow('직 접 재 료 비','',d.matSum,false,false);
     ghtml+=grow('간 접 재 료 비','','',false,false);
