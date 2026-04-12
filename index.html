@@ -528,10 +528,10 @@ g('settings-reset-btn').addEventListener('click',function(){
     var el=g('s-'+key)||g('f-'+key);
     if(el)el.value=DEFAULTS[key];
   });
-  g('nego-chk').checked=false;
-  g('nego-body').style.display='none';
-  g('nego-amount').value=0;
-  g('nego-rate').value=0;
+  if(g('nego-chk')){g('nego-chk').checked=false;}
+  if(g('nego-body')){g('nego-body').style.display='none';}
+  if(g('nego-amount')){g('nego-amount').value=0;}
+  if(g('nego-rate')){g('nego-rate').value=0;}
   updateNegoResult();
 });
 
@@ -544,26 +544,33 @@ document.querySelectorAll('[id^="s-"],[id^="f-"]').forEach(function(inp){
   });
 });
 
-// 네고
-g('nego-chk').addEventListener('change',function(){
-  g('nego-body').style.display=this.checked?'block':'none';
-  updateNegoResult();
-});
-g('nego-type').addEventListener('change',function(){
-  g('nego-amount-row').style.display=this.value==='amount'?'flex':'none';
-  g('nego-rate-row').style.display=this.value==='rate'?'flex':'none';
-  updateNegoResult();
-});
-g('nego-amount').addEventListener('input',updateNegoResult);
-g('nego-rate').addEventListener('input',updateNegoResult);
+// 네고 (제출용 탭에 있으므로 null 체크)
+function bindNego(){
+  var chk=g('nego-chk');
+  if(!chk)return;
+  chk.addEventListener('change',function(){
+    g('nego-body').style.display=this.checked?'block':'none';
+    updateNegoResult();
+  });
+  var nt=g('nego-type');
+  if(nt)nt.addEventListener('change',function(){
+    g('nego-amount-row').style.display=this.value==='amount'?'flex':'none';
+    g('nego-rate-row').style.display=this.value==='rate'?'flex':'none';
+    updateNegoResult();
+  });
+  var na=g('nego-amount');if(na)na.addEventListener('input',updateNegoResult);
+  var nr=g('nego-rate');if(nr)nr.addEventListener('input',updateNegoResult);
+}
+bindNego();
 
 function getNegoAmount(total){
-  if(!g('nego-chk').checked)return 0;
-  if(g('nego-type').value==='amount') return parseFloat(g('nego-amount').value)||0;
-  return Math.round(total*(parseFloat(g('nego-rate').value)||0)/100);
+  if(!g('nego-chk')||!g('nego-chk').checked)return 0;
+  if(g('nego-type')&&g('nego-type').value==='amount') return parseFloat(g('nego-amount').value)||0;
+  return Math.round(total*(parseFloat(g('nego-rate')?g('nego-rate').value:0)||0)/100);
 }
 
 function updateNegoResult(){
+  if(!g('nego-chk')||!g('nego-result'))return;
   if(!g('nego-chk').checked){g('nego-result').innerHTML='네고 미적용';return;}
   var totalEl=g('s-total');
   if(!totalEl||totalEl.textContent==='-'){g('nego-result').innerHTML='견적 계산 후 적용됩니다.';return;}
