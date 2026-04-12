@@ -186,25 +186,6 @@ tr:last-child td{border-bottom:none;}
       </div>
     </div>
   </div>
-  <!-- 갑지 비율 설정 -->
-  <div class="settings-sec" id="stab-gabji">
-    <div class="s-group">간접비 비율</div>
-    <div class="s-row"><label>간접노무비율</label><input type="number" id="g-indirect-labor" value="15" step="0.1"><span class="s-unit">% (직접노무비 대비)</span></div>
-    <div class="s-row"><label>산재보험료율</label><input type="number" id="g-sangjae" value="3.7" step="0.01"><span class="s-unit">% (노무비 대비)</span></div>
-    <div class="s-row"><label>안전관리비율</label><input type="number" id="g-safety" value="1.86" step="0.01"><span class="s-unit">% (재료비+노무비 대비)</span></div>
-    <div class="s-row"><label>현장관리비율</label><input type="number" id="g-site-mgmt" value="6" step="0.1"><span class="s-unit">% (재+노+간노 대비)</span></div>
-    <div class="s-row"><label>일반관리비율</label><input type="number" id="g-general-mgmt" value="3.5" step="0.1"><span class="s-unit">% (공사원가 대비)</span></div>
-    <div class="s-row"><label>이윤율</label><input type="number" id="g-profit" value="10" step="0.1"><span class="s-unit">%</span></div>
-    <div class="s-row"><label>부가가치세율</label><input type="number" id="g-vat" value="10" step="0.1"><span class="s-unit">%</span></div>
-    <div class="s-group">표시 옵션</div>
-    <div style="font-size:11px;color:#6b7280;margin-bottom:8px;">아래 항목은 금액란 비워두고 항목명만 표시</div>
-    <div class="chk-grid">
-      <div class="chk-mini"><input type="checkbox" id="g-show-employ" checked><label for="g-show-employ">고용보험</label></div>
-      <div class="chk-mini"><input type="checkbox" id="g-show-pension" checked><label for="g-show-pension">국민연금</label></div>
-      <div class="chk-mini"><input type="checkbox" id="g-show-health" checked><label for="g-show-health">건강보험</label></div>
-      <div class="chk-mini"><input type="checkbox" id="g-show-retire" checked><label for="g-show-retire">퇴직공제부금</label></div>
-    </div>
-  </div>
 </div>
 
 <div class="container">
@@ -279,6 +260,27 @@ tr:last-child td{border-bottom:none;}
     <div class="s-row"><label>시트 시공 (30평당)</label><input type="number" id="f-cs-sheet-crew" value="3" step="1"><span class="s-unit">인</span></div>
     <div class="s-row"><label>시트 기준 면적</label><input type="number" id="f-cs-sheet-base" value="30" step="5"><span class="s-unit">평</span></div>
   </div>
+
+  <!-- 갑지 비율 설정 -->
+  <div class="settings-sec" id="stab-gabji">
+    <div class="s-group">간접비 비율</div>
+    <div class="s-row"><label>간접노무비율</label><input type="number" id="g-indirect-labor" value="15" step="0.1"><span class="s-unit">% (직접노무비 대비)</span></div>
+    <div class="s-row"><label>산재보험료율</label><input type="number" id="g-sangjae" value="3.7" step="0.01"><span class="s-unit">% (노무비 대비)</span></div>
+    <div class="s-row"><label>안전관리비율</label><input type="number" id="g-safety" value="1.86" step="0.01"><span class="s-unit">% (재료비+노무비 대비)</span></div>
+    <div class="s-row"><label>현장관리비율</label><input type="number" id="g-site-mgmt" value="6" step="0.1"><span class="s-unit">% (재+노+간노 대비)</span></div>
+    <div class="s-row"><label>일반관리비율</label><input type="number" id="g-general-mgmt" value="3.5" step="0.1"><span class="s-unit">% (공사원가 대비)</span></div>
+    <div class="s-row"><label>이윤율</label><input type="number" id="g-profit" value="10" step="0.1"><span class="s-unit">%</span></div>
+    <div class="s-row"><label>부가가치세율</label><input type="number" id="g-vat" value="10" step="0.1"><span class="s-unit">%</span></div>
+    <div class="s-group">표시 옵션</div>
+    <div style="font-size:11px;color:#6b7280;margin-bottom:8px;">아래 항목은 금액란 비워두고 항목명만 표시</div>
+    <div class="chk-grid">
+      <div class="chk-mini"><input type="checkbox" id="g-show-employ" checked><label for="g-show-employ">고용보험</label></div>
+      <div class="chk-mini"><input type="checkbox" id="g-show-pension" checked><label for="g-show-pension">국민연금</label></div>
+      <div class="chk-mini"><input type="checkbox" id="g-show-health" checked><label for="g-show-health">건강보험</label></div>
+      <div class="chk-mini"><input type="checkbox" id="g-show-retire" checked><label for="g-show-retire">퇴직공제부금</label></div>
+    </div>
+  </div>
+
 
 </div>
 
