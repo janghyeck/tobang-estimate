@@ -506,7 +506,7 @@ var DEFAULTS={
 function getSV(key){return sv('s-'+key,DEFAULTS[key])||sv('f-'+key,DEFAULTS[key]);}
 
 // 설정 패널 토글
-g('settings-toggle-btn').addEventListener('click',function(){
+if(g('settings-toggle-btn'))g('settings-toggle-btn').addEventListener('click',function(){
   var p=g('settings-panel');
   p.classList.toggle('open');
   this.textContent=p.classList.contains('open')?'✕ 설정 닫기':'⚙ 단가/계산식 설정';
@@ -523,7 +523,7 @@ document.querySelectorAll('.settings-tab').forEach(function(btn){
 });
 
 // 기본값 초기화
-g('settings-reset-btn').addEventListener('click',function(){
+if(g('settings-reset-btn'))g('settings-reset-btn').addEventListener('click',function(){
   Object.keys(DEFAULTS).forEach(function(key){
     var el=g('s-'+key)||g('f-'+key);
     if(el)el.value=DEFAULTS[key];
@@ -682,7 +682,7 @@ function calc(){
   g('s-body').innerHTML=sHTML;
   document.addEventListener('input',function(e){if(e.target.classList.contains('amt-inp'))recalcEdit();});
   g('f-name').value='방수공사';g('f-date').value=new Date().toISOString().split('T')[0];
-  initNotes();updateCover();g('result-wrap').classList.add('show');recalcEdit();
+  initNotes();updateCover();g('result-wrap').classList.add('show');recalcEdit();bindNego();
 }
 g('calc-btn').addEventListener('click',calc);
 
