@@ -813,13 +813,13 @@ function bindFormatBtns(){
     estimateFormat='normal';
     btnN.style.background='#2563eb';btnN.style.color='#fff';btnN.style.borderColor='#2563eb';
     btnI.style.background='#fff';btnI.style.color='#6b7280';btnI.style.borderColor='#d1d5db';
-    g('ilwi-notice').style.display='none';
+    if(g('ilwi-notice')) g('ilwi-notice').style.display='none';
   });
   btnI.addEventListener('click',function(){
     estimateFormat='ilwi';
     btnI.style.background='#2563eb';btnI.style.color='#fff';btnI.style.borderColor='#2563eb';
     btnN.style.background='#fff';btnN.style.color='#6b7280';btnN.style.borderColor='#d1d5db';
-    g('ilwi-notice').style.display='block';
+    if(g('ilwi-notice')) g('ilwi-notice').style.display='block';
   });
 }
 bindFormatBtns();
