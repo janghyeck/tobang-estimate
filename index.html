@@ -166,6 +166,37 @@ tr:last-child td{border-bottom:none;}
   </div>
 </div>
 
+<!-- 인쇄용 일위대가 견적서 -->
+<div id="print-ilwi" style="display:none;">
+  <div style="padding:14mm 14mm;">
+    <div style="font-size:13pt;font-weight:700;color:#1a1a2e;border-bottom:2.5px solid #2563eb;padding-bottom:5px;margin-bottom:14px;">&#9632; 견적서 (일위대가)</div>
+    <div style="font-size:10pt;font-weight:700;color:#2563eb;border-bottom:1px solid #2563eb;padding-bottom:3px;margin:12px 0 6px;">&#9632; 공사 개요</div>
+    <table id="ilwi-info" style="width:100%;border-collapse:collapse;margin-bottom:8px;font-size:9pt;"></table>
+    <div style="font-size:10pt;font-weight:700;color:#2563eb;border-bottom:1px solid #2563eb;padding-bottom:3px;margin:12px 0 6px;">&#9632; 공사비 내역 (요약)</div>
+    <table style="width:100%;border-collapse:collapse;font-size:8.5pt;margin-bottom:12px;">
+      <thead><tr style="background:#2563eb!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;">
+        <th style="color:#fff!important;font-weight:700;padding:5px 7px;text-align:left;border:0.5px solid #1d4ed8;">공종</th>
+        <th style="color:#fff!important;font-weight:700;padding:5px 7px;text-align:left;border:0.5px solid #1d4ed8;">규격</th>
+        <th style="color:#fff!important;font-weight:700;padding:5px 7px;text-align:right;border:0.5px solid #1d4ed8;">단위</th>
+        <th style="color:#fff!important;font-weight:700;padding:5px 7px;text-align:right;border:0.5px solid #1d4ed8;">수량</th>
+        <th style="color:#fff!important;font-weight:700;padding:5px 7px;text-align:right;border:0.5px solid #1d4ed8;">단가</th>
+        <th style="color:#fff!important;font-weight:700;padding:5px 7px;text-align:right;border:0.5px solid #1d4ed8;">금액</th>
+      </tr></thead>
+      <tbody id="ilwi-summary-rows"></tbody>
+    </table>
+    <div style="font-size:10pt;font-weight:700;color:#2563eb;border-bottom:1px solid #2563eb;padding-bottom:3px;margin:12px 0 6px;">&#9632; 일위대가표</div>
+    <div id="ilwi-detail-tables"></div>
+    <div style="font-size:10pt;font-weight:700;color:#2563eb;border-bottom:1px solid #2563eb;padding-bottom:3px;margin:12px 0 6px;">&#9632; 공사비 정산</div>
+    <table id="ilwi-cost" style="width:100%;border-collapse:collapse;font-size:9pt;margin-bottom:10px;"></table>
+    <div style="page-break-inside:avoid;">
+      <div style="border:1px solid #d1d5db;border-radius:4px;overflow:hidden;">
+        <div style="background:#f3f4f6;font-weight:700;font-size:9pt;padding:6px 10px;border-bottom:1px solid #d1d5db;">참고사항</div>
+        <div style="padding:8px 10px 10px;" id="ilwi-notes"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- 인쇄용 견적서 -->
 <div id="print-submit" style="display:none;">
   <div style="padding:14mm 14mm;">
@@ -280,13 +311,31 @@ tr:last-child td{border-bottom:none;}
       <span style="font-size:11px;color:#9ca3af;line-height:28px;">%</span>
       <button id="g-extra-add" style="height:28px;padding:0 12px;border:0.5px solid #2563eb;border-radius:5px;background:#fff;color:#2563eb;font-size:11px;font-weight:600;cursor:pointer;">+ 추가</button>
     </div>
-    <div class="s-group">항목명만 표시 (금액 미기재)</div>
-    <div style="font-size:11px;color:#6b7280;margin-bottom:8px;">체크 해제 시 항목 표시됨 / 체크 시 숨김</div>
-    <div class="chk-grid">
-      <div class="chk-mini"><input type="checkbox" id="g-hide-employ" checked><label for="g-hide-employ">고용보험 숨김</label></div>
-      <div class="chk-mini"><input type="checkbox" id="g-hide-pension" checked><label for="g-hide-pension">국민연금 숨김</label></div>
-      <div class="chk-mini"><input type="checkbox" id="g-hide-health" checked><label for="g-hide-health">건강보험 숨김</label></div>
-      <div class="chk-mini"><input type="checkbox" id="g-hide-retire" checked><label for="g-hide-retire">퇴직공제부금 숨김</label></div>
+    <div class="s-group">4대보험 등 표시/숨김</div>
+    <div style="font-size:11px;color:#6b7280;margin-bottom:8px;">체크=숨김 / 체크 해제=표시+비율 입력 가능</div>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+      <input type="checkbox" id="g-hide-employ" checked style="width:14px;height:14px;">
+      <label for="g-hide-employ" style="font-size:11px;min-width:90px;">고용보험</label>
+      <input type="number" id="g-rate-employ" value="0.9" step="0.01" disabled style="width:65px;height:26px;border:0.5px solid #d1d5db;border-radius:5px;padding:0 6px;font-size:11px;text-align:right;background:#f3f4f6;">
+      <span style="font-size:11px;color:#9ca3af;">% (노무비 대비)</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+      <input type="checkbox" id="g-hide-pension" checked style="width:14px;height:14px;">
+      <label for="g-hide-pension" style="font-size:11px;min-width:90px;">국민연금</label>
+      <input type="number" id="g-rate-pension" value="4.5" step="0.01" disabled style="width:65px;height:26px;border:0.5px solid #d1d5db;border-radius:5px;padding:0 6px;font-size:11px;text-align:right;background:#f3f4f6;">
+      <span style="font-size:11px;color:#9ca3af;">% (노무비 대비)</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+      <input type="checkbox" id="g-hide-health" checked style="width:14px;height:14px;">
+      <label for="g-hide-health" style="font-size:11px;min-width:90px;">건강보험</label>
+      <input type="number" id="g-rate-health" value="3.545" step="0.001" disabled style="width:65px;height:26px;border:0.5px solid #d1d5db;border-radius:5px;padding:0 6px;font-size:11px;text-align:right;background:#f3f4f6;">
+      <span style="font-size:11px;color:#9ca3af;">% (노무비 대비)</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+      <input type="checkbox" id="g-hide-retire" checked style="width:14px;height:14px;">
+      <label for="g-hide-retire" style="font-size:11px;min-width:90px;">퇴직공제부금</label>
+      <input type="number" id="g-rate-retire" value="2.3" step="0.01" disabled style="width:65px;height:26px;border:0.5px solid #d1d5db;border-radius:5px;padding:0 6px;font-size:11px;text-align:right;background:#f3f4f6;">
+      <span style="font-size:11px;color:#9ca3af;">% (노무비 대비)</span>
     </div>
   </div>
 
@@ -703,10 +752,10 @@ function updateGabjiPreview(){
   html+=prow('소계','',d.matSum+d.laborSum,true,false);
   html+=prow('간접노무비',d.iR+'%',d.iL,false,false);
   html+=prow('산재보험료',d.sR+'%',d.sj,false,false);
-  if(!d.hideE)html+=erow('고용보험료');
-  if(!d.hideP)html+=erow('국민연금');
-  if(!d.hideH)html+=erow('건강보험료');
-  if(!d.hideRe)html+=erow('퇴직공제부금');
+  if(!d.hideE)html+=prow('고용보험료',d.rE+'%',d.employ,false,false);
+  if(!d.hideP)html+=prow('국민연금',d.rP+'%',d.pension,false,false);
+  if(!d.hideH)html+=prow('건강보험료',d.rH+'%',d.health,false,false);
+  if(!d.hideRe)html+=prow('퇴직공제부금',d.rRe+'%',d.retire,false,false);
   html+=prow('안전관리비',d.saR+'%',d.sf,false,false);
   html+=prow('현장관리비',d.smR+'%',d.sm,false,false);
   d.extraAmts.forEach(function(x){html+=prow(x.name,x.rate+'%',x.amt,false,false);});
@@ -1032,11 +1081,20 @@ function bindGabjiSettings(){
     renderGExtraRows();
     updateGabjiPreview();
   });
+  // 4대보험 체크박스 토글 - 체크=숨김/비활성, 체크해제=표시/활성
+  ['employ','pension','health','retire'].forEach(function(key){
+    var chk=g('g-hide-'+key), inp=g('g-rate-'+key);
+    if(!chk||!inp)return;
+    chk.addEventListener('change',function(){
+      inp.disabled=this.checked;
+      inp.style.background=this.checked?'#f3f4f6':'#fff';
+      updateGabjiPreview();
+    });
+    inp.addEventListener('input',updateGabjiPreview);
+  });
   // 비율 변경시 미리보기 갱신
-  ['g-indirect-labor','g-sangjae','g-safety','g-site-mgmt','g-general-mgmt','g-profit','g-vat',
-   'g-hide-employ','g-hide-pension','g-hide-health','g-hide-retire'].forEach(function(id){
+  ['g-indirect-labor','g-sangjae','g-safety','g-site-mgmt','g-general-mgmt','g-profit','g-vat'].forEach(function(id){
     var el=g(id); if(el) el.addEventListener('input',updateGabjiPreview);
-    if(el&&el.type==='checkbox') el.addEventListener('change',updateGabjiPreview);
   });
 }
 bindGabjiSettings();
@@ -1053,13 +1111,21 @@ function getGabjiData(matSum, laborSum){
   var hideP=(g('g-hide-pension')||{checked:true}).checked;
   var hideH=(g('g-hide-health')||{checked:true}).checked;
   var hideRe=(g('g-hide-retire')||{checked:true}).checked;
+  var rE=hideE?0:parseFloat((g('g-rate-employ')||{value:0.9}).value)||0.9;
+  var rP=hideP?0:parseFloat((g('g-rate-pension')||{value:4.5}).value)||4.5;
+  var rH=hideH?0:parseFloat((g('g-rate-health')||{value:3.545}).value)||3.545;
+  var rRe=hideRe?0:parseFloat((g('g-rate-retire')||{value:2.3}).value)||2.3;
 
   var iL=Math.round(laborSum*iR/100);
   var tL=laborSum+iL;
   var sj=Math.round(tL*sR/100);
+  var employ=Math.round(tL*rE/100);
+  var pension=Math.round(tL*rP/100);
+  var health=Math.round(tL*rH/100);
+  var retire=Math.round(tL*rRe/100);
   var sf=Math.round((matSum+laborSum)*saR/100);
   var sm=Math.round((matSum+laborSum+iL)*smR/100);
-  var sub=matSum+laborSum+iL+sj+sf+sm;
+  var sub=matSum+laborSum+iL+sj+employ+pension+health+retire+sf+sm;
   // 추가 항목
   var extraAmts=gExtraItems.map(function(item){return{name:item.name,rate:item.rate,amt:Math.round(sub*item.rate/100)};});
   var extraSum=extraAmts.reduce(function(s,x){return s+x.amt;},0);
@@ -1074,7 +1140,8 @@ function getGabjiData(matSum, laborSum){
   return {
     matSum:matSum,laborSum:laborSum,iR:iR,iL:iL,sR:sR,sj:sj,saR:saR,sf:sf,smR:smR,sm:sm,
     sub:sub,extraAmts:extraAmts,subTotal:subTotal,gmR:gmR,gm:gm,ct:ct,pR:pR,pr:pr,gt:gt,vR:vR,vat:vat,ft:ft,
-    hideE:hideE,hideP:hideP,hideH:hideH,hideRe:hideRe
+    hideE:hideE,hideP:hideP,hideH:hideH,hideRe:hideRe,
+    rE:rE,rP:rP,rH:rH,rRe:rRe,employ:employ,pension:pension,health:health,retire:retire
   };
 }
 
@@ -1096,10 +1163,10 @@ function buildGabji(matSum, laborSum){
   rows+=row('소&nbsp;&nbsp;계','',d.matSum+d.laborSum,true,false);
   rows+=row('간접노무비',d.iR+'% (직노 대비)',d.iL,false,false);
   rows+=row('산재보험료',d.sR+'% (노무비 대비)',d.sj,false,false);
-  if(!d.hideE)rows+=erow('고용보험료');
-  if(!d.hideP)rows+=erow('국민연금');
-  if(!d.hideH)rows+=erow('건강보험료');
-  if(!d.hideRe)rows+=erow('퇴직공제부금');
+  if(!d.hideE)rows+=row('고용보험료',d.rE+'% (노무비 대비)',d.employ,false,false);
+  if(!d.hideP)rows+=row('국민연금',d.rP+'% (노무비 대비)',d.pension,false,false);
+  if(!d.hideH)rows+=row('건강보험료',d.rH+'% (노무비 대비)',d.health,false,false);
+  if(!d.hideRe)rows+=row('퇴직공제부금',d.rRe+'% (노무비 대비)',d.retire,false,false);
   rows+=row('안전관리비',d.saR+'% (재+노 대비)',d.sf,false,false);
   rows+=row('현장관리비',d.smR+'% (재+노+간노 대비)',d.sm,false,false);
   d.extraAmts.forEach(function(x){rows+=row(x.name,x.rate+'%',x.amt,false,false);});
@@ -1110,6 +1177,195 @@ function buildGabji(matSum, laborSum){
   rows+=row('부가가치세',d.vR+'%',d.vat,false,false);
   rows+=row('총 공사금액','',d.ft,false,true);
   g('gabji-rows').innerHTML=rows;
+}
+
+function buildIlwiPages(name,addr,mgr,date,submitSum,profit,supply,final){
+  // 공사 개요
+  var infoHTML='<tbody><tr><td style="padding:5px 8px;border:0.5px solid #d1d5db;background:#f3f4f6;font-weight:700;width:28%;font-size:9pt;">공 사 명</td><td style="padding:5px 8px;border:0.5px solid #d1d5db;font-size:9pt;">'+name+'</td></tr>';
+  if(addr)infoHTML+='<tr><td style="padding:5px 8px;border:0.5px solid #d1d5db;background:#f3f4f6;font-weight:700;font-size:9pt;">위\u00a0\u00a0\u00a0\u00a0치</td><td style="padding:5px 8px;border:0.5px solid #d1d5db;font-size:9pt;">'+addr+'</td></tr>';
+  infoHTML+='<tr><td style="padding:5px 8px;border:0.5px solid #d1d5db;background:#f3f4f6;font-weight:700;font-size:9pt;">담 당 자</td><td style="padding:5px 8px;border:0.5px solid #d1d5db;font-size:9pt;">'+mgr[0]+' / '+mgr[1]+'</td></tr>';
+  infoHTML+='<tr><td style="padding:5px 8px;border:0.5px solid #d1d5db;background:#f3f4f6;font-weight:700;font-size:9pt;">제 출 일</td><td style="padding:5px 8px;border:0.5px solid #d1d5db;font-size:9pt;">'+fmtDateKo(date)+'</td></tr></tbody>';
+  g('ilwi-info').innerHTML=infoHTML;
+
+  // 설정값
+  var hadoRate=sv('f-hado-rate',0.13),sangdoRate=sv('f-sangdo-rate',0.11),thinnerRate=sv('f-thinner-rate',0.0625);
+  var urCoef=sv('f-ur-15',1.4),sheetArea=sv('f-sheet-area',13.5);
+  var hP=sv('s-hado',52000),jP=sv('s-jungdo',57000),sP=sv('s-sangdo',75000),tP=sv('s-thinner',34000);
+  var techW=sv('s-tech',250000),genW=sv('s-gen',180000);
+  var bujaP=sv('s-buja',1600),mgmtP=sv('s-mgmt',5000);
+  var surRate=1+sv('s-surcharge',50)/100;
+
+  var summaryRows='';
+  var detailTables='';
+  var totalAmt=0;
+  var rowIdx=0;
+
+  function thStyle(){return 'color:#fff!important;font-weight:700;padding:4px 7px;border:0.5px solid #1d4ed8;background:#2563eb!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;';}
+  function tdStyle(right,even){return 'padding:3px 7px;border:0.5px solid #d1d5db;'+(right?'text-align:right;':'')+(even?'background:#f8fafc;':'');}
+
+  function makeDetailTable(title, rows, unitPrice){
+    var html='<div style="margin-bottom:10px;">';
+    html+='<div style="font-size:9pt;font-weight:700;color:#1a1a2e;margin-bottom:4px;padding:4px 8px;background:#f0f9ff;border-left:3px solid #2563eb;">'+title+'</div>';
+    html+='<table style="width:100%;border-collapse:collapse;font-size:8pt;">';
+    html+='<thead><tr>'
+      +'<th style="'+thStyle()+'text-align:left;">구분</th>'
+      +'<th style="'+thStyle()+'text-align:left;">품명</th>'
+      +'<th style="'+thStyle()+'text-align:right;">단위</th>'
+      +'<th style="'+thStyle()+'text-align:right;">수량</th>'
+      +'<th style="'+thStyle()+'text-align:right;">단가</th>'
+      +'<th style="'+thStyle()+'text-align:right;">금액</th>'
+      +'</tr></thead><tbody>';
+    var matAmt=0,laborAmt=0;
+    rows.forEach(function(r,i){
+      var even=i%2===0;
+      html+='<tr>'
+        +'<td style="'+tdStyle(false,even)+'">'+r.type+'</td>'
+        +'<td style="'+tdStyle(false,even)+'">'+r.name+'</td>'
+        +'<td style="'+tdStyle(true,even)+'">'+r.unit+'</td>'
+        +'<td style="'+tdStyle(true,even)+'">'+r.qty+'</td>'
+        +'<td style="'+tdStyle(true,even)+'">'+n(r.price)+'</td>'
+        +'<td style="'+tdStyle(true,even)+'">'+n(r.amt)+'</td>'
+        +'</tr>';
+      if(r.type==='재료비')matAmt+=r.amt;
+      else laborAmt+=r.amt;
+    });
+    html+='<tr style="background:#eff6ff;"><td colspan="5" style="padding:3px 7px;border:0.5px solid #d1d5db;font-weight:700;">합계</td>'
+      +'<td style="padding:3px 7px;border:0.5px solid #d1d5db;text-align:right;font-weight:700;">'+n(unitPrice)+'</td></tr>';
+    html+='</tbody></table></div>';
+    return html;
+  }
+
+  // 바탕조정
+  if(g('chk-bt').checked){
+    var btV=parseFloat(g('bt-area').value)||0,btU=g('bt-unit').value;
+    var btSqm=getSqm(btV,btU),btPy=getPy(btV,btU);
+    var thick=parseFloat(g('bt-thick').value);
+    var r=getBtCalc(thick,btSqm);
+    var hP2=parseFloat(g('bt-price').value)||sv('s-hyper',65000);
+    var rP2=parseFloat(g('bt-remi').value)||sv('s-remi',7000);
+    // 1㎡당 단가
+    var hKgPm=r.hyperKg/btSqm, rKgPm=(r.remiPo*40)/btSqm;
+    var hAmt1=Math.round(hKgPm*(hP2/16)*surRate), rAmt1=Math.round(rKgPm*(rP2/40));
+    var sp=parseInt(g('bt-special').value);
+    var tech=btPy<10?sv('f-bt-s1-t',1):btPy<20?sv('f-bt-s2-t',1):btPy<=60?sv('f-bt-s3-t',2):sv('f-bt-s4-t',2);
+    var gen=btPy<10?sv('f-bt-s1-g',0):btPy<20?sv('f-bt-s2-g',1):btPy<=60?sv('f-bt-s3-g',2):sv('f-bt-s4-g',3);
+    if(sp)gen+=1;
+    var laborAmt1=Math.round((tech*techW+gen*genW)/btSqm);
+    var unitP=hAmt1+rAmt1+laborAmt1;
+    var totalP=Math.round(unitP*btSqm);
+    totalAmt+=totalP;
+    var bg=rowIdx%2===0?'#fff':'#f8fafc'; rowIdx++;
+    summaryRows+='<tr style="background:'+bg+'"><td style="padding:4px 7px;border:0.5px solid #d1d5db;">바탕조정</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;">'+thick+'mm</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">㎡</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+btSqm.toFixed(2)+'</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+n(unitP)+'</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+n(totalP)+'</td></tr>';
+    detailTables+=makeDetailTable('바탕조정 (KCC 하이퍼 '+thick+'mm) — 1㎡당',[
+      {type:'재료비',name:'하이퍼',unit:'kg',qty:hKgPm.toFixed(3),price:Math.round(hP2/16*surRate),amt:hAmt1},
+      {type:'재료비',name:'레미탈',unit:'kg',qty:rKgPm.toFixed(3),price:Math.round(rP2/40),amt:rAmt1},
+      {type:'노무비',name:'기술자/일반공',unit:'인',qty:((tech+gen)/btSqm).toFixed(4),price:Math.round((tech*techW+gen*genW)/(tech+gen)),amt:laborAmt1}
+    ],unitP);
+  }
+
+  // 우레탄 단독
+  if(g('chk-ur').checked){
+    var urT=parseFloat(g('ur-thick').value);
+    var mainV=parseFloat(g('pyeong').value)||0,mainU=g('unit-main').value;
+    var mainSqm=getSqm(mainV,mainU);
+    var jKgPm=urT*urCoef;
+    var hAmt2=Math.round(hadoRate*(hP*surRate/14));
+    var jAmt2=Math.round(jKgPm*(jP*surRate/20));
+    var sAmt2=Math.round(sangdoRate*(sP*surRate/16));
+    var tAmt2=Math.round(jKgPm*thinnerRate*(tP*surRate/17));
+    var bujaAmt2=Math.round(bujaP*surRate/3.3058);
+    var urBase=urT===3?sv('f-ur-base3',4):sv('f-ur-base',2);
+    var urCoefL=urT===3?sv('f-ur-coef3',0.02):sv('f-ur-coef',0.02);
+    var crewPm=(urBase/mainSqm)+urCoefL;
+    var laborAmt2=Math.round(crewPm*techW);
+    var unitP2=hAmt2+jAmt2+sAmt2+tAmt2+bujaAmt2+laborAmt2;
+    var totalP2=Math.round(unitP2*mainSqm);
+    totalAmt+=totalP2;
+    var bg2=rowIdx%2===0?'#fff':'#f8fafc'; rowIdx++;
+    summaryRows+='<tr style="background:'+bg2+'"><td style="padding:4px 7px;border:0.5px solid #d1d5db;">우레탄방수</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;">'+urT+'mm</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">㎡</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+mainSqm.toFixed(2)+'</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+n(unitP2)+'</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+n(totalP2)+'</td></tr>';
+    detailTables+=makeDetailTable('우레탄방수 ('+urT+'mm) — 1㎡당',[
+      {type:'재료비',name:'하도',unit:'L',qty:hadoRate.toFixed(3),price:Math.round(hP*surRate/14),amt:hAmt2},
+      {type:'재료비',name:'우레탄 중도',unit:'kg',qty:jKgPm.toFixed(3),price:Math.round(jP*surRate/20),amt:jAmt2},
+      {type:'재료비',name:'상도',unit:'kg',qty:sangdoRate.toFixed(3),price:Math.round(sP*surRate/16),amt:sAmt2},
+      {type:'재료비',name:'신나',unit:'L',qty:(jKgPm*thinnerRate).toFixed(4),price:Math.round(tP*surRate/17),amt:tAmt2},
+      {type:'재료비',name:'부자재',unit:'식',qty:1,price:bujaAmt2,amt:bujaAmt2},
+      {type:'노무비',name:'기술자',unit:'인',qty:crewPm.toFixed(4),price:techW,amt:laborAmt2}
+    ],unitP2);
+  }
+
+  // 복합시트
+  if(g('chk-cs').checked){
+    var st2=parseFloat(g('cs-st').value),ut2=parseFloat(g('cs-ut').value);
+    var mainV2=parseFloat(g('pyeong').value)||0,mainU2=g('unit-main').value;
+    var mSqm=getSqm(mainV2,mainU2);
+    var csSp2=parseFloat(g('cs-sp').value)||sv('s-sheet',120000);
+    var sheetPm=1/sheetArea;
+    var tapePm=sheetPm, sealPm=sheetPm*3;
+    var jKgPm2=ut2*urCoef;
+    var hAmt3=Math.round(hadoRate*(hP*surRate/14));
+    var shAmt3=Math.round(sheetPm*(csSp2*surRate));
+    var tapAmt3=Math.round(tapePm*5000*surRate);
+    var seaAmt3=Math.round(sealPm*10000*surRate);
+    var jAmt3=Math.round(jKgPm2*(jP*surRate/20));
+    var sAmt3=Math.round(sangdoRate*(sP*surRate/16));
+    var tAmt3=Math.round(jKgPm2*thinnerRate*(tP*surRate/17));
+    var bujaAmt3=Math.round(bujaP*surRate/3.3058);
+    var csCrew=sv('f-cs-sheet-crew',3),csBase=sv('f-cs-sheet-base',30);
+    var urCoefL2=sv('f-ur-coef',0.02),urBase2=sv('f-ur-base',2);
+    var sheetLaborPm=(csCrew/csBase)/3.3058;
+    var urLaborPm=urBase2/mSqm+urCoefL2;
+    var laborAmt3=Math.round((sheetLaborPm+urLaborPm)*techW);
+    var unitP3=hAmt3+shAmt3+tapAmt3+seaAmt3+jAmt3+sAmt3+tAmt3+bujaAmt3+laborAmt3;
+    var totalP3=Math.round(unitP3*mSqm);
+    totalAmt+=totalP3;
+    var bg3=rowIdx%2===0?'#fff':'#f8fafc'; rowIdx++;
+    summaryRows+='<tr style="background:'+bg3+'"><td style="padding:4px 7px;border:0.5px solid #d1d5db;">복합시트방수</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;">시트'+st2+'mm+우레탄'+ut2+'mm</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">㎡</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+mSqm.toFixed(2)+'</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+n(unitP3)+'</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+n(totalP3)+'</td></tr>';
+    detailTables+=makeDetailTable('복합시트방수 (시트'+st2+'mm+우레탄'+ut2+'mm) — 1㎡당',[
+      {type:'재료비',name:'하도',unit:'L',qty:hadoRate.toFixed(3),price:Math.round(hP*surRate/14),amt:hAmt3},
+      {type:'재료비',name:'시트('+st2+'mm)',unit:'㎡',qty:sheetPm.toFixed(4),price:Math.round(csSp2*surRate),amt:shAmt3},
+      {type:'재료비',name:'망사테이프',unit:'개',qty:tapePm.toFixed(4),price:Math.round(5000*surRate),amt:tapAmt3},
+      {type:'재료비',name:'실란트',unit:'개',qty:sealPm.toFixed(4),price:Math.round(10000*surRate),amt:seaAmt3},
+      {type:'재료비',name:'우레탄 중도',unit:'kg',qty:jKgPm2.toFixed(3),price:Math.round(jP*surRate/20),amt:jAmt3},
+      {type:'재료비',name:'상도',unit:'kg',qty:sangdoRate.toFixed(3),price:Math.round(sP*surRate/16),amt:sAmt3},
+      {type:'재료비',name:'신나',unit:'L',qty:(jKgPm2*thinnerRate).toFixed(4),price:Math.round(tP*surRate/17),amt:tAmt3},
+      {type:'재료비',name:'부자재',unit:'식',qty:1,price:bujaAmt3,amt:bujaAmt3},
+      {type:'노무비',name:'시공 인원',unit:'인',qty:(sheetLaborPm+urLaborPm).toFixed(4),price:techW,amt:laborAmt3}
+    ],unitP3);
+  }
+
+  // 현장관리 추가
+  var mainPy2=getPy(parseFloat(g('pyeong').value)||0,g('unit-main').value);
+  var mgmtTotal=Math.round(mainPy2*mgmtP);
+  totalAmt+=mgmtTotal;
+  var bgM=rowIdx%2===0?'#fff':'#f8fafc';
+  summaryRows+='<tr style="background:'+bgM+'"><td style="padding:4px 7px;border:0.5px solid #d1d5db;">현장관리</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;">-</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">식</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">1</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+n(mgmtTotal)+'</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+n(mgmtTotal)+'</td></tr>';
+
+  // 추가항목
+  extraItems.forEach(function(item,i){
+    if(!item.amt)return;
+    var bgE=(rowIdx+i)%2===0?'#fff':'#f8fafc';
+    summaryRows+='<tr style="background:'+bgE+'"><td style="padding:4px 7px;border:0.5px solid #d1d5db;">'+item.gong+'</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;">'+item.spec+'</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+item.unit+'</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+item.qty+'</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+n(item.price)+'</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+n(item.amt)+'</td></tr>';
+    totalAmt+=item.amt;
+  });
+
+  summaryRows+='<tr style="background:#eff6ff;font-weight:700;"><td colspan="5" style="padding:4px 7px;border:0.5px solid #d1d5db;">합계</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+n(totalAmt)+'</td></tr>';
+  g('ilwi-summary-rows').innerHTML=summaryRows;
+  g('ilwi-detail-tables').innerHTML=detailTables;
+
+  var profitRate3=sv('s-profit-rate',10)/100;
+  var ilwiProfit=Math.round(totalAmt*profitRate3),ilwiSupply=totalAmt+ilwiProfit,ilwiFinal=ru(ilwiSupply);
+  var negoAmt2=getNegoAmount(ilwiFinal);
+  var ilwiFinalNego=ru(ilwiFinal-negoAmt2);
+  var costRows2='<tbody><tr><td style="padding:5px 10px;border:0.5px solid #d1d5db;font-size:9pt;">공사비 합계</td><td style="padding:5px 10px;border:0.5px solid #d1d5db;text-align:right;font-size:9pt;">'+n(totalAmt)+' 원</td></tr>'
+    +'<tr style="background:#f8fafc"><td style="padding:5px 10px;border:0.5px solid #d1d5db;font-size:9pt;">기업이윤 ('+Math.round(profitRate3*100)+'%)</td><td style="padding:5px 10px;border:0.5px solid #d1d5db;text-align:right;font-size:9pt;">'+n(ilwiProfit)+' 원</td></tr>'
+    +'<tr><td style="padding:5px 10px;border:0.5px solid #d1d5db;font-size:9pt;">공급가액</td><td style="padding:5px 10px;border:0.5px solid #d1d5db;text-align:right;font-size:9pt;">'+n(ilwiSupply)+' 원</td></tr>';
+  if(negoAmt2>0)costRows2+='<tr><td style="padding:5px 10px;border:0.5px solid #d1d5db;font-size:9pt;color:#dc2626;">네고 차감</td><td style="padding:5px 10px;border:0.5px solid #d1d5db;text-align:right;font-size:9pt;color:#dc2626;">- '+n(negoAmt2)+' 원</td></tr>';
+  costRows2+='<tr style="background:#2563eb!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;"><td style="padding:8px 10px;color:#fff!important;font-weight:700;font-size:11pt;">총 공사금액 (V.A.T 별도)</td><td style="padding:8px 10px;color:#fff!important;font-weight:700;font-size:11pt;text-align:right;">'+(negoAmt2>0?n(ilwiFinalNego):n(ilwiFinal))+' 원</td></tr></tbody>';
+  g('ilwi-cost').innerHTML=costRows2;
+
+  var notesHTML='';notes.forEach(function(note){notesHTML+='<p style="font-size:8.5pt;color:#374151;padding:2px 0;">- '+note.text+'</p>';});
+  g('ilwi-notes').innerHTML=notesHTML;
+  g('print-ilwi').style.display='block';
 }
 
 function buildPrintPages(){
@@ -1194,10 +1450,19 @@ function buildPrintPages(){
     if(g('print-gabji-page')) g('print-gabji-page').style.display='none';
   }
 
+  // 일위대가 vs 일반
+  if(estimateFormat==='ilwi'){
+    g('print-submit').style.display='none';
+    buildIlwiPages(name,addr,mgr,date,submitSum,profit,supply,final);
+  } else {
+    if(g('print-ilwi')) g('print-ilwi').style.display='none';
+  }
+
   window.addEventListener('afterprint',function(){
     g('print-cover').style.display='none';
     g('print-submit').style.display='none';
     g('print-internal-page').style.display='none';
+    if(g('print-ilwi')) g('print-ilwi').style.display='none';
     if(g('print-gabji-page')) g('print-gabji-page').style.display='none';
   },{once:true});
 }
