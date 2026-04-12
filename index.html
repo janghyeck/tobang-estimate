@@ -105,8 +105,7 @@ tr:last-child td{border-bottom:none;}
   thead th{background:#2563eb!important;color:#fff!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
   body{background:#fff;margin:0;padding:0;}
   .container{display:none!important;}
-  #print-cover{display:block!important;}
-  @page{size:A4;margin:8mm 8mm;} @page.landscape{size:A4 landscape;margin:6mm 9mm;}
+  @page{size:A4;margin:8mm 8mm;}
 }
 </style>
 </head>
@@ -199,7 +198,7 @@ tr:last-child td{border-bottom:none;}
     <div style="font-size:12pt;font-weight:700;color:#1e3a5f;letter-spacing:.2em;">공 사 원 가 계 산 서</div>
   </div>
   <div style="font-size:7pt;color:#4a6080;margin-bottom:4px;" id="ilwi-gabji-title"></div>
-  <table id="ilwi-gabji-table" style="width:100%;border-collapse:collapse;font-size:7pt;table-layout:fixed;">
+  <table id="ilwi-gabji-table" style="width:100%;border-collapse:collapse;font-size:6.5pt;table-layout:fixed;">
     <colgroup><col style="width:4%;"><col style="width:30%;"><col style="width:36%;"><col style="width:30%;"></colgroup>
     <thead>
       <tr style="background:#1e3a5f!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;">
@@ -1494,10 +1493,10 @@ function buildIlwiPages(name,addr,mgr,date,submitSum,profit,supply,final){
       var s=isTot?'background:#1e3a5f!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;':isSub?'background:#e8f0fb!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;font-weight:700;color:#1e3a5f;':'';
       var ct=isTot?'color:#fff!important;':'';
       var fw=isSub?'font-weight:700;':'';
-      return '<tr style="height:13px;'+s+'"><td style="padding:1.5px 4px;border:0.5px solid #c8d0db;'+ct+fw+'">'+label+'</td>'+
-        '<td style="padding:1.5px 4px;border:0.5px solid #c8d0db;text-align:center;'+ct+'">'+rate+'</td>'+
-        '<td style="padding:1.5px 4px;border:0.5px solid #c8d0db;text-align:right;'+ct+fw+'">'+(amt!==null?n(amt):'')+'</td>'+
-        '<td style="padding:1.5px 4px;border:0.5px solid #c8d0db;'+ct+'"></td></tr>';
+      return '<tr style="height:13px;white-space:nowrap;'+s+'"><td style="padding:1px 5px;border:0.5px solid #c8d0db;white-space:nowrap;'+ct+fw+'">'+label+'</td>'+
+        '<td style="padding:1px 5px;border:0.5px solid #c8d0db;text-align:center;white-space:nowrap;'+ct+'">'+rate+'</td>'+
+        '<td style="padding:1px 5px;border:0.5px solid #c8d0db;text-align:right;white-space:nowrap;'+ct+fw+'">'+(amt!==null?n(amt):'')+'</td>'+
+        '<td style="padding:1px 5px;border:0.5px solid #c8d0db;white-space:nowrap;'+ct+'"></td></tr>';
     }
     function gempty(label){return '<tr style="height:13px;"><td style="padding:1.5px 4px;border:0.5px solid #c8d0db;color:#9ca3af;">'+label+'</td><td style="border:0.5px solid #c8d0db;text-align:center;color:#9ca3af;">-</td><td style="border:0.5px solid #c8d0db;"></td><td style="border:0.5px solid #c8d0db;"></td></tr>';}
     var ghtml='';
@@ -1630,21 +1629,26 @@ function buildPrintPages(){
   }
 
   // 일위대가 vs 일반 - 하나만 표시
+  var styleEl=document.getElementById('print-orientation-style');
+  if(!styleEl){styleEl=document.createElement('style');styleEl.id='print-orientation-style';document.head.appendChild(styleEl);}
+
   if(estimateFormat==='ilwi'){
-    g('print-submit').style.display='none';
+    // 일반 출력 전부 숨김
+    if(g('print-cover')) g('print-cover').style.display='none';
+    if(g('print-submit')) g('print-submit').style.display='none';
+    if(g('print-internal-page')) g('print-internal-page').style.display='none';
+    if(g('print-gabji-page')) g('print-gabji-page').style.display='none';
     if(g('print-ilwi')) g('print-ilwi').style.display='none';
     // 가로 인쇄 설정
-    var styleEl=document.getElementById('print-orientation-style');
-    if(!styleEl){styleEl=document.createElement('style');styleEl.id='print-orientation-style';document.head.appendChild(styleEl);}
-    styleEl.textContent='@media print{@page{size:A4 landscape;margin:6mm 9mm;}}';
+    styleEl.textContent='@media print{@page{size:A4 landscape;margin:6mm 9mm;} #print-cover{display:none!important;} #print-submit{display:none!important;} #print-internal-page{display:none!important;} #print-gabji-page{display:none!important;}}';
     buildIlwiPages(name,addr,mgr,date,submitSum,profit,supply,final);
   } else {
+    // 일위대가 숨김
     if(g('print-ilwi')) g('print-ilwi').style.display='none';
-    g('print-submit').style.display='block';
     // 세로 인쇄 설정
-    var styleEl=document.getElementById('print-orientation-style');
-    if(!styleEl){styleEl=document.createElement('style');styleEl.id='print-orientation-style';document.head.appendChild(styleEl);}
-    styleEl.textContent='@media print{@page{size:A4 portrait;margin:8mm 8mm;}}';
+    styleEl.textContent='@media print{@page{size:A4 portrait;margin:8mm 8mm;} #print-ilwi{display:none!important;}}';
+    g('print-cover').style.display='block';
+    g('print-submit').style.display='block';
   }
 
   window.addEventListener('afterprint',function(){
