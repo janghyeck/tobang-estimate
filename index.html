@@ -1493,12 +1493,11 @@ function buildIlwiPages(name,addr,mgr,date,submitSum,profit,supply,final){
       var s=isTot?'background:#1e3a5f!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;':isSub?'background:#e8f0fb!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;font-weight:700;color:#1e3a5f;':'';
       var ct=isTot?'color:#fff!important;':'';
       var fw=isSub?'font-weight:700;':'';
-      return '<tr style="height:13px;white-space:nowrap;'+s+'"><td style="padding:1px 5px;border:0.5px solid #c8d0db;white-space:nowrap;'+ct+fw+'">'+label+'</td>'+
-        '<td style="padding:1px 5px;border:0.5px solid #c8d0db;text-align:center;white-space:nowrap;'+ct+'">'+rate+'</td>'+
-        '<td style="padding:1px 5px;border:0.5px solid #c8d0db;text-align:right;white-space:nowrap;'+ct+fw+'">'+(amt!==null?n(amt):'')+'</td>'+
-        '<td style="padding:1px 5px;border:0.5px solid #c8d0db;white-space:nowrap;'+ct+'"></td></tr>';
+      return '<tr style="height:14px;'+s+'"><td style="padding:2px 6px;border:0.5px solid #c8d0db;'+ct+fw+'">'+label+'</td>'+
+        '<td style="padding:2px 6px;border:0.5px solid #c8d0db;text-align:right;'+ct+fw+'">'+(amt!==null?n(amt):'')+'</td>'+
+        '<td style="padding:2px 6px;border:0.5px solid #c8d0db;'+ct+'">'+rate+'</td></tr>';
     }
-    function gempty(label){return '<tr style="height:13px;white-space:nowrap;"><td style="padding:1px 5px;border:0.5px solid #c8d0db;color:#9ca3af;white-space:nowrap;">'+label+'</td><td style="border:0.5px solid #c8d0db;text-align:center;color:#9ca3af;white-space:nowrap;">-</td><td style="border:0.5px solid #c8d0db;white-space:nowrap;"></td><td style="border:0.5px solid #c8d0db;white-space:nowrap;"></td></tr>';}
+    function gempty(label){return '<tr style="height:14px;"><td style="padding:2px 6px;border:0.5px solid #c8d0db;color:#9ca3af;">'+label+'</td><td style="padding:2px 6px;border:0.5px solid #c8d0db;"></td><td style="padding:2px 6px;border:0.5px solid #c8d0db;color:#9ca3af;">-</td></tr>';}
     var ghtml='';
     ghtml+=grow('직 접 재 료 비','',d.matSum,false,false);
     ghtml+=grow('간 접 재 료 비','','',false,false);
@@ -1613,51 +1612,46 @@ function buildPrintPages(){
 
   var notesHTML='';notes.forEach(function(note){notesHTML+='<p style="font-size:8.5pt;color:#374151;padding:2px 0;">- '+note.text+'</p>';});
   g('ps-notes').innerHTML=notesHTML;
-  g('print-cover').style.display='block';
-  g('print-submit').style.display='block';
-  // 갑지 처리
-  var printGabji = g('print-gabji') && g('print-gabji').checked;
-  if(printGabji && g('gabji-rows')){
-    // 자재비/노무비 수집
-    var gMatSum=0,gLaborSum=0;
-    document.querySelectorAll('.amt-inp[id^="mp_"]').forEach(function(inp){var q=parseFloat(inp.dataset.qty)||0,p=parseFloat(inp.value)||0;gMatSum+=q*p;});
-    document.querySelectorAll('.amt-inp[id^="lp_"]').forEach(function(inp){var q=parseFloat(inp.dataset.qty)||0,p=parseFloat(inp.value)||0;gLaborSum+=q*p;});
-    extraItems.forEach(function(item){gMatSum+=item.amt||0;});
-    buildGabji(gMatSum, gLaborSum);
-    g('print-gabji-page').style.display='block';
-  } else {
-    if(g('print-gabji-page')) g('print-gabji-page').style.display='none';
-  }
 
-  // 일위대가 vs 일반 - 하나만 표시
+  // 모든 인쇄 페이지 먼저 전부 숨김
+  ['print-cover','print-submit','print-internal-page','print-gabji-page','print-ilwi'].forEach(function(id){
+    if(g(id)) g(id).style.display='none';
+  });
+  if(g('ilwi-cost-page')) g('ilwi-cost-page').style.display='none';
+
+  // @page 스타일 설정
   var styleEl=document.getElementById('print-orientation-style');
   if(!styleEl){styleEl=document.createElement('style');styleEl.id='print-orientation-style';document.head.appendChild(styleEl);}
 
   if(estimateFormat==='ilwi'){
-    // 일반 출력 전부 숨김
-    if(g('print-cover')) g('print-cover').style.display='none';
-    if(g('print-submit')) g('print-submit').style.display='none';
-    if(g('print-internal-page')) g('print-internal-page').style.display='none';
-    if(g('print-gabji-page')) g('print-gabji-page').style.display='none';
-    if(g('print-ilwi')) g('print-ilwi').style.display='none';
-    // 가로 인쇄 설정
-    styleEl.textContent='@media print{@page{size:A4 landscape;margin:6mm 9mm;} #print-cover{display:none!important;} #print-submit{display:none!important;} #print-internal-page{display:none!important;} #print-gabji-page{display:none!important;}}';
+    // 가로 A4
+    styleEl.textContent='@media print{@page{size:A4 landscape;margin:6mm 9mm;}}';
     buildIlwiPages(name,addr,mgr,date,submitSum,profit,supply,final);
   } else {
-    // 일위대가 숨김
-    if(g('print-ilwi')) g('print-ilwi').style.display='none';
-    // 세로 인쇄 설정
-    styleEl.textContent='@media print{@page{size:A4 portrait;margin:8mm 8mm;} #print-ilwi{display:none!important;}}';
-    g('print-cover').style.display='block';
-    g('print-submit').style.display='block';
+    // 세로 A4
+    styleEl.textContent='@media print{@page{size:A4 portrait;margin:8mm 8mm;}}';
+    // 표지
+    if(g('print-cover')) g('print-cover').style.display='block';
+    // 내부검토용
+    if(printInternal && g('print-internal-page')) g('print-internal-page').style.display='block';
+    // 갑지
+    var printGabji=g('print-gabji')&&g('print-gabji').checked;
+    if(printGabji && g('gabji-rows')){
+      var gMatSum=0,gLaborSum=0;
+      document.querySelectorAll('.amt-inp[id^="mp_"]').forEach(function(inp){var q=parseFloat(inp.dataset.qty)||0,p=parseFloat(inp.value)||0;gMatSum+=q*p;});
+      document.querySelectorAll('.amt-inp[id^="lp_"]').forEach(function(inp){var q=parseFloat(inp.dataset.qty)||0,p=parseFloat(inp.value)||0;gLaborSum+=q*p;});
+      extraItems.forEach(function(item){gMatSum+=item.amt||0;});
+      buildGabji(gMatSum,gLaborSum);
+      if(g('print-gabji-page')) g('print-gabji-page').style.display='block';
+    }
+    // 견적서
+    if(g('print-submit')) g('print-submit').style.display='block';
   }
 
   window.addEventListener('afterprint',function(){
-    g('print-cover').style.display='none';
-    g('print-submit').style.display='none';
-    g('print-internal-page').style.display='none';
-    if(g('print-ilwi')) g('print-ilwi').style.display='none';
-    if(g('print-gabji-page')) g('print-gabji-page').style.display='none';
+    ['print-cover','print-submit','print-internal-page','print-gabji-page','print-ilwi'].forEach(function(id){
+      if(g(id)) g(id).style.display='none';
+    });
     if(g('ilwi-cost-page')) g('ilwi-cost-page').style.display='none';
   },{once:true});
 }
