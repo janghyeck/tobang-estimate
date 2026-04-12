@@ -149,6 +149,23 @@ tr:last-child td{border-bottom:none;}
   </div>
 </div>
 
+<!-- 인쇄용 갑지 -->
+<div id="print-gabji-page" style="display:none;page-break-after:always;">
+  <div style="padding:14mm 14mm;">
+    <div style="font-size:13pt;font-weight:700;color:#1a1a2e;border-bottom:2.5px solid #2563eb;padding-bottom:5px;margin-bottom:14px;">&#9632; 공사원가 계산서</div>
+    <table id="gabji-table" style="width:100%;border-collapse:collapse;font-size:9pt;">
+      <thead>
+        <tr style="background:#2563eb!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;">
+          <th style="color:#fff!important;padding:6px 10px;text-align:left;border:0.5px solid #1d4ed8;width:45%;">비&nbsp;&nbsp;목</th>
+          <th style="color:#fff!important;padding:6px 10px;text-align:center;border:0.5px solid #1d4ed8;width:20%;">구성비</th>
+          <th style="color:#fff!important;padding:6px 10px;text-align:right;border:0.5px solid #1d4ed8;width:35%;">금&nbsp;&nbsp;액</th>
+        </tr>
+      </thead>
+      <tbody id="gabji-rows"></tbody>
+    </table>
+  </div>
+</div>
+
 <!-- 인쇄용 견적서 -->
 <div id="print-submit" style="display:none;">
   <div style="padding:14mm 14mm;">
@@ -167,6 +184,25 @@ tr:last-child td{border-bottom:none;}
         <div style="background:#f3f4f6;font-weight:700;font-size:9pt;padding:6px 10px;border-bottom:1px solid #d1d5db;">참고사항</div>
         <div style="padding:8px 10px 10px;" id="ps-notes"></div>
       </div>
+    </div>
+  </div>
+  <!-- 갑지 비율 설정 -->
+  <div class="settings-sec" id="stab-gabji">
+    <div class="s-group">간접비 비율</div>
+    <div class="s-row"><label>간접노무비율</label><input type="number" id="g-indirect-labor" value="15" step="0.1"><span class="s-unit">% (직접노무비 대비)</span></div>
+    <div class="s-row"><label>산재보험료율</label><input type="number" id="g-sangjae" value="3.7" step="0.01"><span class="s-unit">% (노무비 대비)</span></div>
+    <div class="s-row"><label>안전관리비율</label><input type="number" id="g-safety" value="1.86" step="0.01"><span class="s-unit">% (재료비+노무비 대비)</span></div>
+    <div class="s-row"><label>현장관리비율</label><input type="number" id="g-site-mgmt" value="6" step="0.1"><span class="s-unit">% (재+노+간노 대비)</span></div>
+    <div class="s-row"><label>일반관리비율</label><input type="number" id="g-general-mgmt" value="3.5" step="0.1"><span class="s-unit">% (공사원가 대비)</span></div>
+    <div class="s-row"><label>이윤율</label><input type="number" id="g-profit" value="10" step="0.1"><span class="s-unit">%</span></div>
+    <div class="s-row"><label>부가가치세율</label><input type="number" id="g-vat" value="10" step="0.1"><span class="s-unit">%</span></div>
+    <div class="s-group">표시 옵션</div>
+    <div style="font-size:11px;color:#6b7280;margin-bottom:8px;">아래 항목은 금액란 비워두고 항목명만 표시</div>
+    <div class="chk-grid">
+      <div class="chk-mini"><input type="checkbox" id="g-show-employ" checked><label for="g-show-employ">고용보험</label></div>
+      <div class="chk-mini"><input type="checkbox" id="g-show-pension" checked><label for="g-show-pension">국민연금</label></div>
+      <div class="chk-mini"><input type="checkbox" id="g-show-health" checked><label for="g-show-health">건강보험</label></div>
+      <div class="chk-mini"><input type="checkbox" id="g-show-retire" checked><label for="g-show-retire">퇴직공제부금</label></div>
     </div>
   </div>
 </div>
@@ -189,6 +225,7 @@ tr:last-child td{border-bottom:none;}
   <div class="settings-tab-wrap">
     <button class="settings-tab active" data-stab="prices">단가 관리</button>
     <button class="settings-tab" data-stab="formula">일위대가/계산식</button>
+    <button class="settings-tab" data-stab="gabji">갑지 비율 설정</button>
   </div>
 
   <!-- 단가 관리 -->
@@ -441,7 +478,10 @@ tr:last-child td{border-bottom:none;}
         <div class="chk-mini"><input type="checkbox" id="sh-ur" checked><label for="sh-ur">우레탄방수</label></div>
       </div>
       <div style="font-size:11px;color:#6b7280;margin:10px 0 6px;">출력 포함</div>
-      <div class="chk-grid"><div class="chk-mini"><input type="checkbox" id="print-internal" checked><label for="print-internal">내부검토용 포함</label></div></div>
+      <div class="chk-grid">
+        <div class="chk-mini"><input type="checkbox" id="print-internal" checked><label for="print-internal">내부검토용 포함</label></div>
+        <div class="chk-mini"><input type="checkbox" id="print-gabji"><label for="print-gabji">갑지(공사원가계산서) 포함</label></div>
+      </div>
     </div>
   </div>
   <button class="btn-print" id="pdf-btn">견적서 인쇄 / PDF 저장</button>
@@ -842,6 +882,68 @@ g('save-btn').addEventListener('click',function(){
 
 g('pdf-btn').addEventListener('click',function(){buildPrintPages();setTimeout(function(){window.print();},400);});
 
+function buildGabji(matSum, laborSum){
+  var indirectRate = parseFloat((document.getElementById('g-indirect-labor')||{value:15}).value)||15;
+  var sangjaeRate  = parseFloat((document.getElementById('g-sangjae')||{value:3.7}).value)||3.7;
+  var safetyRate   = parseFloat((document.getElementById('g-safety')||{value:1.86}).value)||1.86;
+  var siteMgmtRate = parseFloat((document.getElementById('g-site-mgmt')||{value:6}).value)||6;
+  var genMgmtRate  = parseFloat((document.getElementById('g-general-mgmt')||{value:3.5}).value)||3.5;
+  var profitRate   = parseFloat((document.getElementById('g-profit')||{value:10}).value)||10;
+  var vatRate      = parseFloat((document.getElementById('g-vat')||{value:10}).value)||10;
+
+  var showEmploy  = (document.getElementById('g-show-employ')||{checked:true}).checked;
+  var showPension = (document.getElementById('g-show-pension')||{checked:true}).checked;
+  var showHealth  = (document.getElementById('g-show-health')||{checked:true}).checked;
+  var showRetire  = (document.getElementById('g-show-retire')||{checked:true}).checked;
+
+  var indirectLabor = Math.round(laborSum * indirectRate/100);
+  var totalLabor    = laborSum + indirectLabor;
+  var sangjae       = Math.round(totalLabor * sangjaeRate/100);
+  var safety        = Math.round((matSum+laborSum) * safetyRate/100);
+  var siteMgmt      = Math.round((matSum+laborSum+indirectLabor) * siteMgmtRate/100);
+  var subTotal      = matSum+laborSum+indirectLabor+sangjae+safety+siteMgmt;
+  var genMgmt       = Math.round(subTotal * genMgmtRate/100);
+  var costTotal     = subTotal+genMgmt;
+  var profit        = Math.round(costTotal * profitRate/100);
+  var grandTotal    = costTotal+profit;
+  var vat           = Math.round(grandTotal * vatRate/100);
+  var finalTotal    = grandTotal+vat;
+
+  function row(label, rate, amt, bold, blue){
+    var bg = blue ? 'background:#2563eb!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;' : (bold?'background:#eff6ff;':'');
+    var color = blue ? 'color:#fff!important;' : '';
+    var fw = (bold||blue) ? 'font-weight:700;' : '';
+    var amtStr = amt!==null ? n(amt)+' 원' : '';
+    return '<tr style="'+bg+'"><td style="padding:5px 10px;border:0.5px solid #d1d5db;'+color+fw+'">'+label+'</td>'
+      +'<td style="padding:5px 10px;border:0.5px solid #d1d5db;text-align:center;'+color+'">'+rate+'</td>'
+      +'<td style="padding:5px 10px;border:0.5px solid #d1d5db;text-align:right;'+color+fw+'">'+amtStr+'</td></tr>';
+  }
+  function emptyRow(label){
+    return '<tr><td style="padding:5px 10px;border:0.5px solid #d1d5db;">'+label+'</td><td style="padding:5px 10px;border:0.5px solid #d1d5db;text-align:center;">-</td><td style="padding:5px 10px;border:0.5px solid #d1d5db;"></td></tr>';
+  }
+
+  var rows='';
+  rows+=row('직접재료비','',matSum,false,false);
+  rows+=row('직접노무비','',laborSum,false,false);
+  rows+=row('소&nbsp;&nbsp;계','',matSum+laborSum,true,false);
+  rows+=row('간접노무비',indirectRate+'% (직노 대비)',indirectLabor,false,false);
+  rows+=row('산재보험료',sangjaeRate+'% (노무비 대비)',sangjae,false,false);
+  if(showEmploy)rows+=emptyRow('고용보험료');
+  if(showPension)rows+=emptyRow('국민연금');
+  if(showHealth)rows+=emptyRow('건강보험료');
+  if(showRetire)rows+=emptyRow('퇴직공제부금');
+  rows+=row('안전관리비',safetyRate+'% (재+노 대비)',safety,false,false);
+  rows+=row('현장관리비',siteMgmtRate+'% (재+노+간노 대비)',siteMgmt,false,false);
+  rows+=row('공사원가 소계','',subTotal,true,false);
+  rows+=row('일반관리비',genMgmtRate+'% (공사원가 대비)',genMgmt,false,false);
+  rows+=row('이&nbsp;&nbsp;윤',profitRate+'%',profit,false,false);
+  rows+=row('합&nbsp;&nbsp;계','',grandTotal,true,false);
+  rows+=row('부가가치세',vatRate+'%',vat,false,false);
+  rows+=row('총 공사금액','',finalTotal,false,true);
+
+  g('gabji-rows').innerHTML=rows;
+}
+
 function buildPrintPages(){
   var name=g('f-name').value||'방수공사',addr=g('f-addr').value||'',mgr=g('f-mgr').value.split('|'),date=g('f-date').value,printInternal=g('print-internal').checked;
   g('pc-title').innerHTML=name.replace(/\n/g,'<br>')+'<br>견적서';
@@ -910,7 +1012,26 @@ function buildPrintPages(){
   g('ps-notes').innerHTML=notesHTML;
   g('print-cover').style.display='block';
   g('print-submit').style.display='block';
-  window.addEventListener('afterprint',function(){g('print-cover').style.display='none';g('print-submit').style.display='none';g('print-internal-page').style.display='none';},{once:true});
+  // 갑지 처리
+  var printGabji = g('print-gabji') && g('print-gabji').checked;
+  if(printGabji && g('gabji-rows')){
+    // 자재비/노무비 수집
+    var gMatSum=0,gLaborSum=0;
+    document.querySelectorAll('.amt-inp[id^="mp_"]').forEach(function(inp){var q=parseFloat(inp.dataset.qty)||0,p=parseFloat(inp.value)||0;gMatSum+=q*p;});
+    document.querySelectorAll('.amt-inp[id^="lp_"]').forEach(function(inp){var q=parseFloat(inp.dataset.qty)||0,p=parseFloat(inp.value)||0;gLaborSum+=q*p;});
+    extraItems.forEach(function(item){gMatSum+=item.amt||0;});
+    buildGabji(gMatSum, gLaborSum);
+    g('print-gabji-page').style.display='block';
+  } else {
+    if(g('print-gabji-page')) g('print-gabji-page').style.display='none';
+  }
+
+  window.addEventListener('afterprint',function(){
+    g('print-cover').style.display='none';
+    g('print-submit').style.display='none';
+    g('print-internal-page').style.display='none';
+    if(g('print-gabji-page')) g('print-gabji-page').style.display='none';
+  },{once:true});
 }
 
 // 저장된 상태 복원
