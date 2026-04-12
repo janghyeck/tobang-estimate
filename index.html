@@ -897,7 +897,14 @@ function buildPrintPages(){
   extraItems.forEach(function(item){submitSum+=item.amt||0;});
   var profitRate2=sv('s-profit-rate',10)/100;
   var profit=Math.round(submitSum*profitRate2),supply=submitSum+profit,final=ru(supply);
-  g('ps-cost').innerHTML='<tbody><tr><td style="padding:5px 10px;border:0.5px solid #d1d5db;font-size:9pt;">공사비 합계</td><td style="padding:5px 10px;border:0.5px solid #d1d5db;text-align:right;font-size:9pt;">'+n(submitSum)+' 원</td></tr><tr style="background:#f8fafc"><td style="padding:5px 10px;border:0.5px solid #d1d5db;font-size:9pt;">기업이윤 (10%)</td><td style="padding:5px 10px;border:0.5px solid #d1d5db;text-align:right;font-size:9pt;">'+n(profit)+' 원</td></tr><tr><td style="padding:5px 10px;border:0.5px solid #d1d5db;font-size:9pt;">공급가액</td><td style="padding:5px 10px;border:0.5px solid #d1d5db;text-align:right;font-size:9pt;">'+n(supply)+' 원</td></tr><tr style="background:#2563eb !important;-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;;-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important";-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important"><td style="padding:8px 10px;color:#fff;font-weight:700;font-size:11pt;">총 공사금액 (V.A.T 별도)</td><td style="padding:8px 10px;color:#fff;font-weight:700;font-size:11pt;text-align:right;">'+n(final)+' 원</td></tr></tbody>';
+  var negoAmt=getNegoAmount(final);
+  var finalNego=ru(final-negoAmt);
+  var costRows='<tbody><tr><td style="padding:5px 10px;border:0.5px solid #d1d5db;font-size:9pt;">공사비 합계</td><td style="padding:5px 10px;border:0.5px solid #d1d5db;text-align:right;font-size:9pt;">'+n(submitSum)+' 원</td></tr><tr style="background:#f8fafc"><td style="padding:5px 10px;border:0.5px solid #d1d5db;font-size:9pt;">기업이윤 ('+Math.round(profitRate2*100)+'%)</td><td style="padding:5px 10px;border:0.5px solid #d1d5db;text-align:right;font-size:9pt;">'+n(profit)+' 원</td></tr><tr><td style="padding:5px 10px;border:0.5px solid #d1d5db;font-size:9pt;">공급가액</td><td style="padding:5px 10px;border:0.5px solid #d1d5db;text-align:right;font-size:9pt;">'+n(supply)+' 원</td></tr>';
+  if(negoAmt>0){
+    costRows+='<tr><td style="padding:5px 10px;border:0.5px solid #d1d5db;font-size:9pt;color:#dc2626;">네고 차감</td><td style="padding:5px 10px;border:0.5px solid #d1d5db;text-align:right;font-size:9pt;color:#dc2626;">- '+n(negoAmt)+' 원</td></tr>';
+  }
+  costRows+='<tr style="background:#2563eb!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important"><td style="padding:8px 10px;color:#fff!important;font-weight:700;font-size:11pt;">총 공사금액 (V.A.T 별도)</td><td style="padding:8px 10px;color:#fff!important;font-weight:700;font-size:11pt;text-align:right;">'+(negoAmt>0?n(finalNego):n(final))+' 원</td></tr></tbody>';
+  g('ps-cost').innerHTML=costRows;
 
   var notesHTML='';notes.forEach(function(note){notesHTML+='<p style="font-size:8.5pt;color:#374151;padding:2px 0;">- '+note.text+'</p>';});
   g('ps-notes').innerHTML=notesHTML;
