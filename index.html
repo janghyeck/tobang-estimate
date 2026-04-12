@@ -3,136 +3,225 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>토방이앤지 통합 견적 시스템</title>
+<title>토방이앤지 방수공사 견적 시스템</title>
 <style>
-/* 1. UI 및 기본 레이아웃 (기존 기능 유지) */
+/* [디자인 및 레이아웃] */
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;background:#f3f4f6;color:#1a1a2e;font-size:13px;}
-.container{max-width:960px;margin:0 auto;padding:16px;}
-.sec{background:#fff;border:0.5px solid #d1d5db;border-radius:10px;padding:16px;margin-bottom:10px;}
-.sec-title{font-size:11px;font-weight:600;color:#6b7280;margin-bottom:10px;text-transform:uppercase;letter-spacing:.05em;}
-.badge{display:inline-block;font-size:10px;padding:1px 8px;border-radius:10px;font-weight:600;margin-right:6px;}
-.badge-blue{background:#eff6ff;color:#1d4ed8;} .badge-green{background:#f0fdf4;color:#15803d;} .badge-yellow{background:#fefce8;color:#a16207;}
-.row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
-.row label{font-size:12px;color:#6b7280;min-width:110px;}
-.row input, .row select{flex:1;height:32px;border:0.5px solid #d1d5db;border-radius:6px;padding:0 8px;}
-.chk-block{border:0.5px solid #e5e7eb;border-radius:8px;padding:10px 12px;margin-bottom:8px;}
-.chk-head{display:flex;align-items:center;gap:8px;cursor:pointer;}
-.chk-body{display:none;margin-top:10px;border-top:0.5px solid #f3f4f6;padding-top:10px;}
-.btn-primary{width:100%;height:42px;background:#2563eb;color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;margin-bottom:10px;}
-.tab-wrap{display:flex;gap:6px;margin-bottom:10px;}
-.tab{flex:1;height:34px;border:0.5px solid #d1d5db;border-radius:8px;background:#fff;cursor:pointer;}
+.container{max-width:980px;margin:0 auto;padding:20px;}
+.sec{background:#fff;border:1px solid #d1d5db;border-radius:10px;padding:18px;margin-bottom:12px;box-shadow: 0 2px 4px rgba(0,0,0,0.05);}
+.sec-title{font-size:13px;font-weight:700;color:#2563eb;margin-bottom:12px;border-left:5px solid #2563eb;padding-left:10px;}
+.row-area{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.row-area label{font-size:12px;color:#374151;min-width:120px;font-weight:600;}
+.row-area input, .row-area select{height:34px;border:1px solid #d1d5db;border-radius:6px;padding:0 10px;font-size:12px;}
+.chk-block{border:1px solid #e5e7eb;border-radius:8px;padding:12px;margin-bottom:8px;background:#f9fafb;}
+.chk-head{display:flex;align-items:center;gap:8px;font-weight:600;cursor:pointer;}
+.chk-body{margin-top:10px;border-top:1px solid #e5e7eb;padding-top:10px;}
+.btn-primary{width:100%;height:48px;background:#2563eb;color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;margin:10px 0;}
+.tab-wrap{display:flex;gap:6px;margin-bottom:15px;}
+.tab{flex:1;height:40px;border:1px solid #d1d5db;border-radius:8px;background:#fff;cursor:pointer;font-weight:600;}
 .tab.active{background:#2563eb;color:#fff;border-color:#2563eb;}
 
-/* 2. 전문 원가계산서 전용 인쇄 스타일 (사진 6-2 스타일) */
-#print-gabji-page table {width:100%; border-collapse:collapse; border:1px solid #000;}
-#print-gabji-page th, #print-gabji-page td {border:1px solid #000; padding:4px 8px; font-size:11px;}
-.vertical-td {writing-mode:vertical-lr; text-align:center; vertical-align:middle; background:#f4f4f4 !important; font-weight:bold; letter-spacing:4px;}
-.sub-total-row {background:#e8f0fb !important; font-weight:bold;}
-.grand-total-row {background:#1e3a5f !important; color:#fff !important; font-weight:bold; font-size:13px;}
+/* [원가계산서 전용 스타일 - 사진 6-2 재현] */
+.gabji-table {width:100%; border-collapse:collapse; border:1.5px solid #000; margin-top:10px;}
+.gabji-table th {background:#f0f4fa; border:1px solid #000; padding:8px; font-size:12px; font-weight:bold;}
+.gabji-table td {border:1px solid #000; padding:6px 10px; font-size:11.5px; height:28px;}
+.v-td {writing-mode:vertical-lr; text-align:center; vertical-align:middle; background:#f8f9fa !important; font-weight:bold; letter-spacing:5px; width:35px;}
+.sub-total {background:#eef6ff !important; font-weight:bold;}
+.grand-total {background:#1e3a5f !important; color:#fff !important; font-weight:bold; font-size:14px;}
+.r {text-align:right;} .c {text-align:center;}
 
 @media print{
-    body{background:#fff;} .no-print{display:none !important;}
-    .container{width:100%; padding:0; margin:0;}
-    .sec{border:none;}
-    @page{size:A4 portrait; margin:10mm;}
+  body{background:#fff;}
+  .no-print, .tab-wrap, .btn-primary {display:none !important;}
+  .container {max-width:100%; padding:0;}
+  .sec {border:none; padding:0;}
+  @page {size:A4 portrait; margin:15mm 10mm;}
 }
 </style>
 </head>
 <body>
 
 <div class="container">
-    <h2 style="margin-bottom:15px; color:#1e3a5f;">토방이앤지 방수공사 견적 툴</h2>
+    <h1 style="text-align:center; margin-bottom:25px; color:#1e3a5f; letter-spacing:2px;">토방이앤지 전문 견적 관리 시스템</h1>
 
     <div class="sec no-print">
-        <div class="sec-title">기본 정보 및 공정 설정</div>
-        <div class="row">
-            <label>공사 면적</label>
+        <div class="sec-title">기본 정보 및 시공 설정</div>
+        <div class="row-area">
+            <label>공사 명칭</label>
+            <input type="text" id="f-name" value="메가타운 옥상 방수공사" style="flex:1;">
+        </div>
+        <div class="row-area">
+            <label>전체 면적</label>
             <input type="number" id="pyeong" value="60">
             <select id="unit-main"><option value="pyeong">평</option><option value="sqm">㎡</option></select>
         </div>
 
         <div class="chk-block">
-            <div class="chk-head" onclick="toggleBlock('body-bt')"><input type="checkbox" id="chk-bt" checked><label>바탕조정 공정</label></div>
-            <div class="chk-body" id="body-bt" style="display:block;">
-                <div class="row"><label>두께(mm)</label><input type="number" id="bt-thick" value="1.5"></div>
-                <div class="row"><label>하이퍼 단가</label><input type="number" id="bt-price" value="65000"></div>
-                <div class="row"><label>레미탈 단가</label><input type="number" id="bt-remi" value="7000"></div>
+            <div class="chk-head"><input type="checkbox" id="chk-bt" checked><label>바탕조정 공정 (하이퍼 배합비 로직)</label></div>
+            <div class="chk-body" id="body-bt">
+                <div class="row-area"><label>두께 설정</label><select id="bt-thick"><option value="1.5" selected>1.5mm</option><option value="2">2.0mm</option></select></div>
+                <div class="row-area"><label>하이퍼 단가</label><input type="number" id="bt-price" value="65000"> <label>레미탈 단가</label><input type="number" id="bt-remi" value="7000"></div>
             </div>
         </div>
 
         <div class="chk-block">
-            <div class="chk-head" onclick="toggleBlock('body-ur')"><input type="checkbox" id="chk-ur" checked><label>우레탄 방수 공정</label></div>
-            <div class="chk-body" id="body-ur" style="display:block;">
-                <div class="row"><label>목표 두께</label><select id="ur-thick"><option value="1.5">1.5mm</option><option value="2" selected>2.0mm</option><option value="3">3.0mm</option></select></div>
+            <div class="chk-head"><input type="checkbox" id="chk-ur" checked><label>우레탄 방수 공정 (두께별 도포량 로직)</label></div>
+            <div class="chk-body" id="body-ur">
+                <div class="row-area"><label>우레탄 두께</label><select id="ur-thick"><option value="1.5">1.5mm</option><option value="2" selected>2.0mm</option><option value="3">3.0mm</option></select></div>
             </div>
         </div>
 
         <div class="chk-block">
-            <div class="chk-head" onclick="toggleBlock('body-sky')"><input type="checkbox" id="chk-sky" checked><label>스카이/사다리차</label></div>
-            <div class="chk-body" id="body-sky" style="display:block;">
-                <div class="row"><label>장비비 총액</label><input type="number" id="sky-amt" value="650000"></div>
+            <div class="chk-head"><input type="checkbox" id="chk-sky" checked><label>장비비 및 기타 경비</label></div>
+            <div class="chk-body" id="body-sky">
+                <div class="row-area"><label>스카이/장비비</label><input type="number" id="sky-amt" value="650000"></div>
             </div>
         </div>
     </div>
 
-    <button class="btn-primary no-print" onclick="runTobangLogic()">통합 견적 계산하기</button>
+    <button class="btn-primary no-print" onclick="runTobangLogic()">견적 산출 및 원가계산서 생성</button>
 
     <div id="result-wrap" style="display:none;">
         <div class="tab-wrap no-print">
-            <button class="tab active" onclick="switchTab('gabji')">공사원가계산서 (갑지)</button>
-            <button class="tab" onclick="switchTab('internal')">내부검토 내역</button>
+            <button class="tab active" onclick="switchTab('gabji')">공사원가계산서 (사진 6-2 양식)</button>
+            <button class="tab" onclick="switchTab('detail')">상세 내역서 (을지)</button>
         </div>
 
-        <div id="print-gabji-page" class="sec">
-            <h1 style="text-align:center; padding:20px 0; font-size:22px; letter-spacing:10px;">공 사 원 가 계 산 서</h1>
-            <div id="gabji-content"></div>
+        <div id="tab-gabji" class="sec">
+            <h2 style="text-align:center; padding:15px 0; font-size:24px; letter-spacing:10px; text-decoration:underline;">공 사 원 가 계 산 서</h2>
+            <div style="font-size:12px; margin-bottom:5px;">공사명 : <span id="out-name"></span></div>
+            <div id="gabji-table-wrap"></div>
         </div>
 
-        <div id="print-internal-page" class="sec" style="display:none;">
-            <div class="sec-title">실무 자재/노무 수량 데이터</div>
-            <div id="internal-content"></div>
+        <div id="tab-detail" class="sec" style="display:none;">
+            <h2 style="text-align:center; padding:15px 0; font-size:22px; letter-spacing:8px;">내 역 서</h2>
+            <div id="detail-table-wrap"></div>
         </div>
         
-        <button class="btn-primary no-print" style="background:#16a34a;" onclick="window.print()">견적서 인쇄 / PDF 저장</button>
+        <button class="btn-primary no-print" style="background:#16a34a;" onclick="window.print()">전문 견적서 인쇄 / PDF 저장</button>
     </div>
 </div>
 
 <script>
-function toggleBlock(id) {
-    const el = document.getElementById(id);
-    el.style.display = el.style.display === 'none' ? 'block' : 'none';
-}
+function n(v){ return Math.round(v).toLocaleString(); }
+function ru(v){ return Math.round(v/10000)*10000; }
 
-function switchTab(type) {
-    document.getElementById('print-gabji-page').style.display = type === 'gabji' ? 'block' : 'none';
-    document.getElementById('print-internal-page').style.display = type === 'internal' ? 'block' : 'none';
-    document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+function switchTab(id) {
+    document.getElementById('tab-gabji').style.display = id==='gabji'?'block':'none';
+    document.getElementById('tab-detail').style.display = id==='detail'?'block':'none';
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     event.target.classList.add('active');
 }
 
-function n(v){ return Math.round(v).toLocaleString(); }
-function ru(v){ return Math.round(v/10000)*10000; } // 10,000원 단위 반올림
-
 function runTobangLogic() {
-    const pyeong = parseFloat(document.getElementById('pyeong').value);
-    const sqm = pyeong * 3.3058;
-    const skyAmt = parseFloat(document.getElementById('sky-amt').value) || 0;
+    const py = parseFloat(document.getElementById('pyeong').value);
+    const sqm = py * 3.3058;
+    const sky = parseFloat(document.getElementById('sky-amt').value) || 0;
+    
+    let matSum = 0;
+    let laborSum = 0;
 
-    // --- [바탕조정 로직] ---
-    let matBt = 0, laborBt = 0;
+    // 1. 바탕조정 정밀 로직 (형님의 오리지널 배합비 계산)
     if(document.getElementById('chk-bt').checked) {
-        const thick = parseFloat(document.getElementById('bt-thick').value);
-        const hPrice = parseFloat(document.getElementById('bt-price').value);
-        const rPrice = parseFloat(document.getElementById('bt-remi').value);
-        const batches = Math.ceil(sqm / (thick <= 2 ? (96/(1.75*thick)) : (176/(1.75*thick))));
-        matBt = (batches * 16 * (hPrice/16)) + (batches * 2 * rPrice);
-        laborBt = (pyeong < 20 ? 1 : 2) * 250000; // 기술자 일당 기준
+        const t = parseFloat(document.getElementById('bt-thick').value);
+        const hp = parseFloat(document.getElementById('bt-price').value);
+        const rp = parseFloat(document.getElementById('bt-remi').value);
+        const batchArea = (t <= 2) ? (96 / (1.75 * t)) : (176 / (1.75 * t));
+        const batches = Math.ceil(sqm / batchArea);
+        matSum += (batches * 16 * (hp/16)) + (batches * 2 * rp);
+        laborSum += (py < 20 ? 1 : 2) * 250000;
     }
 
-    // --- [우레탄 로직] ---
-    let matUr = 0, laborUr = 0;
+    // 2. 우레탄 정밀 로직 (두께별 도포량)
     if(document.getElementById('chk-ur').checked) {
         const ut = parseFloat(document.getElementById('ur-thick').value);
-        const ureKg = sqm * ut * 1.4; // 중도 도포량
-        matUr = (Math.ceil(sqm*0.13/14)*
+        const ureKg = sqm * ut * 1.4; 
+        matSum += (Math.ceil(sqm * 0.13 / 14) * 52000) + (Math.ceil(ureKg / 20) * 57000) + (Math.ceil(sqm * 0.11 / 16) * 75000);
+        laborSum += Math.ceil(2 + sqm * 0.02) * 250000;
+    }
+
+    // 3. 메가타운 법정 요율 적용 (사진 6-2 데이터)
+    const iL = Math.round(laborSum * 0.122); 
+    const tL = laborSum + iL;
+    const sj = Math.round(tL * 0.037); 
+    const em = Math.round(tL * 0.0101);
+    const hl = Math.round(laborSum * 0.03545);
+    const pn = Math.round(laborSum * 0.045);
+    const lt = Math.round(hl * 0.1281); // 노인장기요양
+    const re = Math.round(laborSum * 0.023); // 퇴직공제
+    const sf = Math.round((matSum + laborSum) * 0.0293); // 안전관리
+    const sm = Math.round((matSum + tL) * 0.058); // 기타경비
+
+    const subTotal = matSum + tL + sj + em + hl + pn + lt + re + sf + sm + sky;
+    const gm = Math.round(subTotal * 0.05); // 일반관리비 5%
+    const pr = Math.round((tL + sm + gm) * 0.1); // 기업이윤 10%
+    const supply = subTotal + gm + pr;
+    const vat = Math.round(supply * 0.1);
+    const finalTotal = ru(supply + vat);
+
+    // 4. 원가계산서 테이블 생성 (Rowspan 완벽 계산)
+    const expCount = 10; // 경비 항목 수 (기계경비 포함)
+    const totalRows = 4 + 3 + expCount + 1; // 재료(4)+노무(3)+경비(10)+소계(1)
+
+    let g = `<table class="gabji-table">
+        <thead>
+            <tr><th colspan="2" style="width:20%;">비 목</th><th style="width:25%;">금 액</th><th style="width:20%;">구 성 비</th><th style="width:35%;">비 고</th></tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td rowspan="${totalRows}" class="v-td">순공사원가</td>
+                <td rowspan="4" class="v-td">재료비</td>
+                <td>직접재료비</td><td class="r">${n(matSum)}</td><td class="c">-</td><td>배합 및 도포량 기준</td>
+            </tr>
+            <tr><td>간접재료비</td><td class="r">0</td><td class="c">-</td><td></td></tr>
+            <tr><td>작업설, 부산물(△)</td><td class="r">0</td><td class="c">-</td><td></td></tr>
+            <tr class="sub-total"><td>[ 소 계 ]</td><td class="r">${n(matSum)}</td><td class="c">-</td><td></td></tr>
+            
+            <tr>
+                <td rowspan="3" class="v-td">노무비</td>
+                <td>직접노무비</td><td class="r">${n(laborSum)}</td><td class="c">-</td><td>시중노임단가 적용</td>
+            </tr>
+            <tr><td>간접노무비</td><td class="r">${n(iL)}</td><td class="c">12.2%</td><td>직접노무비 * 12.2%</td></tr>
+            <tr class="sub-total"><td>[ 소 계 ]</td><td class="r">${n(tL)}</td><td class="c">-</td><td></td></tr>
+
+            <tr><td rowspan="${expCount}" class="v-td">경비</td><td>기 계 경 비</td><td class="r">${n(sky)}</td><td class="c">-</td><td>스카이/사다리차 등</td></tr>
+            <tr><td>산 재 보 험 료</td><td class="r">${n(sj)}</td><td class="c">3.7%</td><td>노무비(직+간) * 3.7%</td></tr>
+            <tr><td>고 용 보 험 료</td><td class="r">${n(em)}</td><td class="c">1.01%</td><td>노무비(직+간) * 1.01%</td></tr>
+            <tr><td>국 민 건 강 보 험 료</td><td class="r">${n(hl)}</td><td class="c">3.545%</td><td>직접노무비 * 3.545%</td></tr>
+            <tr><td>국 민 연 금 보 험 료</td><td class="r">${n(pn)}</td><td class="c">4.5%</td><td>직접노무비 * 4.5%</td></tr>
+            <tr><td>노인장기요양보험료</td><td class="r">${n(lt)}</td><td class="c">12.81%</td><td>건강보험료 * 12.81%</td></tr>
+            <tr><td>퇴직공제부금비</td><td class="r">${n(re)}</td><td class="c">2.3%</td><td>직접노무비 * 2.3%</td></tr>
+            <tr><td>산업안전보건관리비</td><td class="r">${n(sf)}</td><td class="c">2.93%</td><td>(재료+직노) * 2.93%</td></tr>
+            <tr><td>기 타 경 비</td><td class="r">${n(sm)}</td><td class="c">5.8%</td><td>(재료+노무) * 5.8%</td></tr>
+            <tr><td>하도급지급보증수수료</td><td class="r">0</td><td class="c">0.081%</td><td>-</td></tr>
+            
+            <tr class="sub-total"><td colspan="2">[ 소 계 ]</td><td class="r">${n(subTotal)}</td><td class="c">-</td><td></td></tr>
+            
+            <tr><td colspan="2" style="font-weight:bold;">일 반 관 리 비</td><td class="r">${n(gm)}</td><td class="c">5%</td><td>순공사원가 * 5%</td></tr>
+            <tr><td colspan="2" style="font-weight:bold;">이 윤</td><td class="r">${n(pr)}</td><td class="c">10%</td><td>(노무+경비+일관) * 10%</td></tr>
+            <tr class="sub-total"><td colspan="2">공 급 가 액</td><td class="r">${n(supply)}</td><td class="c">-</td><td></td></tr>
+            <tr><td colspan="2">부 가 가 치 세</td><td class="r">${n(vat)}</td><td class="c">10%</td><td>공급가액 * 10%</td></tr>
+            <tr class="grand-total">
+                <td colspan="2" class="c">총 공 사 비</td><td class="r">${n(finalTotal)}</td><td colspan="2" class="c">만원단위 반올림 (VAT포함)</td>
+            </tr>
+        </tbody>
+    </table>`;
+    
+    document.getElementById('out-name').textContent = document.getElementById('f-name').value;
+    document.getElementById('gabji-table-wrap').innerHTML = g;
+    document.getElementById('result-wrap').style.display = 'block';
+
+    // 5. 상세내역서(을지) - 사진 6-5 구조 반영
+    let d = `<table class="gabji-table">
+        <thead><tr><th>NO</th><th>위치</th><th>품 명</th><th>규 격</th><th>수량</th><th>단위</th><th>합계금액</th></tr></thead>
+        <tbody>
+            <tr><td class="c">1</td><td class="c">옥상</td><td>바탕조정공사</td><td>하이퍼 1.5mm</td><td class="r">${py}</td><td class="c">평</td><td class="r">${n(matSum+laborSum)}</td></tr>
+            <tr class="sub-total"><td colspan="6" class="c">합 계</td><td class="r">${n(matSum+laborSum)}</td></tr>
+        </tbody>
+    </table>`;
+    document.getElementById('detail-table-wrap').innerHTML = d;
+}
+</script>
+</body>
+</html>
