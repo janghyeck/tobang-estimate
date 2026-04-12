@@ -199,12 +199,13 @@ tr:last-child td{border-bottom:none;}
   </div>
   <div style="font-size:7pt;color:#4a6080;margin-bottom:4px;" id="ilwi-gabji-title"></div>
   <table id="ilwi-gabji-table" style="width:100%;border-collapse:collapse;font-size:7pt;table-layout:fixed;">
-    <colgroup><col style="width:3%;"><col style="width:35%;"><col style="width:32%;"><col style="width:30%;"></colgroup>
+    <colgroup><col style="width:2.5%;"><col style="width:2.5%;"><col style="width:33%;"><col style="width:24%;"><col style="width:32%;"><col style="width:6%;"></colgroup>
     <thead>
       <tr style="background:#1e3a5f!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;">
         <th colspan="2" style="color:#fff!important;padding:3px 5px;border:0.5px solid #162d4a;font-size:7.5pt;">비&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;목</th>
-        <th style="color:#fff!important;padding:3px 5px;border:0.5px solid #162d4a;font-size:7.5pt;">금&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;액</th>
-        <th style="color:#fff!important;padding:3px 5px;border:0.5px solid #162d4a;font-size:7.5pt;">구&nbsp;&nbsp;성&nbsp;&nbsp;비</th>
+        <th style="color:#fff!important;padding:3px 8px;border:0.5px solid #162d4a;font-size:7.5pt;text-align:center;">금&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;액</th>
+        <th style="color:#fff!important;padding:3px 8px;border:0.5px solid #162d4a;font-size:7.5pt;text-align:center;">구&nbsp;&nbsp;성&nbsp;&nbsp;비</th>
+        <th style="color:#fff!important;padding:3px 8px;border:0.5px solid #162d4a;font-size:7.5pt;text-align:center;">비&nbsp;&nbsp;고</th>
       </tr>
     </thead>
     <tbody id="ilwi-gabji-rows"></tbody>
@@ -1516,88 +1517,74 @@ function buildIlwiPages(name,addr,mgr,date,submitSum,profit,supply,final){
         +'<td style="'+td1+'"></td>'
         +'</tr>';}
     var ghtml='';
-    // 재료비 (순공사원가 구분: 순/공/사/원/가 세로 병합 - rowspan으로 처리)
-    ghtml+='<tr style="height:14px;">'
-      +'<td rowspan="16" style="padding:1px 2px;border:0.5px solid #c8d0db;text-align:center;font-size:7pt;vertical-align:middle;writing-mode:vertical-lr;letter-spacing:4px;">순&nbsp;공&nbsp;사&nbsp;원&nbsp;가</td>'
-      +'<td rowspan="4" style="padding:1px 2px;border:0.5px solid #c8d0db;text-align:center;font-size:7pt;vertical-align:middle;writing-mode:vertical-lr;letter-spacing:2px;">재료비</td>'
-      +'<td style="padding:1.5px 7px;border:0.5px solid #c8d0db;white-space:nowrap;">직 접 재 료 비</td>'
-      +'<td style="padding:1.5px 7px;border:0.5px solid #c8d0db;text-align:right;white-space:nowrap;">'+n(d.matSum)+'</td>'
-      +'<td style="padding:1.5px 7px;border:0.5px solid #c8d0db;"></td>'
-      +'<td style="padding:1.5px 7px;border:0.5px solid #c8d0db;"></td>'
-      +'</tr>';
-    ghtml+='<tr style="height:14px;">'
-      +'<td style="padding:1.5px 7px;border:0.5px solid #c8d0db;white-space:nowrap;">간 접 재 료 비</td>'
-      +'<td style="padding:1.5px 7px;border:0.5px solid #c8d0db;text-align:right;white-space:nowrap;"></td>'
-      +'<td style="padding:1.5px 7px;border:0.5px solid #c8d0db;"></td>'
-      +'<td style="padding:1.5px 7px;border:0.5px solid #c8d0db;"></td>'
-      +'</tr>';
-    ghtml+='<tr style="height:14px;">'
-      +'<td style="padding:1.5px 7px;border:0.5px solid #c8d0db;white-space:nowrap;">작업설, 부산물(△)</td>'
-      +'<td style="padding:1.5px 7px;border:0.5px solid #c8d0db;text-align:right;white-space:nowrap;"></td>'
-      +'<td style="padding:1.5px 7px;border:0.5px solid #c8d0db;"></td>'
-      +'<td style="padding:1.5px 7px;border:0.5px solid #c8d0db;"></td>'
-      +'</tr>';
-    ghtml+='<tr style="height:14px;background:#e8f0fb!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;font-weight:700;color:#1e3a5f;">'
-      +'<td style="padding:1.5px 7px;border:0.5px solid #c8d0db;white-space:nowrap;font-weight:700;">[ 소&nbsp;&nbsp;계 ]</td>'
-      +'<td style="padding:1.5px 7px;border:0.5px solid #c8d0db;text-align:right;white-space:nowrap;font-weight:700;">'+n(d.matSum)+'</td>'
-      +'<td style="padding:1.5px 7px;border:0.5px solid #c8d0db;"></td>'
-      +'<td style="padding:1.5px 7px;border:0.5px solid #c8d0db;"></td>'
-      +'</tr>';
+    var B='border:0.5px solid #c8d0db;'; var P='padding:1.5px 7px;'; var BP=B+P;
+    var sub='background:#e8f0fb!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;font-weight:700;color:#1e3a5f;';
+    var tot='background:#1e3a5f!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;color:#fff!important;font-weight:700;';
+    var vtd='padding:1px 2px;'+B+'text-align:center;font-size:6.5pt;vertical-align:middle;writing-mode:vertical-lr;letter-spacing:3px;background:#f0f4fa;color:#1e3a5f;';
+    var vtd2='padding:1px 2px;'+B+'text-align:center;font-size:6.5pt;vertical-align:middle;writing-mode:vertical-lr;letter-spacing:2px;background:#f5f8ff;color:#1e3a5f;';
+    function tr(cells,rowStyle){return '<tr style="height:14px;'+(rowStyle||'')+'">'+cells+'</tr>';}
+    function td(txt,style,colspan){return '<td'+(colspan?' colspan="'+colspan+'"':'')+' style="'+BP+(style||'')+'">'+txt+'</td>';}
+    function tdr(txt,style,colspan){return '<td'+(colspan?' colspan="'+colspan+'"':'')+' style="'+BP+'text-align:right;'+(style||'')+'">'+txt+'</td>';}
+    function tdc(txt,style){return '<td style="'+BP+'text-align:center;'+(style||'')+'">'+txt+'</td>';}
+    function nm(v){return v?n(v):'';}
+    // 경비 rowspan 계산
+    var expRows=7;
+    if(!d.hideE||d.employ)expRows++;
+    if(!d.hideH||d.health)expRows++;
+    if(!d.hideP||d.pension)expRows++;
+    if(!d.hideRe||d.retire)expRows++;
+    expRows+=d.extraAmts.length;
+
+    // 재료비 - 순공사원가 rowspan=재(4)+노(3)+경(expRows+1)+소계 = 전체
+    var totalRows=4+3+expRows+1;
+    ghtml+=tr(
+      '<td rowspan="'+totalRows+'" style="'+vtd+'width:2.5%;">순&nbsp;공&nbsp;사&nbsp;원&nbsp;가</td>'+
+      '<td rowspan="4" style="'+vtd2+'width:2.5%;">재료비</td>'+
+      td('직 접 재 료 비')+tdr(nm(d.matSum))+td('')+td('')
+    );
+    ghtml+=tr(td('간 접 재 료 비')+tdr('')+td('')+td(''));
+    ghtml+=tr(td('작업설, 부산물(△)')+tdr('')+td('')+td(''));
+    ghtml+=tr(td('[ 소&nbsp;&nbsp;계 ]',''+sub,null)+tdr(nm(d.matSum),sub)+td('',sub)+td('',sub));
+
     // 노무비
-    ghtml+='<tr style="height:14px;">'
-      +'<td rowspan="3" style="padding:1px 2px;border:0.5px solid #c8d0db;text-align:center;font-size:7pt;vertical-align:middle;writing-mode:vertical-lr;letter-spacing:2px;">노무비</td>'
-      +'<td style="padding:1.5px 7px;border:0.5px solid #c8d0db;white-space:nowrap;">직 접 노 무 비</td>'
-      +'<td style="padding:1.5px 7px;border:0.5px solid #c8d0db;text-align:right;white-space:nowrap;">'+n(d.laborSum)+'</td>'
-      +'<td style="padding:1.5px 7px;border:0.5px solid #c8d0db;"></td>'
-      +'<td style="padding:1.5px 7px;border:0.5px solid #c8d0db;"></td>'
-      +'</tr>';
-    ghtml+='<tr style="height:14px;">'
-      +'<td style="padding:1.5px 7px;border:0.5px solid #c8d0db;white-space:nowrap;">간 접 노 무 비</td>'
-      +'<td style="padding:1.5px 7px;border:0.5px solid #c8d0db;text-align:right;white-space:nowrap;">'+n(d.iL)+'</td>'
-      +'<td style="padding:1.5px 7px;border:0.5px solid #c8d0db;white-space:nowrap;">직접노무비 × '+d.iR+'%</td>'
-      +'<td style="padding:1.5px 7px;border:0.5px solid #c8d0db;"></td>'
-      +'</tr>';
-    ghtml+='<tr style="height:14px;background:#e8f0fb!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;font-weight:700;color:#1e3a5f;">'
-      +'<td style="padding:1.5px 7px;border:0.5px solid #c8d0db;white-space:nowrap;font-weight:700;">[ 소&nbsp;&nbsp;계 ]</td>'
-      +'<td style="padding:1.5px 7px;border:0.5px solid #c8d0db;text-align:right;white-space:nowrap;font-weight:700;">'+n(d.laborSum+d.iL)+'</td>'
-      +'<td style="padding:1.5px 7px;border:0.5px solid #c8d0db;"></td>'
-      +'<td style="padding:1.5px 7px;border:0.5px solid #c8d0db;"></td>'
-      +'</tr>';
+    ghtml+=tr(
+      '<td rowspan="3" style="'+vtd2+'">노무비</td>'+
+      td('직 접 노 무 비')+tdr(nm(d.laborSum))+td('')+td('')
+    );
+    ghtml+=tr(td('간 접 노 무 비')+tdr(nm(d.iL))+td('직접노무비 × '+d.iR+'%')+td(''));
+    ghtml+=tr(td('[ 소&nbsp;&nbsp;계 ]',sub)+tdr(nm(d.laborSum+d.iL),sub)+td('',sub)+td('',sub));
+
     // 경비
-    var expRowCount = 6 + (d.hideE?0:1) + (d.hideP?0:1) + (d.hideH?0:1) + (d.hideRe?0:1) + d.extraAmts.length + 1;
-    ghtml+='<tr style="height:14px;">'
-      +'<td rowspan="'+expRowCount+'" style="padding:1px 2px;border:0.5px solid #c8d0db;text-align:center;font-size:7pt;vertical-align:middle;writing-mode:vertical-lr;letter-spacing:2px;">경비</td>'
-      +'<td style="padding:1.5px 7px;border:0.5px solid #c8d0db;white-space:nowrap;">산 재 보 험 료</td>'
-      +'<td style="padding:1.5px 7px;border:0.5px solid #c8d0db;text-align:right;white-space:nowrap;">'+n(d.sj)+'</td>'
-      +'<td style="padding:1.5px 7px;border:0.5px solid #c8d0db;white-space:nowrap;">노무비 × '+d.sR+'%</td>'
-      +'<td style="padding:1.5px 7px;border:0.5px solid #c8d0db;"></td>'
-      +'</tr>';
-    if(!d.hideE)ghtml+='<tr style="height:14px;"><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;white-space:nowrap;">고 용 보 험 료</td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;text-align:right;white-space:nowrap;">'+n(d.employ)+'</td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;white-space:nowrap;">노무비 × '+d.rE+'%</td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;"></td></tr>';
-    else ghtml+='<tr style="height:14px;"><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;color:#9ca3af;white-space:nowrap;">고 용 보 험 료</td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;"></td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;color:#9ca3af;white-space:nowrap;">노무비 × '+d.rE+'%</td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;"></td></tr>';
-    if(!d.hideH)ghtml+='<tr style="height:14px;"><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;white-space:nowrap;">국 민 건 강 보 험 료</td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;text-align:right;white-space:nowrap;">'+n(d.health)+'</td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;white-space:nowrap;">직접노무비 × '+d.rH+'%</td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;"></td></tr>';
-    else ghtml+='<tr style="height:14px;"><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;color:#9ca3af;white-space:nowrap;">국 민 건 강 보 험 료</td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;"></td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;color:#9ca3af;white-space:nowrap;">직접노무비 × '+d.rH+'%</td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;"></td></tr>';
-    if(!d.hideP)ghtml+='<tr style="height:14px;"><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;white-space:nowrap;">국 민 연 금 보 험 료</td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;text-align:right;white-space:nowrap;">'+n(d.pension)+'</td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;white-space:nowrap;">직접노무비 × '+d.rP+'%</td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;"></td></tr>';
-    else ghtml+='<tr style="height:14px;"><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;color:#9ca3af;white-space:nowrap;">국 민 연 금 보 험 료</td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;"></td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;color:#9ca3af;white-space:nowrap;">직접노무비 × '+d.rP+'%</td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;"></td></tr>';
-    if(!d.hideRe)ghtml+='<tr style="height:14px;"><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;white-space:nowrap;">퇴 직 공 제 부 금 비</td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;text-align:right;white-space:nowrap;">'+n(d.retire)+'</td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;white-space:nowrap;">직접노무비 × '+d.rRe+'%</td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;"></td></tr>';
-    else ghtml+='<tr style="height:14px;"><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;color:#9ca3af;white-space:nowrap;">퇴 직 공 제 부 금 비</td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;"></td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;color:#9ca3af;white-space:nowrap;">직접노무비 × '+d.rRe+'%</td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;"></td></tr>';
-    ghtml+='<tr style="height:14px;"><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;white-space:nowrap;">산업안전보건관리비</td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;text-align:right;white-space:nowrap;">'+n(d.sf)+'</td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;white-space:nowrap;">(재료비+직노) × '+d.saR+'%</td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;"></td></tr>';
-    ghtml+='<tr style="height:14px;"><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;white-space:nowrap;">기 타 경 비</td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;text-align:right;white-space:nowrap;">'+n(d.sm)+'</td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;white-space:nowrap;">(재료비+노무비) × '+d.smR+'%</td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;"></td></tr>';
-    d.extraAmts.forEach(function(x){ghtml+='<tr style="height:14px;"><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;white-space:nowrap;">'+x.name+'</td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;text-align:right;white-space:nowrap;">'+n(x.amt)+'</td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;white-space:nowrap;">'+x.rate+'%</td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;"></td></tr>';});
-    ghtml+='<tr style="height:14px;background:#e8f0fb!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;font-weight:700;color:#1e3a5f;"><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;white-space:nowrap;font-weight:700;">[ 소&nbsp;&nbsp;계 ]</td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;text-align:right;white-space:nowrap;font-weight:700;">'+n(d.subTotal)+'</td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;"></td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;"></td></tr>';
-    // 계
-    ghtml+='<tr style="height:14px;background:#e8f0fb!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;font-weight:700;color:#1e3a5f;">'
-      +'<td colspan="2" style="padding:1px 2px;border:0.5px solid #c8d0db;"></td>'
-      +'<td style="padding:1.5px 7px;border:0.5px solid #c8d0db;white-space:nowrap;font-weight:700;">계</td>'
-      +'<td style="padding:1.5px 7px;border:0.5px solid #c8d0db;text-align:right;white-space:nowrap;font-weight:700;">'+n(d.subTotal)+'</td>'
-      +'<td style="padding:1.5px 7px;border:0.5px solid #c8d0db;"></td>'
-      +'<td style="padding:1.5px 7px;border:0.5px solid #c8d0db;"></td>'
-      +'</tr>';
-    ghtml+='<tr style="height:14px;"><td colspan="2" style="border:0.5px solid #c8d0db;"></td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;white-space:nowrap;">일 반 관 리 비</td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;text-align:right;white-space:nowrap;">'+n(d.gm)+'</td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;white-space:nowrap;">계 × '+d.gmR+'%</td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;"></td></tr>';
-    ghtml+='<tr style="height:14px;"><td colspan="2" style="border:0.5px solid #c8d0db;"></td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;white-space:nowrap;">이&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;윤</td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;text-align:right;white-space:nowrap;">'+n(d.pr)+'</td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;white-space:nowrap;">(노무비+경비+일반관리비) × '+d.pR+'%</td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;"></td></tr>';
-    ghtml+='<tr style="height:14px;background:#e8f0fb!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;font-weight:700;color:#1e3a5f;"><td colspan="2" style="border:0.5px solid #c8d0db;"></td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;white-space:nowrap;font-weight:700;">공 급 가 액</td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;text-align:right;white-space:nowrap;font-weight:700;">'+n(d.gt)+'</td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;"></td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;"></td></tr>';
-    ghtml+='<tr style="height:14px;"><td colspan="2" style="border:0.5px solid #c8d0db;"></td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;white-space:nowrap;">부 가 가 치 세</td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;text-align:right;white-space:nowrap;">'+n(d.vat)+'</td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;white-space:nowrap;">공급가액 × '+d.vR+'%</td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;"></td></tr>';
-    ghtml+='<tr style="height:14px;"><td colspan="2" style="border:0.5px solid #c8d0db;"></td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;white-space:nowrap;">도&nbsp;&nbsp;급&nbsp;&nbsp;액</td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;text-align:right;white-space:nowrap;">'+n(d.gt+d.vat)+'</td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;"></td><td style="padding:1.5px 7px;border:0.5px solid #c8d0db;"></td></tr>';
-    ghtml+='<tr style="height:16px;background:#1e3a5f!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;"><td colspan="2" style="border:0.5px solid #162d4a;"></td><td style="padding:2px 7px;border:0.5px solid #162d4a;color:#fff!important;font-weight:700;white-space:nowrap;">총&nbsp;&nbsp;공&nbsp;&nbsp;사&nbsp;&nbsp;비</td><td style="padding:2px 7px;border:0.5px solid #162d4a;color:#fff!important;font-weight:700;text-align:right;white-space:nowrap;">'+n(d.ft)+'</td><td style="padding:2px 7px;border:0.5px solid #162d4a;color:#fff!important;"></td><td style="padding:2px 7px;border:0.5px solid #162d4a;color:#fff!important;"></td></tr>';
+    ghtml+=tr(
+      '<td rowspan="'+(expRows+1)+'" style="'+vtd2+'">경비</td>'+
+      td('기 계 경 비')+tdr('')+td('')+td('')
+    );
+    ghtml+=tr(td('산 재 보 험 료')+tdr(nm(d.sj))+td('노무비 × '+d.sR+'%')+td(''));
+    if(!d.hideE) ghtml+=tr(td('고 용 보 험 료')+tdr(nm(d.employ))+td('노무비 × '+d.rE+'%')+td(''));
+    else ghtml+=tr(td('고 용 보 험 료','color:#9ca3af;')+tdr('','color:#9ca3af;')+td('노무비 × '+d.rE+'%','color:#9ca3af;')+td(''));
+    if(!d.hideH) ghtml+=tr(td('국 민 건 강 보 험 료')+tdr(nm(d.health))+td('직접노무비 × '+d.rH+'%')+td(''));
+    else ghtml+=tr(td('국 민 건 강 보 험 료','color:#9ca3af;')+tdr('','color:#9ca3af;')+td('직접노무비 × '+d.rH+'%','color:#9ca3af;')+td(''));
+    if(!d.hideP) ghtml+=tr(td('국 민 연 금 보 험 료')+tdr(nm(d.pension))+td('직접노무비 × '+d.rP+'%')+td(''));
+    else ghtml+=tr(td('국 민 연 금 보 험 료','color:#9ca3af;')+tdr('','color:#9ca3af;')+td('직접노무비 × '+d.rP+'%','color:#9ca3af;')+td(''));
+    ghtml+=tr(td('노인장기요양보험료','color:#9ca3af;')+tdr('','color:#9ca3af;')+td('건강보험료 × 12.81%','color:#9ca3af;')+td(''));
+    if(!d.hideRe) ghtml+=tr(td('퇴 직 공 제 부 금 비')+tdr(nm(d.retire))+td('직접노무비 × '+d.rRe+'%')+td(''));
+    else ghtml+=tr(td('퇴 직 공 제 부 금 비','color:#9ca3af;')+tdr('','color:#9ca3af;')+td('직접노무비 × '+d.rRe+'%','color:#9ca3af;')+td(''));
+    ghtml+=tr(td('산업안전보건관리비')+tdr(nm(d.sf))+td('(재료비+직노) × '+d.saR+'%')+td(''));
+    ghtml+=tr(td('기 타 경 비')+tdr(nm(d.sm))+td('(재료비+노무비) × '+d.smR+'%')+td(''));
+    d.extraAmts.forEach(function(x){ghtml+=tr(td(x.name)+tdr(nm(x.amt))+td(x.rate+'%')+td(''));});
+    ghtml+=tr(td('하도급지급보증수수료','color:#9ca3af;')+tdr('','color:#9ca3af;')+td('','color:#9ca3af;')+td(''));
+    ghtml+=tr(td('[ 소&nbsp;&nbsp;계 ]',sub)+tdr(nm(d.subTotal),sub)+td('',sub)+td('',sub));
+
+    // 계 이하
+    ghtml+=tr('<td colspan="2" style="'+BP+sub+'">계</td>'+tdr(nm(d.subTotal),sub)+td('',sub)+td('',sub));
+    ghtml+=tr('<td colspan="2" style="'+BP+'">일 반 관 리 비</td>'+tdr(nm(d.gm))+td('계 × '+d.gmR+'%')+td(''));
+    ghtml+=tr('<td colspan="2" style="'+BP+'">이&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;윤</td>'+tdr(nm(d.pr))+td('(노무비+경비+일관리비) × '+d.pR+'%')+td(''));
+    ghtml+=tr('<td colspan="2" style="'+BP+'color:#9ca3af;">폐 기 물 처 리 비</td>'+tdr('','color:#9ca3af;')+td('','color:#9ca3af;')+td(''));
+    ghtml+=tr('<td colspan="2" style="'+BP+sub+'">공 급 가 액</td>'+tdr(nm(d.gt),sub)+td('',sub)+td('',sub));
+    ghtml+=tr('<td colspan="2" style="'+BP+'">부 가 가 치 세</td>'+tdr(nm(d.vat))+td('공급가액 × '+d.vR+'%')+td(''));
+    ghtml+=tr('<td colspan="2" style="'+BP+'">도&nbsp;&nbsp;급&nbsp;&nbsp;액</td>'+tdr(nm(d.gt+d.vat))+td('')+td(''));
+    ghtml+=tr('<td colspan="2" style="'+BP+tot+'">총&nbsp;&nbsp;공&nbsp;&nbsp;사&nbsp;&nbsp;비</td>'+tdr(nm(d.ft),tot)+td('',tot)+td('',tot));
+
         g('ilwi-gabji-rows').innerHTML=ghtml;
     g('ilwi-gabji-page').style.display='block';
   } else {
