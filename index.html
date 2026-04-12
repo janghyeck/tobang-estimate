@@ -106,8 +106,7 @@ tr:last-child td{border-bottom:none;}
   body{background:#fff;margin:0;padding:0;}
   .container{display:none!important;}
   #print-cover{display:block!important;}
-  #print-submit{display:block!important;}
-  @page{size:A4;margin:8mm 8mm;}
+  @page{size:A4;margin:8mm 8mm;} @page.landscape{size:A4 landscape;margin:6mm 9mm;}
 }
 </style>
 </head>
@@ -166,35 +165,128 @@ tr:last-child td{border-bottom:none;}
   </div>
 </div>
 
-<!-- 인쇄용 일위대가 견적서 -->
-<div id="print-ilwi" style="display:none;">
-  <div style="padding:14mm 14mm;">
-    <div style="font-size:13pt;font-weight:700;color:#1a1a2e;border-bottom:2.5px solid #2563eb;padding-bottom:5px;margin-bottom:14px;">&#9632; 견적서 (일위대가)</div>
-    <div style="font-size:10pt;font-weight:700;color:#2563eb;border-bottom:1px solid #2563eb;padding-bottom:3px;margin:12px 0 6px;">&#9632; 공사 개요</div>
-    <table id="ilwi-info" style="width:100%;border-collapse:collapse;margin-bottom:8px;font-size:9pt;"></table>
-    <div style="font-size:10pt;font-weight:700;color:#2563eb;border-bottom:1px solid #2563eb;padding-bottom:3px;margin:12px 0 6px;">&#9632; 공사비 내역 (요약)</div>
-    <table style="width:100%;border-collapse:collapse;font-size:8.5pt;margin-bottom:12px;">
-      <thead><tr style="background:#2563eb!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;">
-        <th style="color:#fff!important;font-weight:700;padding:5px 7px;text-align:left;border:0.5px solid #1d4ed8;">공종</th>
-        <th style="color:#fff!important;font-weight:700;padding:5px 7px;text-align:left;border:0.5px solid #1d4ed8;">규격</th>
-        <th style="color:#fff!important;font-weight:700;padding:5px 7px;text-align:right;border:0.5px solid #1d4ed8;">단위</th>
-        <th style="color:#fff!important;font-weight:700;padding:5px 7px;text-align:right;border:0.5px solid #1d4ed8;">수량</th>
-        <th style="color:#fff!important;font-weight:700;padding:5px 7px;text-align:right;border:0.5px solid #1d4ed8;">단가</th>
-        <th style="color:#fff!important;font-weight:700;padding:5px 7px;text-align:right;border:0.5px solid #1d4ed8;">금액</th>
-      </tr></thead>
-      <tbody id="ilwi-summary-rows"></tbody>
-    </table>
-    <div style="font-size:10pt;font-weight:700;color:#2563eb;border-bottom:1px solid #2563eb;padding-bottom:3px;margin:12px 0 6px;">&#9632; 일위대가표</div>
-    <div id="ilwi-detail-tables"></div>
-    <div style="font-size:10pt;font-weight:700;color:#2563eb;border-bottom:1px solid #2563eb;padding-bottom:3px;margin:12px 0 6px;">&#9632; 공사비 정산</div>
-    <table id="ilwi-cost" style="width:100%;border-collapse:collapse;font-size:9pt;margin-bottom:10px;"></table>
-    <div style="page-break-inside:avoid;">
-      <div style="border:1px solid #d1d5db;border-radius:4px;overflow:hidden;">
-        <div style="background:#f3f4f6;font-weight:700;font-size:9pt;padding:6px 10px;border-bottom:1px solid #d1d5db;">참고사항</div>
-        <div style="padding:8px 10px 10px;" id="ilwi-notes"></div>
+<!-- 인쇄용 일위대가 견적서 (가로 A4, 세련된 디자인) -->
+<div id="print-ilwi" style="display:none;font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;">
+
+<!-- 표지 -->
+<div id="ilwi-cover-page" style="min-height:190mm;display:flex;page-break-after:always;">
+  <div style="width:16mm;background:#1e3a5f;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:8mm;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;">
+    <div style="color:#fff;font-size:6pt;letter-spacing:.08em;writing-mode:vertical-rl;transform:rotate(180deg);opacity:.7;">TOBANGENG</div>
+  </div>
+  <div style="flex:1;padding:10mm 12mm;display:flex;flex-direction:column;justify-content:space-between;">
+    <div>
+      <div style="width:40px;height:3px;background:#1e3a5f;margin-bottom:10px;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;"></div>
+      <div style="font-size:7pt;color:#4a6080;letter-spacing:.12em;margin-bottom:6px;">TOBANGENG · 방수공사 견적서</div>
+      <div id="ilwi-cover-title" style="font-size:20pt;font-weight:700;color:#1e3a5f;line-height:1.2;margin-bottom:6px;">방수공사<br>견적서</div>
+      <div style="font-size:11pt;color:#4a6080;letter-spacing:.2em;margin-top:4px;">견 적 서</div>
+    </div>
+    <div>
+      <div style="height:1px;background:#c8d0db;margin-bottom:8px;"></div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;">
+        <div id="ilwi-cover-left" style="font-size:8pt;color:#1e3a5f;font-weight:600;line-height:1.8;"></div>
+        <div>
+          <table id="ilwi-cover-company" style="width:180px;border-collapse:collapse;font-size:7pt;"></table>
+        </div>
       </div>
     </div>
   </div>
+</div>
+
+<!-- 공사원가계산서 (갑지) -->
+<div id="ilwi-gabji-page" style="display:none;padding:7mm 10mm;page-break-after:always;">
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+    <div style="width:4px;height:18px;background:#1e3a5f;border-radius:2px;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;"></div>
+    <div style="font-size:12pt;font-weight:700;color:#1e3a5f;letter-spacing:.2em;">공 사 원 가 계 산 서</div>
+  </div>
+  <div style="font-size:7pt;color:#4a6080;margin-bottom:4px;" id="ilwi-gabji-title"></div>
+  <table id="ilwi-gabji-table" style="width:100%;border-collapse:collapse;font-size:7pt;table-layout:fixed;">
+    <colgroup><col style="width:4%;"><col style="width:30%;"><col style="width:36%;"><col style="width:30%;"></colgroup>
+    <thead>
+      <tr style="background:#1e3a5f!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;">
+        <th colspan="2" style="color:#fff!important;padding:3px 5px;border:0.5px solid #162d4a;font-size:7.5pt;">비&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;목</th>
+        <th style="color:#fff!important;padding:3px 5px;border:0.5px solid #162d4a;font-size:7.5pt;">금&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;액</th>
+        <th style="color:#fff!important;padding:3px 5px;border:0.5px solid #162d4a;font-size:7.5pt;">구&nbsp;&nbsp;성&nbsp;&nbsp;비</th>
+      </tr>
+    </thead>
+    <tbody id="ilwi-gabji-rows"></tbody>
+  </table>
+</div>
+
+<!-- 공사금액 집계표 -->
+<div id="ilwi-summary-page" style="padding:7mm 10mm;page-break-after:always;">
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+    <div style="width:4px;height:18px;background:#1e3a5f;border-radius:2px;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;"></div>
+    <div style="font-size:12pt;font-weight:700;color:#1e3a5f;letter-spacing:.2em;">공 사 금 액 집 계 표</div>
+  </div>
+  <table style="width:100%;border-collapse:collapse;font-size:7pt;table-layout:fixed;">
+    <colgroup><col style="width:5%;"><col style="width:22%;"><col style="width:6%;"><col style="width:6%;"><col style="width:8%;"><col style="width:9%;"><col style="width:8%;"><col style="width:9%;"><col style="width:8%;"><col style="width:9%;"><col style="width:10%;"></colgroup>
+    <thead>
+      <tr style="background:#1e3a5f!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;">
+        <th rowspan="2" style="color:#fff!important;padding:3px 4px;border:0.5px solid #162d4a;vertical-align:middle;">NO.</th>
+        <th rowspan="2" style="color:#fff!important;padding:3px 4px;border:0.5px solid #162d4a;vertical-align:middle;">품&nbsp;&nbsp;&nbsp;명</th>
+        <th rowspan="2" style="color:#fff!important;padding:3px 4px;border:0.5px solid #162d4a;vertical-align:middle;">수량</th>
+        <th rowspan="2" style="color:#fff!important;padding:3px 4px;border:0.5px solid #162d4a;vertical-align:middle;">단위</th>
+        <th colspan="2" style="color:#fff!important;padding:3px 4px;border:0.5px solid #162d4a;">재&nbsp;&nbsp;료&nbsp;&nbsp;비</th>
+        <th colspan="2" style="color:#fff!important;padding:3px 4px;border:0.5px solid #162d4a;">노&nbsp;&nbsp;무&nbsp;&nbsp;비</th>
+        <th colspan="2" style="color:#fff!important;padding:3px 4px;border:0.5px solid #162d4a;">경&nbsp;&nbsp;&nbsp;&nbsp;비</th>
+        <th rowspan="2" style="color:#fff!important;padding:3px 4px;border:0.5px solid #162d4a;vertical-align:middle;">합&nbsp;&nbsp;계</th>
+      </tr>
+      <tr style="background:#1e3a5f!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;">
+        <th style="color:#fff!important;padding:2px 4px;border:0.5px solid #162d4a;">단가</th><th style="color:#fff!important;padding:2px 4px;border:0.5px solid #162d4a;">금액</th>
+        <th style="color:#fff!important;padding:2px 4px;border:0.5px solid #162d4a;">단가</th><th style="color:#fff!important;padding:2px 4px;border:0.5px solid #162d4a;">금액</th>
+        <th style="color:#fff!important;padding:2px 4px;border:0.5px solid #162d4a;">단가</th><th style="color:#fff!important;padding:2px 4px;border:0.5px solid #162d4a;">금액</th>
+      </tr>
+    </thead>
+    <tbody id="ilwi-jipt-rows"></tbody>
+  </table>
+</div>
+
+<!-- 내역서 -->
+<div id="ilwi-detail-page" style="padding:7mm 10mm;page-break-after:always;">
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+    <div style="width:4px;height:18px;background:#1e3a5f;border-radius:2px;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;"></div>
+    <div style="font-size:12pt;font-weight:700;color:#1e3a5f;letter-spacing:.2em;">내 역 서</div>
+  </div>
+  <table style="width:100%;border-collapse:collapse;font-size:7pt;table-layout:fixed;">
+    <colgroup><col style="width:4%;"><col style="width:5%;"><col style="width:15%;"><col style="width:10%;"><col style="width:6%;"><col style="width:5%;"><col style="width:8%;"><col style="width:8%;"><col style="width:8%;"><col style="width:8%;"><col style="width:8%;"><col style="width:8%;"><col style="width:7%;"></colgroup>
+    <thead>
+      <tr style="background:#1e3a5f!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;">
+        <th rowspan="2" style="color:#fff!important;padding:3px 4px;border:0.5px solid #162d4a;vertical-align:middle;">NO.</th>
+        <th rowspan="2" style="color:#fff!important;padding:3px 4px;border:0.5px solid #162d4a;vertical-align:middle;">위치</th>
+        <th rowspan="2" style="color:#fff!important;padding:3px 4px;border:0.5px solid #162d4a;vertical-align:middle;">품&nbsp;&nbsp;&nbsp;명</th>
+        <th rowspan="2" style="color:#fff!important;padding:3px 4px;border:0.5px solid #162d4a;vertical-align:middle;">규&nbsp;&nbsp;격</th>
+        <th rowspan="2" style="color:#fff!important;padding:3px 4px;border:0.5px solid #162d4a;vertical-align:middle;">수량</th>
+        <th rowspan="2" style="color:#fff!important;padding:3px 4px;border:0.5px solid #162d4a;vertical-align:middle;">단위</th>
+        <th colspan="2" style="color:#fff!important;padding:3px 4px;border:0.5px solid #162d4a;">재&nbsp;&nbsp;료&nbsp;&nbsp;비</th>
+        <th colspan="2" style="color:#fff!important;padding:3px 4px;border:0.5px solid #162d4a;">노&nbsp;&nbsp;무&nbsp;&nbsp;비</th>
+        <th colspan="2" style="color:#fff!important;padding:3px 4px;border:0.5px solid #162d4a;">경&nbsp;&nbsp;&nbsp;&nbsp;비</th>
+        <th rowspan="2" style="color:#fff!important;padding:3px 4px;border:0.5px solid #162d4a;vertical-align:middle;">합&nbsp;&nbsp;계</th>
+      </tr>
+      <tr style="background:#1e3a5f!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;">
+        <th style="color:#fff!important;padding:2px 4px;border:0.5px solid #162d4a;">단가</th><th style="color:#fff!important;padding:2px 4px;border:0.5px solid #162d4a;">금액</th>
+        <th style="color:#fff!important;padding:2px 4px;border:0.5px solid #162d4a;">단가</th><th style="color:#fff!important;padding:2px 4px;border:0.5px solid #162d4a;">금액</th>
+        <th style="color:#fff!important;padding:2px 4px;border:0.5px solid #162d4a;">단가</th><th style="color:#fff!important;padding:2px 4px;border:0.5px solid #162d4a;">금액</th>
+      </tr>
+    </thead>
+    <tbody id="ilwi-naeyeok-rows"></tbody>
+  </table>
+</div>
+
+<!-- 공사비 정산 + 참고사항 -->
+<div id="ilwi-cost-page" style="padding:7mm 10mm;">
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+    <div style="width:4px;height:18px;background:#1e3a5f;border-radius:2px;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;"></div>
+    <div style="font-size:12pt;font-weight:700;color:#1e3a5f;letter-spacing:.15em;">공사비 정산</div>
+  </div>
+  <table id="ilwi-cost" style="width:100%;border-collapse:collapse;font-size:8pt;margin-bottom:10px;table-layout:fixed;"></table>
+  <div style="page-break-inside:avoid;margin-top:8px;">
+    <div style="border:0.5px solid #c8d0db;border-radius:3px;overflow:hidden;">
+      <div style="background:#1e3a5f;font-weight:700;font-size:8pt;padding:5px 10px;color:#fff;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;">참고사항</div>
+      <div style="padding:6px 10px 8px;" id="ilwi-notes"></div>
+    </div>
+  </div>
+</div>
+
 </div>
 
 <!-- 인쇄용 견적서 -->
@@ -454,15 +546,32 @@ tr:last-child td{border-bottom:none;}
       </div>
 
     </div>
+    <!-- 일반 견적서 화면 -->
+    <div id="normal-view">
     <div class="sec"><div class="sec-title">공사 내역 <span style="font-size:10px;color:#9ca3af">자재 50% 할증 / 금액 수정 가능</span></div>
       <table><thead><tr><th>공정</th><th>항목</th><th>규격</th><th class="r">수량</th><th class="r">단가</th><th class="r">금액</th></tr></thead>
         <tbody id="s-body"></tbody>
       </table>
     </div>
+    </div>
+
+    <!-- 일위대가 화면 -->
+    <div id="ilwi-view" style="display:none;">
+    <div class="sec">
+      <div class="sec-title">공사비 내역 (요약) <span style="font-size:10px;color:#9ca3af">공종별 ㎡당 단가</span></div>
+      <table><thead><tr><th>공종</th><th>규격</th><th class="r">단위</th><th class="r">수량</th><th class="r">단가</th><th class="r">금액</th></tr></thead>
+        <tbody id="ilwi-screen-summary"></tbody>
+      </table>
+    </div>
+    <div class="sec">
+      <div class="sec-title">일위대가표 <span style="font-size:10px;color:#9ca3af">공종별 1㎡당 세부내역</span></div>
+      <div id="ilwi-screen-detail"></div>
+    </div>
+    </div>
     <div class="sec"><div class="sec-title">공사비 정산</div>
       <table><tbody>
         <tr><td>공사비 합계</td><td class="r" id="s-cost">-</td></tr>
-        <tr><td>기업이윤(10%)</td><td class="r" id="s-profit">-</td></tr>
+        <tr><td id="s-profit-label">기업이윤(10%)</td><td class="r" id="s-profit">-</td></tr>
         <tr><td>공급가액</td><td class="r" id="s-supply">-</td></tr>
         <tr class="total-row"><td>총 공사금액(V.A.T 별도)</td><td class="r" id="s-total">-</td></tr>
       </tbody></table>
@@ -1180,12 +1289,21 @@ function buildGabji(matSum, laborSum){
 }
 
 function buildIlwiPages(name,addr,mgr,date,submitSum,profit,supply,final){
-  // 공사 개요
-  var infoHTML='<tbody><tr><td style="padding:5px 8px;border:0.5px solid #d1d5db;background:#f3f4f6;font-weight:700;width:28%;font-size:9pt;">공 사 명</td><td style="padding:5px 8px;border:0.5px solid #d1d5db;font-size:9pt;">'+name+'</td></tr>';
-  if(addr)infoHTML+='<tr><td style="padding:5px 8px;border:0.5px solid #d1d5db;background:#f3f4f6;font-weight:700;font-size:9pt;">위\u00a0\u00a0\u00a0\u00a0치</td><td style="padding:5px 8px;border:0.5px solid #d1d5db;font-size:9pt;">'+addr+'</td></tr>';
-  infoHTML+='<tr><td style="padding:5px 8px;border:0.5px solid #d1d5db;background:#f3f4f6;font-weight:700;font-size:9pt;">담 당 자</td><td style="padding:5px 8px;border:0.5px solid #d1d5db;font-size:9pt;">'+mgr[0]+' / '+mgr[1]+'</td></tr>';
-  infoHTML+='<tr><td style="padding:5px 8px;border:0.5px solid #d1d5db;background:#f3f4f6;font-weight:700;font-size:9pt;">제 출 일</td><td style="padding:5px 8px;border:0.5px solid #d1d5db;font-size:9pt;">'+fmtDateKo(date)+'</td></tr></tbody>';
-  g('ilwi-info').innerHTML=infoHTML;
+  // 표지
+  g('ilwi-cover-title').innerHTML=name.replace(/\n/g,'<br>')+'<br>견적서';
+  g('ilwi-cover-left').innerHTML=fmtDate(date)+'<br>토방이앤지';
+  var mgrArr=mgr;
+  g('ilwi-cover-company').innerHTML=
+    '<tr><td style="background:#1e3a5f;color:#fff;font-weight:700;width:52px;text-align:center;padding:2.5px 4px;border:0.5px solid #162d4a;">상&nbsp;&nbsp;&nbsp;호</td><td style="text-align:center;padding:2.5px 4px;border:0.5px solid #c8d0db;">(주)토방이앤지</td></tr>'+
+    '<tr><td style="background:#1e3a5f;color:#fff;font-weight:700;text-align:center;padding:2.5px 4px;border:0.5px solid #162d4a;">대표이사</td><td style="text-align:center;padding:2.5px 4px;border:0.5px solid #c8d0db;">이 경 수, 장 혁</td></tr>'+
+    '<tr><td style="background:#1e3a5f;color:#fff;font-weight:700;text-align:center;padding:2.5px 4px;border:0.5px solid #162d4a;">담당자</td><td style="text-align:center;padding:2.5px 4px;border:0.5px solid #c8d0db;">'+mgrArr[0]+' / '+mgrArr[1]+'</td></tr>'+
+    '<tr><td style="background:#1e3a5f;color:#fff;font-weight:700;text-align:center;padding:2.5px 4px;border:0.5px solid #162d4a;">전화번호</td><td style="text-align:center;padding:2.5px 4px;border:0.5px solid #c8d0db;">1522-2761</td></tr>';
+
+  function navyTh(text){return '<th style="color:#fff!important;background:#1e3a5f!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;padding:2px 4px;border:0.5px solid #162d4a;text-align:right;">'+text+'</th>';}
+  function td(text,align,bg){var b=bg?'background:'+bg+'!important;':'';return '<td style="padding:1.8px 4px;border:0.5px solid #c8d0db;text-align:'+(align||'left')+';'+b+'">'+text+'</td>';}
+  function subTd(text,align){return '<td style="padding:1.8px 4px;border:0.5px solid #b8c8e8;background:#e8f0fb!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;font-weight:700;color:#1e3a5f;text-align:'+(align||'left')+';">'+text+'</td>';}
+  function totTd(text,align){return '<td style="padding:1.8px 4px;border:0.5px solid #162d4a;background:#1e3a5f!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;font-weight:700;color:#fff!important;text-align:'+(align||'left')+';">'+text+'</td>';}
+  function grpTd(text){return '<td style="padding:2px 5px;border:0.5px solid #162d4a;background:#1e3a5f!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;font-weight:700;color:#fff!important;">'+text+'</td>';}
 
   // 설정값
   var hadoRate=sv('f-hado-rate',0.13),sangdoRate=sv('f-sangdo-rate',0.11),thinnerRate=sv('f-thinner-rate',0.0625);
@@ -1194,45 +1312,23 @@ function buildIlwiPages(name,addr,mgr,date,submitSum,profit,supply,final){
   var techW=sv('s-tech',250000),genW=sv('s-gen',180000);
   var bujaP=sv('s-buja',1600),mgmtP=sv('s-mgmt',5000);
   var surRate=1+sv('s-surcharge',50)/100;
+  var mainV=parseFloat(g('pyeong').value)||0,mainU=g('unit-main').value;
+  var mainSqm=getSqm(mainV,mainU),mainPy=getPy(mainV,mainU);
 
-  var summaryRows='';
-  var detailTables='';
-  var totalAmt=0;
-  var rowIdx=0;
+  var totalMatAmt=0,totalLaborAmt=0,totalExpAmt=0,totalAmt=0;
+  var jiptRows='',naeyeokRows='',rowNo=1;
 
-  function thStyle(){return 'color:#fff!important;font-weight:700;padding:4px 7px;border:0.5px solid #1d4ed8;background:#2563eb!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;';}
-  function tdStyle(right,even){return 'padding:3px 7px;border:0.5px solid #d1d5db;'+(right?'text-align:right;':'')+(even?'background:#f8fafc;':'');}
-
-  function makeDetailTable(title, rows, unitPrice){
-    var html='<div style="margin-bottom:10px;">';
-    html+='<div style="font-size:9pt;font-weight:700;color:#1a1a2e;margin-bottom:4px;padding:4px 8px;background:#f0f9ff;border-left:3px solid #2563eb;">'+title+'</div>';
-    html+='<table style="width:100%;border-collapse:collapse;font-size:8pt;">';
-    html+='<thead><tr>'
-      +'<th style="'+thStyle()+'text-align:left;">구분</th>'
-      +'<th style="'+thStyle()+'text-align:left;">품명</th>'
-      +'<th style="'+thStyle()+'text-align:right;">단위</th>'
-      +'<th style="'+thStyle()+'text-align:right;">수량</th>'
-      +'<th style="'+thStyle()+'text-align:right;">단가</th>'
-      +'<th style="'+thStyle()+'text-align:right;">금액</th>'
-      +'</tr></thead><tbody>';
-    var matAmt=0,laborAmt=0;
-    rows.forEach(function(r,i){
-      var even=i%2===0;
-      html+='<tr>'
-        +'<td style="'+tdStyle(false,even)+'">'+r.type+'</td>'
-        +'<td style="'+tdStyle(false,even)+'">'+r.name+'</td>'
-        +'<td style="'+tdStyle(true,even)+'">'+r.unit+'</td>'
-        +'<td style="'+tdStyle(true,even)+'">'+r.qty+'</td>'
-        +'<td style="'+tdStyle(true,even)+'">'+n(r.price)+'</td>'
-        +'<td style="'+tdStyle(true,even)+'">'+n(r.amt)+'</td>'
-        +'</tr>';
-      if(r.type==='재료비')matAmt+=r.amt;
-      else laborAmt+=r.amt;
-    });
-    html+='<tr style="background:#eff6ff;"><td colspan="5" style="padding:3px 7px;border:0.5px solid #d1d5db;font-weight:700;">합계</td>'
-      +'<td style="padding:3px 7px;border:0.5px solid #d1d5db;text-align:right;font-weight:700;">'+n(unitPrice)+'</td></tr>';
-    html+='</tbody></table></div>';
-    return html;
+  function addJipt(name,qty,unit,matD,matA,laborD,laborA,expD,expA){
+    var tot=matA+laborA+expA;
+    totalMatAmt+=matA;totalLaborAmt+=laborA;totalExpAmt+=expA;totalAmt+=tot;
+    var idx=parseInt(jiptRows.split('<tr').length);
+    var bg=idx%2===0?'':'background:#f6f8fc;';
+    jiptRows+='<tr style="height:14px;'+bg+'">'+
+      td(rowNo++,'center')+td(name)+td(qty,'center')+td(unit,'center')+
+      td(matD>0?n(matD):'-','right')+td(matA>0?n(matA):'-','right')+
+      td(laborD>0?n(laborD):'-','right')+td(laborA>0?n(laborA):'-','right')+
+      td(expD>0?n(expD):'-','right')+td(expA>0?n(expA):'-','right')+
+      td(n(tot),'right')+'</tr>';
   }
 
   // 바탕조정
@@ -1243,31 +1339,38 @@ function buildIlwiPages(name,addr,mgr,date,submitSum,profit,supply,final){
     var r=getBtCalc(thick,btSqm);
     var hP2=parseFloat(g('bt-price').value)||sv('s-hyper',65000);
     var rP2=parseFloat(g('bt-remi').value)||sv('s-remi',7000);
-    // 1㎡당 단가
-    var hKgPm=r.hyperKg/btSqm, rKgPm=(r.remiPo*40)/btSqm;
-    var hAmt1=Math.round(hKgPm*(hP2/16)*surRate), rAmt1=Math.round(rKgPm*(rP2/40));
+    var hKgPm=r.hyperKg/btSqm,rKgPm=(r.remiPo*40)/btSqm;
+    var hAmt1=Math.round(hKgPm*(hP2/16)*surRate),rAmt1=Math.round(rKgPm*(rP2/40));
     var sp=parseInt(g('bt-special').value);
     var tech=btPy<10?sv('f-bt-s1-t',1):btPy<20?sv('f-bt-s2-t',1):btPy<=60?sv('f-bt-s3-t',2):sv('f-bt-s4-t',2);
     var gen=btPy<10?sv('f-bt-s1-g',0):btPy<20?sv('f-bt-s2-g',1):btPy<=60?sv('f-bt-s3-g',2):sv('f-bt-s4-g',3);
     if(sp)gen+=1;
     var laborAmt1=Math.round((tech*techW+gen*genW)/btSqm);
-    var unitP=hAmt1+rAmt1+laborAmt1;
-    var totalP=Math.round(unitP*btSqm);
-    totalAmt+=totalP;
-    var bg=rowIdx%2===0?'#fff':'#f8fafc'; rowIdx++;
-    summaryRows+='<tr style="background:'+bg+'"><td style="padding:4px 7px;border:0.5px solid #d1d5db;">바탕조정</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;">'+thick+'mm</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">㎡</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+btSqm.toFixed(2)+'</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+n(unitP)+'</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+n(totalP)+'</td></tr>';
-    detailTables+=makeDetailTable('바탕조정 (KCC 하이퍼 '+thick+'mm) — 1㎡당',[
-      {type:'재료비',name:'하이퍼',unit:'kg',qty:hKgPm.toFixed(3),price:Math.round(hP2/16*surRate),amt:hAmt1},
-      {type:'재료비',name:'레미탈',unit:'kg',qty:rKgPm.toFixed(3),price:Math.round(rP2/40),amt:rAmt1},
-      {type:'노무비',name:'기술자/일반공',unit:'인',qty:((tech+gen)/btSqm).toFixed(4),price:Math.round((tech*techW+gen*genW)/(tech+gen)),amt:laborAmt1}
-    ],unitP);
+    var unitP1=hAmt1+rAmt1+laborAmt1;
+    var matTotal1=Math.round((hAmt1+rAmt1)*btSqm);
+    var laborTotal1=Math.round(laborAmt1*btSqm);
+
+    addJipt('바탕조정공사',1,'식',0,matTotal1,0,laborTotal1,0,0);
+
+    // 내역서
+    naeyeokRows+='<tr style="height:14px;background:#1e3a5f!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;">'+
+      '<td colspan="13" style="color:#fff!important;font-weight:700;padding:2px 5px;border:0.5px solid #162d4a;">&nbsp;바탕조정공사</td></tr>';
+    naeyeokRows+='<tr style="height:14px;">'+
+      td('1','center')+td('옥상','center')+td('바탕조정')+td('하이퍼 '+thick+'mm')+
+      td(btSqm.toFixed(2),'right')+td('㎡','center')+
+      td(n(hAmt1+rAmt1),'right')+td(n(matTotal1),'right')+
+      td(n(laborAmt1),'right')+td(n(laborTotal1),'right')+
+      td('-','right')+td('-','right')+
+      td(n(matTotal1+laborTotal1),'right')+'</tr>';
+    naeyeokRows+='<tr style="height:14px;">'+
+      subTd('')+subTd('')+subTd('계','right',6)+subTd('','right')+subTd(n(matTotal1),'right')+
+      subTd('','right')+subTd(n(laborTotal1),'right')+subTd('','right')+subTd('-','right')+
+      subTd(n(matTotal1+laborTotal1),'right')+'</tr>';
   }
 
-  // 우레탄 단독
+  // 우레탄
   if(g('chk-ur').checked){
     var urT=parseFloat(g('ur-thick').value);
-    var mainV=parseFloat(g('pyeong').value)||0,mainU=g('unit-main').value;
-    var mainSqm=getSqm(mainV,mainU);
     var jKgPm=urT*urCoef;
     var hAmt2=Math.round(hadoRate*(hP*surRate/14));
     var jAmt2=Math.round(jKgPm*(jP*surRate/20));
@@ -1278,29 +1381,32 @@ function buildIlwiPages(name,addr,mgr,date,submitSum,profit,supply,final){
     var urCoefL=urT===3?sv('f-ur-coef3',0.02):sv('f-ur-coef',0.02);
     var crewPm=(urBase/mainSqm)+urCoefL;
     var laborAmt2=Math.round(crewPm*techW);
-    var unitP2=hAmt2+jAmt2+sAmt2+tAmt2+bujaAmt2+laborAmt2;
-    var totalP2=Math.round(unitP2*mainSqm);
-    totalAmt+=totalP2;
-    var bg2=rowIdx%2===0?'#fff':'#f8fafc'; rowIdx++;
-    summaryRows+='<tr style="background:'+bg2+'"><td style="padding:4px 7px;border:0.5px solid #d1d5db;">우레탄방수</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;">'+urT+'mm</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">㎡</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+mainSqm.toFixed(2)+'</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+n(unitP2)+'</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+n(totalP2)+'</td></tr>';
-    detailTables+=makeDetailTable('우레탄방수 ('+urT+'mm) — 1㎡당',[
-      {type:'재료비',name:'하도',unit:'L',qty:hadoRate.toFixed(3),price:Math.round(hP*surRate/14),amt:hAmt2},
-      {type:'재료비',name:'우레탄 중도',unit:'kg',qty:jKgPm.toFixed(3),price:Math.round(jP*surRate/20),amt:jAmt2},
-      {type:'재료비',name:'상도',unit:'kg',qty:sangdoRate.toFixed(3),price:Math.round(sP*surRate/16),amt:sAmt2},
-      {type:'재료비',name:'신나',unit:'L',qty:(jKgPm*thinnerRate).toFixed(4),price:Math.round(tP*surRate/17),amt:tAmt2},
-      {type:'재료비',name:'부자재',unit:'식',qty:1,price:bujaAmt2,amt:bujaAmt2},
-      {type:'노무비',name:'기술자',unit:'인',qty:crewPm.toFixed(4),price:techW,amt:laborAmt2}
-    ],unitP2);
+    var matPerSqm=hAmt2+jAmt2+sAmt2+tAmt2+bujaAmt2;
+    var matTotal2=Math.round(matPerSqm*mainSqm);
+    var laborTotal2=Math.round(laborAmt2*mainSqm);
+
+    addJipt('우레탄방수공사',1,'식',0,matTotal2,0,laborTotal2,0,0);
+
+    naeyeokRows+='<tr style="height:14px;background:#1e3a5f!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;">'+
+      '<td colspan="13" style="color:#fff!important;font-weight:700;padding:2px 5px;border:0.5px solid #162d4a;">&nbsp;우레탄방수공사</td></tr>';
+    naeyeokRows+='<tr style="height:14px;">'+
+      td('2','center')+td('옥상','center')+td('우레탄방수')+td(urT+'mm')+
+      td(mainSqm.toFixed(2),'right')+td('㎡','center')+
+      td(n(matPerSqm),'right')+td(n(matTotal2),'right')+
+      td(n(laborAmt2),'right')+td(n(laborTotal2),'right')+
+      td('-','right')+td('-','right')+
+      td(n(matTotal2+laborTotal2),'right')+'</tr>';
+    naeyeokRows+='<tr style="height:14px;">'+
+      subTd('')+subTd('')+subTd('계','right',6)+subTd('','right')+subTd(n(matTotal2),'right')+
+      subTd('','right')+subTd(n(laborTotal2),'right')+subTd('','right')+subTd('-','right')+
+      subTd(n(matTotal2+laborTotal2),'right')+'</tr>';
   }
 
   // 복합시트
   if(g('chk-cs').checked){
     var st2=parseFloat(g('cs-st').value),ut2=parseFloat(g('cs-ut').value);
-    var mainV2=parseFloat(g('pyeong').value)||0,mainU2=g('unit-main').value;
-    var mSqm=getSqm(mainV2,mainU2);
     var csSp2=parseFloat(g('cs-sp').value)||sv('s-sheet',120000);
-    var sheetPm=1/sheetArea;
-    var tapePm=sheetPm, sealPm=sheetPm*3;
+    var sheetPm=1/sheetArea,tapePm=sheetPm,sealPm=sheetPm*3;
     var jKgPm2=ut2*urCoef;
     var hAmt3=Math.round(hadoRate*(hP*surRate/14));
     var shAmt3=Math.round(sheetPm*(csSp2*surRate));
@@ -1313,57 +1419,131 @@ function buildIlwiPages(name,addr,mgr,date,submitSum,profit,supply,final){
     var csCrew=sv('f-cs-sheet-crew',3),csBase=sv('f-cs-sheet-base',30);
     var urCoefL2=sv('f-ur-coef',0.02),urBase2=sv('f-ur-base',2);
     var sheetLaborPm=(csCrew/csBase)/3.3058;
-    var urLaborPm=urBase2/mSqm+urCoefL2;
+    var urLaborPm=urBase2/mainSqm+urCoefL2;
     var laborAmt3=Math.round((sheetLaborPm+urLaborPm)*techW);
-    var unitP3=hAmt3+shAmt3+tapAmt3+seaAmt3+jAmt3+sAmt3+tAmt3+bujaAmt3+laborAmt3;
-    var totalP3=Math.round(unitP3*mSqm);
-    totalAmt+=totalP3;
-    var bg3=rowIdx%2===0?'#fff':'#f8fafc'; rowIdx++;
-    summaryRows+='<tr style="background:'+bg3+'"><td style="padding:4px 7px;border:0.5px solid #d1d5db;">복합시트방수</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;">시트'+st2+'mm+우레탄'+ut2+'mm</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">㎡</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+mSqm.toFixed(2)+'</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+n(unitP3)+'</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+n(totalP3)+'</td></tr>';
-    detailTables+=makeDetailTable('복합시트방수 (시트'+st2+'mm+우레탄'+ut2+'mm) — 1㎡당',[
-      {type:'재료비',name:'하도',unit:'L',qty:hadoRate.toFixed(3),price:Math.round(hP*surRate/14),amt:hAmt3},
-      {type:'재료비',name:'시트('+st2+'mm)',unit:'㎡',qty:sheetPm.toFixed(4),price:Math.round(csSp2*surRate),amt:shAmt3},
-      {type:'재료비',name:'망사테이프',unit:'개',qty:tapePm.toFixed(4),price:Math.round(5000*surRate),amt:tapAmt3},
-      {type:'재료비',name:'실란트',unit:'개',qty:sealPm.toFixed(4),price:Math.round(10000*surRate),amt:seaAmt3},
-      {type:'재료비',name:'우레탄 중도',unit:'kg',qty:jKgPm2.toFixed(3),price:Math.round(jP*surRate/20),amt:jAmt3},
-      {type:'재료비',name:'상도',unit:'kg',qty:sangdoRate.toFixed(3),price:Math.round(sP*surRate/16),amt:sAmt3},
-      {type:'재료비',name:'신나',unit:'L',qty:(jKgPm2*thinnerRate).toFixed(4),price:Math.round(tP*surRate/17),amt:tAmt3},
-      {type:'재료비',name:'부자재',unit:'식',qty:1,price:bujaAmt3,amt:bujaAmt3},
-      {type:'노무비',name:'시공 인원',unit:'인',qty:(sheetLaborPm+urLaborPm).toFixed(4),price:techW,amt:laborAmt3}
-    ],unitP3);
+    var matPerSqm3=hAmt3+shAmt3+tapAmt3+seaAmt3+jAmt3+sAmt3+tAmt3+bujaAmt3;
+    var matTotal3=Math.round(matPerSqm3*mainSqm);
+    var laborTotal3=Math.round(laborAmt3*mainSqm);
+
+    addJipt('복합시트방수공사',1,'식',0,matTotal3,0,laborTotal3,0,0);
+
+    naeyeokRows+='<tr style="height:14px;background:#1e3a5f!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;">'+
+      '<td colspan="13" style="color:#fff!important;font-weight:700;padding:2px 5px;border:0.5px solid #162d4a;">&nbsp;복합시트방수공사</td></tr>';
+    naeyeokRows+='<tr style="height:14px;">'+
+      td('','center')+td('옥상','center')+td('복합시트방수')+td('시트'+st2+'mm+우레탄'+ut2+'mm')+
+      td(mainSqm.toFixed(2),'right')+td('㎡','center')+
+      td(n(matPerSqm3),'right')+td(n(matTotal3),'right')+
+      td(n(laborAmt3),'right')+td(n(laborTotal3),'right')+
+      td('-','right')+td('-','right')+
+      td(n(matTotal3+laborTotal3),'right')+'</tr>';
+    naeyeokRows+='<tr style="height:14px;">'+
+      subTd('')+subTd('')+subTd('계','right',6)+subTd('','right')+subTd(n(matTotal3),'right')+
+      subTd('','right')+subTd(n(laborTotal3),'right')+subTd('','right')+subTd('-','right')+
+      subTd(n(matTotal3+laborTotal3),'right')+'</tr>';
   }
 
-  // 현장관리 추가
-  var mainPy2=getPy(parseFloat(g('pyeong').value)||0,g('unit-main').value);
-  var mgmtTotal=Math.round(mainPy2*mgmtP);
-  totalAmt+=mgmtTotal;
-  var bgM=rowIdx%2===0?'#fff':'#f8fafc';
-  summaryRows+='<tr style="background:'+bgM+'"><td style="padding:4px 7px;border:0.5px solid #d1d5db;">현장관리</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;">-</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">식</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">1</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+n(mgmtTotal)+'</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+n(mgmtTotal)+'</td></tr>';
+  // 현장관리
+  var mgmtTotal=Math.round(mainPy*mgmtP);
+  totalExpAmt+=mgmtTotal;totalAmt+=mgmtTotal;
+  jiptRows+='<tr style="height:14px;">'+
+    td(rowNo++,'center')+td('현장관리 및 부자재')+td(1,'center')+td('식','center')+
+    td('-','right')+td('-','right')+td('-','right')+td('-','right')+
+    td(n(mgmtTotal),'right')+td(n(mgmtTotal),'right')+td(n(mgmtTotal),'right')+'</tr>';
 
   // 추가항목
-  extraItems.forEach(function(item,i){
+  extraItems.forEach(function(item){
     if(!item.amt)return;
-    var bgE=(rowIdx+i)%2===0?'#fff':'#f8fafc';
-    summaryRows+='<tr style="background:'+bgE+'"><td style="padding:4px 7px;border:0.5px solid #d1d5db;">'+item.gong+'</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;">'+item.spec+'</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+item.unit+'</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+item.qty+'</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+n(item.price)+'</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+n(item.amt)+'</td></tr>';
-    totalAmt+=item.amt;
+    totalExpAmt+=item.amt;totalAmt+=item.amt;
+    jiptRows+='<tr style="height:14px;">'+
+      td(rowNo++,'center')+td(item.gong+' '+item.name)+td(item.qty,'center')+td(item.unit,'center')+
+      td('-','right')+td('-','right')+td('-','right')+td('-','right')+
+      td(n(item.price),'right')+td(n(item.amt),'right')+td(n(item.amt),'right')+'</tr>';
   });
 
-  summaryRows+='<tr style="background:#eff6ff;font-weight:700;"><td colspan="5" style="padding:4px 7px;border:0.5px solid #d1d5db;">합계</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+n(totalAmt)+'</td></tr>';
-  g('ilwi-summary-rows').innerHTML=summaryRows;
-  g('ilwi-detail-tables').innerHTML=detailTables;
+  // 빈 행 채우기 (28행 기준)
+  var filledRows=jiptRows.split('<tr style="height:14px').length-1;
+  for(var i=filledRows;i<25;i++){
+    jiptRows+='<tr style="height:14px;">'+td('')+td('')+td('')+td('')+td('')+td('')+td('')+td('')+td('')+td('')+td('')+'</tr>';
+  }
+  jiptRows+='<tr style="height:14px;background:#1e3a5f!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;">'+
+    totTd('합&nbsp;&nbsp;&nbsp;&nbsp;계','')+totTd('')+totTd('')+totTd('')+
+    totTd('','right')+totTd(n(totalMatAmt),'right')+
+    totTd('','right')+totTd(n(totalLaborAmt),'right')+
+    totTd('','right')+totTd(n(totalExpAmt),'right')+
+    totTd(n(totalAmt),'right')+'</tr>';
+  g('ilwi-jipt-rows').innerHTML=jiptRows;
 
+  // 내역서 소계
+  var naeyeokFilled=naeyeokRows.split('<tr style="height:14px').length-1;
+  for(var j=naeyeokFilled;j<22;j++){
+    naeyeokRows+='<tr style="height:14px;">'+td('')+td('')+td('')+td('')+td('')+td('')+td('')+td('')+td('')+td('')+td('')+td('')+td('')+'</tr>';
+  }
+  naeyeokRows+='<tr style="height:14px;background:#1e3a5f!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;">'+
+    totTd('소&nbsp;&nbsp;&nbsp;계','')+totTd('')+totTd('')+totTd('')+totTd('')+totTd('')+
+    totTd('','right')+totTd(n(totalMatAmt),'right')+
+    totTd('','right')+totTd(n(totalLaborAmt),'right')+
+    totTd('','right')+totTd(n(totalExpAmt),'right')+
+    totTd(n(totalAmt),'right')+'</tr>';
+  g('ilwi-naeyeok-rows').innerHTML=naeyeokRows;
+
+  // 갑지
+  if(g('print-gabji')&&g('print-gabji').checked){
+    var d=getGabjiData(totalMatAmt,totalLaborAmt);
+    g('ilwi-gabji-title').textContent='공사명 : '+name.replace(/
+/g,' ');
+    function grow(label,rate,amt,isSub,isTot){
+      var s=isTot?'background:#1e3a5f!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;':isSub?'background:#e8f0fb!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;font-weight:700;color:#1e3a5f;':'';
+      var ct=isTot?'color:#fff!important;':'';
+      var fw=isSub?'font-weight:700;':'';
+      return '<tr style="height:13px;'+s+'"><td style="padding:1.5px 4px;border:0.5px solid #c8d0db;'+ct+fw+'">'+label+'</td>'+
+        '<td style="padding:1.5px 4px;border:0.5px solid #c8d0db;text-align:center;'+ct+'">'+rate+'</td>'+
+        '<td style="padding:1.5px 4px;border:0.5px solid #c8d0db;text-align:right;'+ct+fw+'">'+(amt!==null?n(amt):'')+'</td>'+
+        '<td style="padding:1.5px 4px;border:0.5px solid #c8d0db;'+ct+'"></td></tr>';
+    }
+    function gempty(label){return '<tr style="height:13px;"><td style="padding:1.5px 4px;border:0.5px solid #c8d0db;color:#9ca3af;">'+label+'</td><td style="border:0.5px solid #c8d0db;text-align:center;color:#9ca3af;">-</td><td style="border:0.5px solid #c8d0db;"></td><td style="border:0.5px solid #c8d0db;"></td></tr>';}
+    var ghtml='';
+    ghtml+=grow('직 접 재 료 비','',d.matSum,false,false);
+    ghtml+=grow('간 접 재 료 비','','',false,false);
+    ghtml+=grow('[ 소&nbsp;&nbsp;계 ]','',d.matSum,true,false);
+    ghtml+=grow('직 접 노 무 비','',d.laborSum,false,false);
+    ghtml+=grow('간 접 노 무 비',d.iR+'%',d.iL,false,false);
+    ghtml+=grow('[ 소&nbsp;&nbsp;계 ]','',d.laborSum+d.iL,true,false);
+    ghtml+=grow('산 재 보 험 료',d.sR+'%',d.sj,false,false);
+    if(!d.hideE)ghtml+=grow('고 용 보 험 료',d.rE+'%',d.employ,false,false); else ghtml+=gempty('고 용 보 험 료');
+    if(!d.hideP)ghtml+=grow('국 민 연 금 보 험 료',d.rP+'%',d.pension,false,false); else ghtml+=gempty('국 민 연 금 보 험 료');
+    if(!d.hideH)ghtml+=grow('국 민 건 강 보 험 료',d.rH+'%',d.health,false,false); else ghtml+=gempty('국 민 건 강 보 험 료');
+    if(!d.hideRe)ghtml+=grow('퇴 직 공 제 부 금 비',d.rRe+'%',d.retire,false,false); else ghtml+=gempty('퇴 직 공 제 부 금 비');
+    ghtml+=grow('산업안전보건관리비',d.saR+'%',d.sf,false,false);
+    ghtml+=grow('기 타 경 비',d.smR+'%',d.sm,false,false);
+    d.extraAmts.forEach(function(x){ghtml+=grow(x.name,x.rate+'%',x.amt,false,false);});
+    ghtml+=grow('[ 소&nbsp;&nbsp;계 ]','',d.subTotal,true,false);
+    ghtml+=grow('계','',d.subTotal,true,false);
+    ghtml+=grow('일 반 관 리 비',d.gmR+'%',d.gm,false,false);
+    ghtml+=grow('이&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;윤',d.pR+'%',d.pr,false,false);
+    ghtml+=grow('공 급 가 액','',d.gt,true,false);
+    ghtml+=grow('부 가 가 치 세',d.vR+'%',d.vat,false,false);
+    ghtml+=grow('도&nbsp;&nbsp;급&nbsp;&nbsp;액','',d.gt+d.vat,false,false);
+    ghtml+=grow('총&nbsp;&nbsp;공&nbsp;&nbsp;사&nbsp;&nbsp;비','',d.ft,false,true);
+    g('ilwi-gabji-rows').innerHTML=ghtml;
+    g('ilwi-gabji-page').style.display='block';
+  } else {
+    g('ilwi-gabji-page').style.display='none';
+  }
+
+  // 공사비 정산
   var profitRate3=sv('s-profit-rate',10)/100;
   var ilwiProfit=Math.round(totalAmt*profitRate3),ilwiSupply=totalAmt+ilwiProfit,ilwiFinal=ru(ilwiSupply);
   var negoAmt2=getNegoAmount(ilwiFinal);
   var ilwiFinalNego=ru(ilwiFinal-negoAmt2);
-  var costRows2='<tbody><tr><td style="padding:5px 10px;border:0.5px solid #d1d5db;font-size:9pt;">공사비 합계</td><td style="padding:5px 10px;border:0.5px solid #d1d5db;text-align:right;font-size:9pt;">'+n(totalAmt)+' 원</td></tr>'
-    +'<tr style="background:#f8fafc"><td style="padding:5px 10px;border:0.5px solid #d1d5db;font-size:9pt;">기업이윤 ('+Math.round(profitRate3*100)+'%)</td><td style="padding:5px 10px;border:0.5px solid #d1d5db;text-align:right;font-size:9pt;">'+n(ilwiProfit)+' 원</td></tr>'
-    +'<tr><td style="padding:5px 10px;border:0.5px solid #d1d5db;font-size:9pt;">공급가액</td><td style="padding:5px 10px;border:0.5px solid #d1d5db;text-align:right;font-size:9pt;">'+n(ilwiSupply)+' 원</td></tr>';
-  if(negoAmt2>0)costRows2+='<tr><td style="padding:5px 10px;border:0.5px solid #d1d5db;font-size:9pt;color:#dc2626;">네고 차감</td><td style="padding:5px 10px;border:0.5px solid #d1d5db;text-align:right;font-size:9pt;color:#dc2626;">- '+n(negoAmt2)+' 원</td></tr>';
-  costRows2+='<tr style="background:#2563eb!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;"><td style="padding:8px 10px;color:#fff!important;font-weight:700;font-size:11pt;">총 공사금액 (V.A.T 별도)</td><td style="padding:8px 10px;color:#fff!important;font-weight:700;font-size:11pt;text-align:right;">'+(negoAmt2>0?n(ilwiFinalNego):n(ilwiFinal))+' 원</td></tr></tbody>';
+  var costRows2='<tbody>'+
+    '<tr><td style="padding:4px 10px;border:0.5px solid #c8d0db;">공사비 합계</td><td style="padding:4px 10px;border:0.5px solid #c8d0db;text-align:right;">'+n(totalAmt)+' 원</td></tr>'+
+    '<tr style="background:#f6f8fc;"><td style="padding:4px 10px;border:0.5px solid #c8d0db;">기업이윤 ('+Math.round(profitRate3*100)+'%)</td><td style="padding:4px 10px;border:0.5px solid #c8d0db;text-align:right;">'+n(ilwiProfit)+' 원</td></tr>'+
+    '<tr><td style="padding:4px 10px;border:0.5px solid #c8d0db;">공급가액</td><td style="padding:4px 10px;border:0.5px solid #c8d0db;text-align:right;">'+n(ilwiSupply)+' 원</td></tr>';
+  if(negoAmt2>0)costRows2+='<tr><td style="padding:4px 10px;border:0.5px solid #c8d0db;color:#dc2626;">네고 차감</td><td style="padding:4px 10px;border:0.5px solid #c8d0db;text-align:right;color:#dc2626;">- '+n(negoAmt2)+' 원</td></tr>';
+  costRows2+='<tr style="background:#1e3a5f!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;"><td style="padding:6px 10px;color:#fff!important;font-weight:700;font-size:10pt;">총 공사금액 (V.A.T 별도)</td><td style="padding:6px 10px;color:#fff!important;font-weight:700;font-size:10pt;text-align:right;">'+(negoAmt2>0?n(ilwiFinalNego):n(ilwiFinal))+' 원</td></tr></tbody>';
   g('ilwi-cost').innerHTML=costRows2;
 
-  var notesHTML='';notes.forEach(function(note){notesHTML+='<p style="font-size:8.5pt;color:#374151;padding:2px 0;">- '+note.text+'</p>';});
+  var notesHTML='';notes.forEach(function(note){notesHTML+='<p style="font-size:8pt;color:#374151;padding:2px 0;">- '+note.text+'</p>';});
   g('ilwi-notes').innerHTML=notesHTML;
   g('print-ilwi').style.display='block';
 }
@@ -1450,12 +1630,22 @@ function buildPrintPages(){
     if(g('print-gabji-page')) g('print-gabji-page').style.display='none';
   }
 
-  // 일위대가 vs 일반
+  // 일위대가 vs 일반 - 하나만 표시
   if(estimateFormat==='ilwi'){
     g('print-submit').style.display='none';
+    if(g('print-ilwi')) g('print-ilwi').style.display='none';
+    // 가로 인쇄 설정
+    var styleEl=document.getElementById('print-orientation-style');
+    if(!styleEl){styleEl=document.createElement('style');styleEl.id='print-orientation-style';document.head.appendChild(styleEl);}
+    styleEl.textContent='@media print{@page{size:A4 landscape;margin:6mm 9mm;}}';
     buildIlwiPages(name,addr,mgr,date,submitSum,profit,supply,final);
   } else {
     if(g('print-ilwi')) g('print-ilwi').style.display='none';
+    g('print-submit').style.display='block';
+    // 세로 인쇄 설정
+    var styleEl=document.getElementById('print-orientation-style');
+    if(!styleEl){styleEl=document.createElement('style');styleEl.id='print-orientation-style';document.head.appendChild(styleEl);}
+    styleEl.textContent='@media print{@page{size:A4 portrait;margin:8mm 8mm;}}';
   }
 
   window.addEventListener('afterprint',function(){
