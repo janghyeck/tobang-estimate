@@ -1489,36 +1489,51 @@ function buildIlwiPages(name,addr,mgr,date,submitSum,profit,supply,final){
   if(g('print-gabji')&&g('print-gabji').checked){
     var d=getGabjiData(totalMatAmt,totalLaborAmt);
     g('ilwi-gabji-title').textContent='공사명 : '+name.replace(/\n/g,' ');
-    function grow(label,rate,amt,isSub,isTot){
+    function grow(label,rate,amt,isSub,isTot,grp1,grp2){
       var s=isTot?'background:#1e3a5f!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;':isSub?'background:#e8f0fb!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;font-weight:700;color:#1e3a5f;':'';
       var ct=isTot?'color:#fff!important;':'';
       var fw=(isSub||isTot)?'font-weight:700;':'';
-      return '<tr style="'+s+'"><td style="padding:1.5px 8px;border:0.5px solid #c8d0db;white-space:nowrap;'+ct+fw+'">'+label+'</td>'+
-        '<td style="padding:1.5px 8px;border:0.5px solid #c8d0db;text-align:right;white-space:nowrap;'+ct+fw+'">'+(amt!==null?n(amt):'')+'</td>'+
-        '<td style="padding:1.5px 8px;border:0.5px solid #c8d0db;white-space:nowrap;'+ct+'">'+rate+'</td></tr>';
+      var g1=grp1||''; var g2=grp2||'';
+      return '<tr style="'+s+'">'
+        +'<td style="padding:1px 3px;border:0.5px solid #c8d0db;text-align:center;font-size:6pt;white-space:nowrap;'+ct+'">'+g1+'</td>'
+        +'<td style="padding:1px 3px;border:0.5px solid #c8d0db;text-align:center;font-size:6pt;white-space:nowrap;'+ct+'">'+g2+'</td>'
+        +'<td style="padding:1px 6px;border:0.5px solid #c8d0db;white-space:nowrap;'+ct+fw+'">'+label+'</td>'
+        +'<td style="padding:1px 6px;border:0.5px solid #c8d0db;text-align:right;white-space:nowrap;'+ct+fw+'">'+(amt!==null?n(amt):'')+'</td>'
+        +'<td style="padding:1px 6px;border:0.5px solid #c8d0db;white-space:nowrap;'+ct+'">'+rate+'</td>'
+        +'<td style="padding:1px 3px;border:0.5px solid #c8d0db;'+ct+'"></td>'
+        +'</tr>';
     }
-    function gempty(label){return '<tr><td style="padding:1.5px 8px;border:0.5px solid #c8d0db;color:#9ca3af;white-space:nowrap;">'+label+'</td><td style="padding:1.5px 8px;border:0.5px solid #c8d0db;"></td><td style="padding:1.5px 8px;border:0.5px solid #c8d0db;color:#9ca3af;white-space:nowrap;">-</td></tr>';}
+    function gempty(label,g1,g2){var gg1=g1||'';var gg2=g2||'';return '<tr>'
+        +'<td style="padding:1px 3px;border:0.5px solid #c8d0db;text-align:center;font-size:6pt;white-space:nowrap;">'+gg1+'</td>'
+        +'<td style="padding:1px 3px;border:0.5px solid #c8d0db;text-align:center;font-size:6pt;white-space:nowrap;">'+gg2+'</td>'
+        +'<td style="padding:1px 6px;border:0.5px solid #c8d0db;color:#9ca3af;white-space:nowrap;">'+label+'</td>'
+        +'<td style="padding:1px 6px;border:0.5px solid #c8d0db;"></td>'
+        +'<td style="padding:1px 6px;border:0.5px solid #c8d0db;color:#9ca3af;white-space:nowrap;">-</td>'
+        +'<td style="padding:1px 3px;border:0.5px solid #c8d0db;"></td>'
+        +'</tr>';}
     var ghtml='';
-    ghtml+=grow('직 접 재 료 비','',d.matSum,false,false);
+    ghtml+=grow('직 접 재 료 비','',d.matSum,false,false,'순','재');
+    ghtml+=grow('간 접 재 료 비','','',false,false,'','료');
+    // 소계 앞 재료비 행 제거 (위에서 추가됨)
     ghtml+=grow('간 접 재 료 비','','',false,false);
     ghtml+=grow('[ 소&nbsp;&nbsp;계 ]','',d.matSum,true,false);
-    ghtml+=grow('직 접 노 무 비','',d.laborSum,false,false);
-    ghtml+=grow('간 접 노 무 비',d.iR+'%',d.iL,false,false);
+    ghtml+=grow('직 접 노 무 비','',d.laborSum,false,false,'원','노');
+    ghtml+=grow('간 접 노 무 비',d.iR+'% (직노 대비)',d.iL,false,false,'가','무');
     ghtml+=grow('[ 소&nbsp;&nbsp;계 ]','',d.laborSum+d.iL,true,false);
-    ghtml+=grow('산 재 보 험 료',d.sR+'%',d.sj,false,false);
-    if(!d.hideE)ghtml+=grow('고 용 보 험 료',d.rE+'%',d.employ,false,false); else ghtml+=gempty('고 용 보 험 료');
-    if(!d.hideP)ghtml+=grow('국 민 연 금 보 험 료',d.rP+'%',d.pension,false,false); else ghtml+=gempty('국 민 연 금 보 험 료');
-    if(!d.hideH)ghtml+=grow('국 민 건 강 보 험 료',d.rH+'%',d.health,false,false); else ghtml+=gempty('국 민 건 강 보 험 료');
-    if(!d.hideRe)ghtml+=grow('퇴 직 공 제 부 금 비',d.rRe+'%',d.retire,false,false); else ghtml+=gempty('퇴 직 공 제 부 금 비');
+    ghtml+=grow('산 재 보 험 료',d.sR+'% (노무비 대비)',d.sj,false,false,'','경');
+    if(!d.hideE)ghtml+=grow('고 용 보 험 료',d.rE+'% (노무비 대비)',d.employ,false,false,'',''); else ghtml+=gempty('고 용 보 험 료','','');
+    if(!d.hideP)ghtml+=grow('국 민 연 금 보 험 료',d.rP+'% (직노 대비)',d.pension,false,false,'',''); else ghtml+=gempty('국 민 연 금 보 험 료','','');
+    if(!d.hideH)ghtml+=grow('국 민 건 강 보 험 료',d.rH+'% (직노 대비)',d.health,false,false,'',''); else ghtml+=gempty('국 민 건 강 보 험 료','','');
+    if(!d.hideRe)ghtml+=grow('퇴 직 공 제 부 금 비',d.rRe+'% (직노 대비)',d.retire,false,false,'',''); else ghtml+=gempty('퇴 직 공 제 부 금 비','','');
     ghtml+=grow('산업안전보건관리비',d.saR+'%',d.sf,false,false);
     ghtml+=grow('기 타 경 비',d.smR+'%',d.sm,false,false);
     d.extraAmts.forEach(function(x){ghtml+=grow(x.name,x.rate+'%',x.amt,false,false);});
     ghtml+=grow('[ 소&nbsp;&nbsp;계 ]','',d.subTotal,true,false);
-    ghtml+=grow('계','',d.subTotal,true,false);
-    ghtml+=grow('일 반 관 리 비',d.gmR+'%',d.gm,false,false);
+    ghtml+=grow('계','',d.subTotal,true,false,'','');
+    ghtml+=grow('일 반 관 리 비',d.gmR+'% (계 대비)',d.gm,false,false,'','');
     ghtml+=grow('이&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;윤',d.pR+'%',d.pr,false,false);
-    ghtml+=grow('공 급 가 액','',d.gt,true,false);
-    ghtml+=grow('부 가 가 치 세',d.vR+'%',d.vat,false,false);
+    ghtml+=grow('공 급 가 액','',d.gt,true,false,'','');
+    ghtml+=grow('부 가 가 치 세',d.vR+'% (공급가액 대비)',d.vat,false,false,'','');
     ghtml+=grow('도&nbsp;&nbsp;급&nbsp;&nbsp;액','',d.gt+d.vat,false,false);
     ghtml+=grow('총&nbsp;&nbsp;공&nbsp;&nbsp;사&nbsp;&nbsp;비','',d.ft,false,true);
     g('ilwi-gabji-rows').innerHTML=ghtml;
@@ -1624,8 +1639,11 @@ function buildPrintPages(){
   if(!styleEl){styleEl=document.createElement('style');styleEl.id='print-orientation-style';document.head.appendChild(styleEl);}
 
   if(estimateFormat==='ilwi'){
-    // 가로 A4
-    styleEl.textContent='@media print{@page{size:A4 landscape;margin:6mm 9mm;}}';
+    // 가로 A4 - 일반 견적 페이지 전부 강제 숨김
+    ['print-cover','print-submit','print-internal-page','print-gabji-page','ilwi-cost-page'].forEach(function(id){
+      var el=g(id); if(el) el.style.cssText='display:none!important;';
+    });
+    styleEl.textContent='@media print{@page{size:A4 landscape;margin:6mm 9mm;} #ilwi-cost-page{display:none!important;} #print-submit{display:none!important;} #print-cover{display:none!important;} #print-internal-page{display:none!important;} #print-gabji-page{display:none!important;}}';
     buildIlwiPages(name,addr,mgr,date,submitSum,profit,supply,final);
   } else {
     // 세로 A4
