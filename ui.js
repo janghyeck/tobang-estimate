@@ -61,4 +61,3 @@ if(window.__SAVED_STATE__){
 }
 
 onAreaChange();
-})();
