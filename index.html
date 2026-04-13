@@ -150,7 +150,7 @@
 </div>
 
 <!-- 인쇄용 견적서 -->
-<div id="print-submit" style="display:none;page-break-before:always;">
+<div id="print-submit" style="display:none;">
   <div style="padding:14mm 14mm;">
     <div style="font-size:13pt;font-weight:700;color:#1a1a2e;border-bottom:2.5px solid #2563eb;padding-bottom:5px;margin-bottom:14px;">&#9632; 견적서</div>
     <div style="font-size:10pt;font-weight:700;color:#2563eb;border-bottom:1px solid #2563eb;padding-bottom:3px;margin:12px 0 6px;">&#9632; 공사 개요</div>
@@ -480,8 +480,10 @@
       </div>
     </div>
   </div>
-  <button class="btn-print" id="pdf-btn">견적서 인쇄 / PDF 저장</button>
-  <button class="btn" id="save-btn" style="background:#2563eb;color:#fff;border:none;font-weight:700;">현재 견적 저장 (HTML)</button>
+  <div class="container">
+    <button class="btn-print" id="pdf-btn">견적서 인쇄 / PDF 저장</button>
+    <button class="btn" id="save-btn" style="background:#2563eb;color:#fff;border:none;font-weight:700;">현재 견적 저장 (HTML)</button>
+  </div>
 </div>
 </div>
 
