@@ -1,4 +1,3 @@
-(function(){
 var g=function(id){return document.getElementById(id);};
 function n(v){return Math.round(v).toLocaleString();}
 function ru(v){return Math.round(v/10000)*10000;}
@@ -416,4 +415,3 @@ g('save-btn').addEventListener('click',function(){
 });
 
 g('pdf-btn').addEventListener('click',function(){buildPrintPages();setTimeout(function(){window.print();},400);});
-})();
