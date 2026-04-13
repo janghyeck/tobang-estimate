@@ -416,3 +416,4 @@ g('save-btn').addEventListener('click',function(){
 });
 
 g('pdf-btn').addEventListener('click',function(){buildPrintPages();setTimeout(function(){window.print();},400);});
+})();
