@@ -1,3 +1,14 @@
+
+// 복합시트 프라이머 선택
+var csPrimerType = 'hado';
+function setCsPrimer(type, btn) {
+  csPrimerType = type;
+  [document.getElementById('cs-primer-hado'), document.getElementById('cs-primer-asphalt')].forEach(function(b){if(b)b.classList.remove('active');});
+  if(btn) btn.classList.add('active');
+  var row = document.getElementById('cs-asphalt-price-row');
+  if(row) row.style.display = type === 'asphalt' ? 'flex' : 'none';
+}
+
 var g=function(id){return document.getElementById(id);};
 function n(v){return Math.round(v).toLocaleString();}
 function ru(v){return Math.round(v/10000)*10000;}
@@ -221,7 +232,15 @@ function calc(){
     var buja=Math.round(mainPy*sv('s-buja',1600));
     var hPrice=sv('s-hado',52000),jPrice=sv('s-jungdo',57000),sPrice=sv('s-sangdo',75000),tPrice=sv('s-thinner',34000);
     var tapePrice=sv('s-tape',5000),sealPrice=sv('s-sealant',10000);
-    iMatHTML+=addMatRow('복합시트','하도','14L/통',(mainSqm*hadoRate).toFixed(1)+'L',hadoQ,'통',hPrice,true);
+    if(csPrimerType === 'asphalt') {
+      // 아스팔트프라이머: 18L/말, 8평(26.446㎡) 도포 → 0.681L/㎡
+      var asphaltRate = 18/(8*3.3058);
+      var asphaltQ = Math.ceil(mainSqm * asphaltRate / 18);
+      var asphaltPrice = sv('cs-asphalt-price', 32000);
+      iMatHTML+=addMatRow('복합시트','아스팔트프라이머','18L/말',(mainSqm*asphaltRate).toFixed(1)+'L',asphaltQ,'말',asphaltPrice,true);
+    } else {
+      iMatHTML+=addMatRow('복합시트','하도','14L/통',(mainSqm*hadoRate).toFixed(1)+'L',hadoQ,'통',hPrice,true);
+    }
     iMatHTML+=addMatRow('복합시트','시트('+st+'mm)','15m롤',(mainSqm/sheetArea).toFixed(2)+'롤',sheetQ,'롤',csSp,true);
     iMatHTML+=addMatRow('복합시트','망사테이프','개','-',sheetQ,'개',tapePrice,true);
     iMatHTML+=addMatRow('복합시트','실란트','개','-',sheetQ*3,'개',sealPrice,true);
