@@ -98,5 +98,8 @@ tr:last-child td{border-bottom:none;}
   thead th{background:#2563eb!important;color:#fff!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
   body{background:#fff;margin:0;padding:0;}
   .container{display:none!important;}
+  table{width:100%!important;table-layout:fixed!important;word-break:break-all;}
+  td,th{overflow:hidden;}
+  .amt-inp{width:80px!important;}
   @page{size:A4;margin:8mm 8mm;}
 }
