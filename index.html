@@ -150,7 +150,7 @@
 </div>
 
 <!-- 인쇄용 견적서 -->
-<div id="print-submit" style="display:none;">
+<div id="print-submit" style="display:none;page-break-before:always;">
   <div style="padding:14mm 14mm;">
     <div style="font-size:13pt;font-weight:700;color:#1a1a2e;border-bottom:2.5px solid #2563eb;padding-bottom:5px;margin-bottom:14px;">&#9632; 견적서</div>
     <div style="font-size:10pt;font-weight:700;color:#2563eb;border-bottom:1px solid #2563eb;padding-bottom:3px;margin:12px 0 6px;">&#9632; 공사 개요</div>
@@ -275,6 +275,13 @@
   <div class="chk-block">
     <div class="chk-head"><input type="checkbox" id="chk-cs"><label for="chk-cs"><span class="badge badge-blue">복합시트방수</span>복합시트방수 공정</label></div>
     <div class="chk-body" id="body-cs">
+      <div class="row"><label>하도 종류</label>
+        <div style="display:flex;gap:6px;">
+          <button id="cs-primer-hado" class="sky-btn active" onclick="setCsPrimer('hado',this)" style="flex:1;">하도</button>
+          <button id="cs-primer-asphalt" class="sky-btn" onclick="setCsPrimer('asphalt',this)" style="flex:1;">아스팔트프라이머</button>
+        </div>
+      </div>
+      <div class="row" id="cs-asphalt-price-row" style="display:none;"><label>아스팔트프라이머 단가</label><input type="number" id="cs-asphalt-price" value="32000"><span class="unit">원/말(18L)</span></div>
       <div class="row"><label>시트 두께</label><select id="cs-st"><option value="1.5">1.5mm</option><option value="2" selected>2mm</option><option value="2.5">2.5mm</option><option value="3">3mm</option></select></div>
       <div class="row"><label>우레탄 두께</label><select id="cs-ut"><option value="1.5">1.5mm</option><option value="2" selected>2mm</option><option value="2.5">2.5mm</option><option value="3">3mm</option></select></div>
       <div class="row"><label>시트 단가(롤)</label><input type="number" id="cs-sp" value="120000"><span class="unit">원</span></div>
@@ -480,10 +487,8 @@
       </div>
     </div>
   </div>
-  <div class="container">
-    <button class="btn-print" id="pdf-btn">견적서 인쇄 / PDF 저장</button>
-    <button class="btn" id="save-btn" style="background:#2563eb;color:#fff;border:none;font-weight:700;">현재 견적 저장 (HTML)</button>
-  </div>
+  <button class="btn-print" id="pdf-btn">견적서 인쇄 / PDF 저장</button>
+  <button class="btn" id="save-btn" style="background:#2563eb;color:#fff;border:none;font-weight:700;">현재 견적 저장 (HTML)</button>
 </div>
 </div>
 
