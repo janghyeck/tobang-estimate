@@ -248,7 +248,7 @@ function buildPrintPages(){
     var piLaborHTML='';
     document.querySelectorAll('#i-labor-body tr').forEach(function(tr,idx){var tds=tr.querySelectorAll('td');if(tds.length<5)return;var inp=tds[3].querySelector('input'),price=inp?parseFloat(inp.value)||0:0,count=parseFloat(tds[2].textContent)||0,amt=count*price;laborSum+=amt;var bg=idx%2===0?'#fff':'#f8fafc';piLaborHTML+='<tr style="background:'+bg+'"><td style="padding:4px 7px;border:0.5px solid #d1d5db;">'+tds[0].textContent+'</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;">'+tds[1].textContent+'</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+tds[2].textContent+'</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+n(price)+'</td><td style="padding:4px 7px;border:0.5px solid #d1d5db;text-align:right;">'+n(amt)+'</td></tr>';});
     g('pi-labor-rows').innerHTML=piLaborHTML;g('pi-labor-total').textContent=n(laborSum);
-    g('pi-sum').innerHTML='<tbody><tr><td style="padding:5px 10px;border:0.5px solid #d1d5db;font-size:9pt;">자재비</td><td style="padding:5px 10px;border:0.5px solid #d1d5db;text-align:right;font-size:9pt;">'+n(matSum)+' 원</td></tr><tr style="background:#f8fafc"><td style="padding:5px 10px;border:0.5px solid #d1d5db;font-size:9pt;">노무비</td><td style="padding:5px 10px;border:0.5px solid #d1d5db;text-align:right;font-size:9pt;">'+n(laborSum)+' 원</td></tr><tr style="background:#2563eb !important;-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important;;-webkit-print-color-adjust:exact !important;print-color-adjust:exact !important";-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important"><td style="padding:8px 10px;color:#fff;font-weight:700;font-size:11pt;">내부검토 합계</td><td style="padding:8px 10px;color:#fff;font-weight:700;font-size:11pt;text-align:right;">'+n(matSum+laborSum)+' 원</td></tr></tbody>';
+    g('pi-sum').innerHTML='<tbody><tr><td style="padding:5px 10px;border:0.5px solid #d1d5db;font-size:9pt;">자재비</td><td style="padding:5px 10px;border:0.5px solid #d1d5db;text-align:right;font-size:9pt;">'+n(matSum)+' 원</td></tr><tr style="background:#f8fafc"><td style="padding:5px 10px;border:0.5px solid #d1d5db;font-size:9pt;">노무비</td><td style="padding:5px 10px;border:0.5px solid #d1d5db;text-align:right;font-size:9pt;">'+n(laborSum)+' 원</td></tr><tr style="background:#2563eb!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;"><td style="padding:8px 10px;color:#fff!important;font-weight:700;font-size:11pt;">내부검토 합계</td><td style="padding:8px 10px;color:#fff!important;font-weight:700;font-size:11pt;text-align:right;">'+n(matSum+laborSum)+' 원</td></tr></tbody>';
     // 추가항목 내부검토용에도 추가
     if(extraItems.length>0){
       var piExtraHTML='';
@@ -287,7 +287,7 @@ function buildPrintPages(){
   if(negoAmt>0){
     costRows+='<tr><td style="padding:5px 10px;border:0.5px solid #d1d5db;font-size:9pt;color:#dc2626;">네고 차감</td><td style="padding:5px 10px;border:0.5px solid #d1d5db;text-align:right;font-size:9pt;color:#dc2626;">- '+n(negoAmt)+' 원</td></tr>';
   }
-  costRows+='<tr style="background:#2563eb!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important"><td style="padding:8px 10px;color:#fff!important;font-weight:700;font-size:11pt;">총 공사금액 (V.A.T 별도)</td><td style="padding:8px 10px;color:#fff!important;font-weight:700;font-size:11pt;text-align:right;">'+(negoAmt>0?n(finalNego):n(final))+' 원</td></tr></tbody>';
+  costRows+='<tr style="background:#2563eb!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;"><td style="padding:8px 10px;color:#fff!important;font-weight:700;font-size:11pt;">총 공사금액 (V.A.T 별도)</td><td style="padding:8px 10px;color:#fff!important;font-weight:700;font-size:11pt;text-align:right;">'+(negoAmt>0?n(finalNego):n(final))+' 원</td></tr></tbody>';
   g('ps-cost').innerHTML=costRows;
 
   var notesHTML='';notes.forEach(function(note){notesHTML+='<p style="font-size:8.5pt;color:#374151;padding:2px 0;">- '+note.text+'</p>';});
@@ -308,11 +308,11 @@ function buildPrintPages(){
     ['print-cover','print-submit','print-internal-page','ilwi-cost-page'].forEach(function(id){
       var el=g(id); if(el) el.style.cssText='display:none!important;';
     });
-    styleEl.textContent='@media print{@page{size:A4 landscape;margin:6mm 9mm;} #ilwi-cost-page{display:none!important;} #print-submit{display:none!important;} #print-cover{display:none!important;} #print-internal-page{display:none!important;}}';
+    styleEl.textContent='@media print{@page{size:A4 landscape;margin:9mm 10mm;} .container{display:none!important;} #print-cover,#print-internal-page,#print-submit{display:none!important;} #ilwi-cost-page{display:block!important;} #print-ilwi,#ilwi-cover-page,#ilwi-summary-page,#ilwi-detail-page{display:block!important;} table{width:100%!important;table-layout:fixed!important;} thead th,thead tr{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;} #ilwi-summary-page,#ilwi-detail-page,#ilwi-cost-page{width:277mm!important;max-width:277mm!important;box-sizing:border-box!important;overflow:visible!important;}}';
     buildIlwiPages(name,addr,mgr,date,submitSum,profit,supply,final);
   } else {
     // 세로 A4
-    styleEl.textContent='@media print{@page{size:A4 portrait;margin:8mm 8mm;}}';
+    styleEl.textContent='@media print{@page{size:A4 portrait;margin:8mm 8mm;} .container{display:none!important;} #print-ilwi,#ilwi-cost-page{display:none!important;} table{width:100%!important;table-layout:fixed!important;} thead th,thead tr{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;} #print-cover,#print-internal-page,#print-submit{width:194mm!important;max-width:194mm!important;box-sizing:border-box!important;}}';
     // 표지
     if(g('print-cover')) g('print-cover').style.display='block';
     // 내부검토용
