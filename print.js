@@ -118,7 +118,16 @@ function buildIlwiPages(name,addr,mgr,date,submitSum,profit,supply,final){
     var csSp2=parseFloat(g('cs-sp').value)||sv('s-sheet',120000);
     var sheetPm=1/sheetArea,tapePm=sheetPm,sealPm=sheetPm*3;
     var jKgPm2=ut2*urCoef;
-    var hAmt3=Math.round(hadoRate*(hP*surRate/14));
+    var hAmt3, primerLabel, primerSpec;
+    if(typeof csPrimerType !== 'undefined' && csPrimerType === 'asphalt') {
+      var asphaltRate3 = 18/(8*3.3058);
+      var asphaltPrice3 = sv('cs-asphalt-price',32000);
+      hAmt3 = Math.round(asphaltRate3 * (asphaltPrice3*surRate/18));
+      primerLabel = '아스팔트프라이머'; primerSpec = '18L/말';
+    } else {
+      hAmt3 = Math.round(hadoRate*(hP*surRate/14));
+      primerLabel = '하도'; primerSpec = '14L/통';
+    }
     var shAmt3=Math.round(sheetPm*(csSp2*surRate));
     var tapAmt3=Math.round(tapePm*5000*surRate);
     var seaAmt3=Math.round(sealPm*10000*surRate);
